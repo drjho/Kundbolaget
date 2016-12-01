@@ -10,5 +10,8 @@ namespace Kundbolaget.EntityFramework.Context
     public class StoreContext : DbContext
     {
         public DbSet<Product> Products { get; set; }
+        public DbSet<Adress> Adresses { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+
     }
 }

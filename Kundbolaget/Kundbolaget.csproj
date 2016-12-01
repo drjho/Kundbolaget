@@ -143,7 +143,13 @@
     <Compile Include="Migrations\201611282307296_InitialCreate.Designer.cs">
       <DependentUpon>201611282307296_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612011135109_CustomerAdress.cs" />
+    <Compile Include="Migrations\201612011135109_CustomerAdress.Designer.cs">
+      <DependentUpon>201612011135109_CustomerAdress.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\EntityModels\Adress.cs" />
+    <Compile Include="Models\EntityModels\Customer.cs" />
     <Compile Include="Models\EntityModels\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -178,6 +184,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201611282307296_InitialCreate.resx">
       <DependentUpon>201611282307296_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612011135109_CustomerAdress.resx">
+      <DependentUpon>201612011135109_CustomerAdress.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
