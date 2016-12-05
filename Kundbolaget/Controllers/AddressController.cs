@@ -1,38 +1,37 @@
-﻿using System;
+﻿using Kundbolaget.EntityFramework.Repositories;
+using Kundbolaget.Models.EntityModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Kundbolaget.EntityFramework.Repositories;
-using Kundbolaget.Models.EntityModels;
 
 namespace Kundbolaget.Controllers
 {
-    public class CustomerController : Controller
+    public class AddressController : Controller
     {
-        IGenericRepository<Customer> repository;
 
-        public CustomerController()
+        DbAddressRepository repository;
+
+        public AddressController()
         {
-            repository = new DbCustomerRepository();
+            repository = new DbAddressRepository();
         }
 
-        // GET: Customer
+        // GET: Address
         public ActionResult Index()
         {
             var model = repository.GetItems();
             return View(model);
         }
 
-        // GET: Customer/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // Get: Customers/Create
         [HttpPost]
-        public ActionResult Create(Customer model)
+        public ActionResult Create(Address model)
         {
             if (!ModelState.IsValid)
                 return View(model);
@@ -40,16 +39,16 @@ namespace Kundbolaget.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Customers/Edit/{id}
+        // GET: Addresses/Edit/{id}
         public ActionResult Edit(int id)
         {
             var model = repository.GetItem(id);
             return View(model);
         }
 
-        // POST: Customers/Edit/{id}
+        // POST: Addresses/Edit/{id}
         [HttpPost]
-        public ActionResult Edit(Customer model)
+        public ActionResult Edit(Address model)
         {
             if (!ModelState.IsValid)
                 return View(model);
@@ -57,23 +56,23 @@ namespace Kundbolaget.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Customers/Details/{id}
+        // GET: Addresses/Details/{id}
         public ActionResult Details(int id)
         {
             var model = repository.GetItem(id);
             return View(model);
         }
 
-        // GET: Customer/Delete/{id}
+        // GET: Address/Delete/{id}
         public ActionResult Delete(int id)
         {
             var model = repository.GetItem(id);
             return View(model);
         }
 
-        // POST: Customer/Delete{id}
+        // POST: Address/Delete{id}
         [HttpPost]
-        public ActionResult Delete(int id, Customer model)
+        public ActionResult Delete(int id, Address model)
         {
             if (id != model.Id)
             {

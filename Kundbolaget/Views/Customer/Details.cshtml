@@ -18,6 +18,29 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.Addresses)
+        </dt>
+
+        @* Loop through and render each category name *@
+        <dd>
+            @foreach (var address in Model.Addresses)
+            {
+                <dl class="dl-horizontal">
+                    <dt>
+                        @address.StreetName @address.Number
+                    </dt>
+                    <dt>
+                        @address.PostalCode @address.Area
+                    </dt>
+                    <dt>
+                        Type: @address.Type
+                    </dt>
+                </dl>
+            }
+        </dd>
+
+
     </dl>
 </div>
 <p>
