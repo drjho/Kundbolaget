@@ -131,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="EntityFramework\Context\StoreContext.cs" />
@@ -143,9 +144,9 @@
     <Compile Include="Migrations\201611282307296_InitialCreate.Designer.cs">
       <DependentUpon>201611282307296_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612011135109_CustomerAdress.cs" />
-    <Compile Include="Migrations\201612011135109_CustomerAdress.Designer.cs">
-      <DependentUpon>201612011135109_CustomerAdress.cs</DependentUpon>
+    <Compile Include="Migrations\201612011310117_OneToMany.cs" />
+    <Compile Include="Migrations\201612011310117_OneToMany.Designer.cs">
+      <DependentUpon>201612011310117_OneToMany.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Adress.cs" />
@@ -168,6 +169,8 @@
     <Content Include="Views\Products\Edit.cshtml" />
     <Content Include="Views\Products\Details.cshtml" />
     <Content Include="Views\Products\Delete.cshtml" />
+    <Content Include="Views\Customer\Create.cshtml" />
+    <Content Include="Views\Customer\Delete.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -185,8 +188,8 @@
     <EmbeddedResource Include="Migrations\201611282307296_InitialCreate.resx">
       <DependentUpon>201611282307296_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612011135109_CustomerAdress.resx">
-      <DependentUpon>201612011135109_CustomerAdress.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201612011310117_OneToMany.resx">
+      <DependentUpon>201612011310117_OneToMany.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

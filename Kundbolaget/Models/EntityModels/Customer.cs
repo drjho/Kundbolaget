@@ -9,9 +9,19 @@ namespace Kundbolaget.Models.EntityModels
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual List<Adress> DeliveryAdresses{ get; set; }
-        public virtual Adress InvoiceAdress { get; set; }
-        public virtual Adress VisitAdress { get; set; }
+        public virtual List<Adress> Adresses{ get; set; }
+
+
+        public Customer()
+        {
+            Adresses = new List<Adress>();
+        }
+
+
 
     }
+
+    
+
+
 }
