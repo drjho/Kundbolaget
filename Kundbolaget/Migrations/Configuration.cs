@@ -10,7 +10,7 @@ namespace Kundbolaget.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(Kundbolaget.EntityFramework.Context.StoreContext context)
@@ -24,6 +24,23 @@ namespace Kundbolaget.Migrations
                        };
             context.Products.AddOrUpdate(products);
 
+            var addresses = new Adress[]
+            {
+                new Adress { Id = 1, StreetName = "Kungsgatan", Number = 1, PostalCode = "11232", Area ="Stockholm", TypeId = 0 },
+                new Adress { Id = 2, StreetName = "Kungsgatan", Number = 2, PostalCode = "11232", Area ="Stockholm", TypeId = 1 },
+                new Adress { Id = 3, StreetName = "Kungsgatan", Number = 3, PostalCode = "11232", Area ="Stockholm", TypeId = 2 }
+
+            };
+
+            var customers = new Customer[]
+            {
+                new Customer { Id = 1, Name = "Coop"}
+            };
+
+            customers[0].Adresses.AddRange(addresses);
+
+            context.Customers.AddOrUpdate(customers);
+            context.Adresses.AddOrUpdate(addresses);
         }
     }
 }
