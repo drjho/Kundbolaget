@@ -40,7 +40,7 @@ namespace Kundbolaget.Migrations
             customers[0].Adresses.AddRange(addresses);
 
             context.Customers.AddOrUpdate(customers);
-            context.Adresses.AddOrUpdate(addresses);
+            
         }
     }
 }

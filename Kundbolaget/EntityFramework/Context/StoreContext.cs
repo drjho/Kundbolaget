@@ -12,12 +12,12 @@ namespace Kundbolaget.EntityFramework.Context
         public StoreContext()
             : base("KundbolagetDB")
         {
-
+            
         }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Adress> Adresses { get; set; }
         public DbSet<Customer> Customers { get; set; }
-
+        public DbSet<Warehouse> Warehouses { get; set; }
     }
 }

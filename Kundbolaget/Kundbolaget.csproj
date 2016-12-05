@@ -142,9 +142,11 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\WarehouseController.cs" />
     <Compile Include="EntityFramework\Context\StoreContext.cs" />
     <Compile Include="EntityFramework\Repositories\DbCustomerRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbStoreRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\DbWarehouseRepository.cs" />
     <Compile Include="EntityFramework\Repositories\IGenericRepository.cs" />
     <Compile Include="EntityFramework\Repositories\IStoreRepository.cs" />
     <Compile Include="Global.asax.cs">
@@ -162,6 +164,8 @@
     <Compile Include="Models\EntityModels\Adress.cs" />
     <Compile Include="Models\EntityModels\Customer.cs" />
     <Compile Include="Models\EntityModels\Product.cs" />
+    <Compile Include="Models\EntityModels\StoragePlace.cs" />
+    <Compile Include="Models\EntityModels\Warehouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +189,11 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Customer\Details.cshtml" />
     <Content Include="Views\Customer\Edit.cshtml" />
+    <Content Include="Views\Warehouse\Index.cshtml" />
+    <Content Include="Views\Warehouse\Create.cshtml" />
+    <Content Include="Views\Warehouse\Edit.cshtml" />
+    <Content Include="Views\Warehouse\Details.cshtml" />
+    <Content Include="Views\Warehouse\Delete.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
