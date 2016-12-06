@@ -19,12 +19,15 @@ namespace Kundbolaget.Models.EntityModels
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Street name")]
         public string StreetName { get; set; }
 
         [Required]
+        [Display(Name = "No.")]
         public int Number { get; set; }
 
         [Required]
+        [Display(Name = "Area code")]
         public string PostalCode { get; set; }
 
         [Required]

@@ -1,4 +1,5 @@
-﻿using Kundbolaget.EntityFramework.Repositories;
+﻿using Kundbolaget.EntityFramework.Context;
+using Kundbolaget.EntityFramework.Repositories;
 using Kundbolaget.Models.EntityModels;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,8 @@ namespace Kundbolaget.Controllers
 
         public ActionResult Create()
         {
+            ViewBag.Customers = new SelectList(new StoreContext().Customers, "Name", "Name");
+
             return View();
         }
 
@@ -36,6 +39,7 @@ namespace Kundbolaget.Controllers
             if (!ModelState.IsValid)
                 return View(model);
             repository.CreateItem(model);
+            
             return RedirectToAction("Index");
         }
 
@@ -43,6 +47,8 @@ namespace Kundbolaget.Controllers
         public ActionResult Edit(int id)
         {
             var model = repository.GetItem(id);
+            ViewBag.Customers = new SelectList(new StoreContext().Customers, "Name", "Name");
+
             return View(model);
         }
 
@@ -52,6 +58,7 @@ namespace Kundbolaget.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
+
             repository.UpdateItem(model);
             return RedirectToAction("Index");
         }
