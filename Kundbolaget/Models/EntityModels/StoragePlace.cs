@@ -25,9 +25,15 @@ namespace Kundbolaget.Models.EntityModels
                 return $"{AisleNr} + {Side} + {Spot} + {ShelfNr}";
             }
         }
+
+        /// <summary>
+        /// Primary key.
+        /// </summary>
+        public int Id { get; set; }
         /// <summary>
         /// What number the aisle is on.
         /// </summary>
+        // TODO : Kanske numreringen ska börja med 1.
         public int AisleNr { get; set; }
 
         /// <summary>
@@ -45,8 +51,8 @@ namespace Kundbolaget.Models.EntityModels
         /// <summary>
         /// The arrival time of the product.
         /// </summary>
-        public DateTime ArrivalDate { get; set; }
+        public DateTime ArrivalDate { get; set; } = DateTime.Today;
 
-
+        public bool Vacant { get; set; } = true;
     }
 }

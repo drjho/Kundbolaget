@@ -160,6 +160,14 @@
     <Compile Include="Migrations\201612011310117_OneToMany.Designer.cs">
       <DependentUpon>201612011310117_OneToMany.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612061041137_WarehouseStorageplace.cs" />
+    <Compile Include="Migrations\201612061041137_WarehouseStorageplace.Designer.cs">
+      <DependentUpon>201612061041137_WarehouseStorageplace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612061046171_WarehouseStorageplace2.cs" />
+    <Compile Include="Migrations\201612061046171_WarehouseStorageplace2.Designer.cs">
+      <DependentUpon>201612061046171_WarehouseStorageplace2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Adress.cs" />
     <Compile Include="Models\EntityModels\Customer.cs" />
@@ -213,6 +221,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612011310117_OneToMany.resx">
       <DependentUpon>201612011310117_OneToMany.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612061041137_WarehouseStorageplace.resx">
+      <DependentUpon>201612061041137_WarehouseStorageplace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612061046171_WarehouseStorageplace2.resx">
+      <DependentUpon>201612061046171_WarehouseStorageplace2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
