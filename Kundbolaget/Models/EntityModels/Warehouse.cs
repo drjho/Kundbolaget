@@ -21,7 +21,16 @@ namespace Kundbolaget.Models.EntityModels
 
         public Warehouse()
         {
+            CreatePlaces(1452);
+        }
+
+        void CreatePlaces(int places)
+        {
             StoragePlace = new List<StoragePlace>();
+            //for (int i = 0; i < places; i++)
+            //{
+
+            //}
         }
     }
 }

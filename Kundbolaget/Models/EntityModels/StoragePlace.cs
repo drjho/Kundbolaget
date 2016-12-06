@@ -10,12 +10,21 @@ namespace Kundbolaget.Models.EntityModels
         /// <summary>
         /// Sets the storageplaceId by the following constructor
         /// </summary>
-        public StoragePlace()
+        public StoragePlace(int aNr, char side, int s, int sNr)
         {
-            StoragePlaceId = $"{AisleNr} + {Part} + {Spot} + {ShelfNr}";
+            AisleNr = aNr;
+            Side = side;
+            Spot = s;
+            ShelfNr = sNr;
         }
 
-        public string StoragePlaceId { get; private set; }
+        public string StoragePlaceId
+        {
+            get
+            {
+                return $"{AisleNr} + {Side} + {Spot} + {ShelfNr}";
+            }
+        }
         /// <summary>
         /// What number the aisle is on.
         /// </summary>
@@ -24,7 +33,7 @@ namespace Kundbolaget.Models.EntityModels
         /// <summary>
         /// What side of the aisle, A or B.
         /// </summary>
-        public char Part { get; set; }
+        public char Side { get; set; }
         /// <summary>
         /// The spot number on the aisle.
         /// </summary>
@@ -38,6 +47,6 @@ namespace Kundbolaget.Models.EntityModels
         /// </summary>
         public DateTime ArrivalDate { get; set; }
 
-        
+
     }
 }
