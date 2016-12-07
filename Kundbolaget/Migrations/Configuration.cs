@@ -24,23 +24,22 @@ namespace Kundbolaget.Migrations
                        };
             context.Products.AddOrUpdate(products);
 
-            var addresses = new Adress[]
-            {
-                new Adress { Id = 1, StreetName = "Kungsgatan", Number = 1, PostalCode = "11232", Area ="Stockholm", TypeId = 0 },
-                new Adress { Id = 2, StreetName = "Kungsgatan", Number = 2, PostalCode = "11232", Area ="Stockholm", TypeId = 1 },
-                new Adress { Id = 3, StreetName = "Kungsgatan", Number = 3, PostalCode = "11232", Area ="Stockholm", TypeId = 2 }
-
-            };
-
             var customers = new Customer[]
             {
                 new Customer { Id = 1, Name = "Coop"}
             };
 
-            customers[0].Adresses.AddRange(addresses);
+            var addresses = new Address[]
+            {
+                new Address { Id = 1, StreetName = "Kungsgatan", Number = 1, PostalCode = "11232", Area = "Stockholm", Type = AddressType.Invoice, CustomerId = 1 },
+                new Address { Id = 2, StreetName = "Kungsgatan", Number = 2, PostalCode = "11232", Area = "Stockholm", Type = AddressType.Delievery, CustomerId = 1 },
+                new Address { Id = 3, StreetName = "Kungsgatan", Number = 3, PostalCode = "11232", Area = "Stockholm", Type = AddressType.Visit, CustomerId = 1 }
+            };
+
+            customers[0].Addresses.AddRange(addresses);
 
             context.Customers.AddOrUpdate(customers);
-            context.Adresses.AddOrUpdate(addresses);
+            context.Addresses.AddOrUpdate(addresses);
         }
     }
 }

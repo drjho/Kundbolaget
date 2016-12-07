@@ -154,10 +154,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AddressController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="EntityFramework\Context\StoreContext.cs" />
+    <Compile Include="EntityFramework\Repositories\DbAddressRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbCustomerRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbStoreRepository.cs" />
     <Compile Include="EntityFramework\Repositories\IGenericRepository.cs" />
@@ -173,8 +175,20 @@
     <Compile Include="Migrations\201612011310117_OneToMany.Designer.cs">
       <DependentUpon>201612011310117_OneToMany.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612052000555_address.cs" />
+    <Compile Include="Migrations\201612052000555_address.Designer.cs">
+      <DependentUpon>201612052000555_address.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612052040585_addressCustomer.cs" />
+    <Compile Include="Migrations\201612052040585_addressCustomer.Designer.cs">
+      <DependentUpon>201612052040585_addressCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612070818224_AddressCustomer2.cs" />
+    <Compile Include="Migrations\201612070818224_AddressCustomer2.Designer.cs">
+      <DependentUpon>201612070818224_AddressCustomer2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\EntityModels\Adress.cs" />
+    <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\Customer.cs" />
     <Compile Include="Models\EntityModels\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -200,6 +214,11 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Customer\Details.cshtml" />
     <Content Include="Views\Customer\Edit.cshtml" />
+    <Content Include="Views\Address\Index.cshtml" />
+    <Content Include="Views\Address\Create.cshtml" />
+    <Content Include="Views\Address\Edit.cshtml" />
+    <Content Include="Views\Address\Details.cshtml" />
+    <Content Include="Views\Address\Delete.cshtml" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -220,6 +239,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612011310117_OneToMany.resx">
       <DependentUpon>201612011310117_OneToMany.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612052000555_address.resx">
+      <DependentUpon>201612052000555_address.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612052040585_addressCustomer.resx">
+      <DependentUpon>201612052040585_addressCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612070818224_AddressCustomer2.resx">
+      <DependentUpon>201612070818224_AddressCustomer2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
