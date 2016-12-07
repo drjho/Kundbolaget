@@ -12,8 +12,6 @@ namespace Kundbolaget.Models.EntityModels
 
         public string Name { get; set; }
 
-        public Address Address { get; set; }
-
         public string City { get; set; }
         public string Country { get; set; }
         public int ZipCode { get; set; }
