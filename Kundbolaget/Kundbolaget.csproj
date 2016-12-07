@@ -168,6 +168,10 @@
     <Compile Include="Migrations\201612061046171_WarehouseStorageplace2.Designer.cs">
       <DependentUpon>201612061046171_WarehouseStorageplace2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612071008073_dbStoragePlace.cs" />
+    <Compile Include="Migrations\201612071008073_dbStoragePlace.Designer.cs">
+      <DependentUpon>201612071008073_dbStoragePlace.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Adress.cs" />
     <Compile Include="Models\EntityModels\Customer.cs" />
@@ -227,6 +231,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612061046171_WarehouseStorageplace2.resx">
       <DependentUpon>201612061046171_WarehouseStorageplace2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612071008073_dbStoragePlace.resx">
+      <DependentUpon>201612071008073_dbStoragePlace.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

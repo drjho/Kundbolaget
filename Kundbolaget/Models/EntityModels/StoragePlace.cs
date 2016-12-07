@@ -7,6 +7,11 @@ namespace Kundbolaget.Models.EntityModels
 {
     public class StoragePlace
     {
+
+        public StoragePlace()
+        {
+
+        }
         /// <summary>
         /// Sets the storageplaceId by the following constructor
         /// </summary>

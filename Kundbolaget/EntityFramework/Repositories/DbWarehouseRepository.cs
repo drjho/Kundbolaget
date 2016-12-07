@@ -20,21 +20,22 @@ namespace Kundbolaget.EntityFramework.Repositories
             }
         }
 
-        public void DeleteItem(int warehouseId)
+        public void DeleteItem(int Id)
         {
             using (var db = new StoreContext())
             {
-                var warehouse = db.Warehouses.SingleOrDefault(w => w.Id == warehouseId);
+                var warehouse = db.Warehouses.Include(w => w.StoragePlace).SingleOrDefault(w => w.Id == Id);
+                db.StoragePlaces.RemoveRange(warehouse.StoragePlace);
                 db.Warehouses.Remove(warehouse);
                 db.SaveChanges();
             }
         }
 
-        public Warehouse GetItem(int warehouseId)
+        public Warehouse GetItem(int Id)
         {
             using (var db = new StoreContext())
             {
-                return db.Warehouses.SingleOrDefault(w => w.Id == warehouseId);
+                return db.Warehouses.SingleOrDefault(w => w.Id == Id);
             }
         }
 
