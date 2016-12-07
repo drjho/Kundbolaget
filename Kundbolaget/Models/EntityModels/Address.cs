@@ -38,6 +38,8 @@ namespace Kundbolaget.Models.EntityModels
         /// </summary>
         public AddressType Type { get; set; }
 
+        public int CustomerId { get; set; }
+
         public virtual Customer Customer { get; set; }
 
     }

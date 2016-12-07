@@ -168,6 +168,10 @@
     <Compile Include="Migrations\201612052040585_addressCustomer.Designer.cs">
       <DependentUpon>201612052040585_addressCustomer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612070818224_AddressCustomer2.cs" />
+    <Compile Include="Migrations\201612070818224_AddressCustomer2.Designer.cs">
+      <DependentUpon>201612070818224_AddressCustomer2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\Customer.cs" />
@@ -225,6 +229,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612052040585_addressCustomer.resx">
       <DependentUpon>201612052040585_addressCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612070818224_AddressCustomer2.resx">
+      <DependentUpon>201612070818224_AddressCustomer2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

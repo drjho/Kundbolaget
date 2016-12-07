@@ -28,7 +28,7 @@ namespace Kundbolaget.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.Customers = new SelectList(new StoreContext().Customers, "Name", "Name");
+            ViewBag.Customers = new SelectList(new StoreContext().Customers, "Id", "Name");
 
             return View();
         }
@@ -47,7 +47,7 @@ namespace Kundbolaget.Controllers
         public ActionResult Edit(int id)
         {
             var model = repository.GetItem(id);
-            ViewBag.Customers = new SelectList(new StoreContext().Customers, "Name", "Name");
+            ViewBag.Customers = new SelectList(new StoreContext().Customers, "Id", "Name");
 
             return View(model);
         }
