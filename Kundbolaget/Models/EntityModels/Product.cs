@@ -13,5 +13,9 @@ namespace Kundbolaget.Models.EntityModels
         public string Name { get; set; }
         [Required]
         public double Price { get; set; }
+
+        public virtual List<StoragePlace> StoragePlaces { get; set; }
+        //[Required]
+        //public float Alcohol { get; set; }
     }
 }

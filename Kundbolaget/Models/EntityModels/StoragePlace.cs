@@ -31,6 +31,9 @@ namespace Kundbolaget.Models.EntityModels
             }
         }
 
+        public virtual Product Product { get; set; }
+        public int? ProductId { get; set; }
+
         /// <summary>
         /// Primary key.
         /// </summary>

@@ -5,53 +5,56 @@ using System.Web;
 using Kundbolaget.Models.EntityModels;
 using Kundbolaget.EntityFramework.Context;
 using System.Data.Entity;
+using Kundbolaget.Models.ViewModels;
 
 namespace Kundbolaget.EntityFramework.Repositories
 {
     public class DbStoreRepository : IStoreRepository
     {
+        StoreContext db = new StoreContext();
         public Product[] GetProducts()
         {
-            using (var db = new StoreContext())
-            {
-                return db.Products.ToArray();
-            }
+            return db.Products.ToArray();
         }
 
         public void CreateProduct(Product newProduct)
         {
-            using (var db = new StoreContext())
-            {
-                db.Products.Add(newProduct);
-                db.SaveChanges();
-            }
+            db.Products.Add(newProduct);
+            db.SaveChanges();
         }
         public void DeleteProduct(int id)
         {
-            using (var db = new StoreContext())
-            {
-                var product = db.Products.SingleOrDefault(p => p.Id == id);
-                db.Products.Remove(product);
-                db.SaveChanges();
-            }
+            var product = db.Products.SingleOrDefault(p => p.Id == id);
+            db.Products.Remove(product);
+            db.SaveChanges();
         }
         public Product GetProduct(int id)
         {
-            using (var db = new StoreContext())
-            {
-                return db.Products.SingleOrDefault(p => p.Id == id);
-            }
+            return db.Products.SingleOrDefault(p => p.Id == id);
         }
         public void UpdateProduct(Product updatedProduct)
         {
-            using (var db = new StoreContext())
-            {
-                db.Products.Attach(updatedProduct);
-                var entry = db.Entry(updatedProduct);
-                entry.State = EntityState.Modified;
-                db.SaveChanges();
-            }
+            db.Products.Attach(updatedProduct);
+            var entry = db.Entry(updatedProduct);
+            entry.State = EntityState.Modified;
+            db.SaveChanges();
         }
-
+        public List<Warehouse> GetWarehouses()
+        {
+            return db.Warehouses.ToList();
+        }
+        public Warehouse GetWarehouse(int id)
+        {
+            return db.Warehouses.SingleOrDefault(w => w.Id == id);
+        }
+        public void AddToStorage(CreateProductVM model)
+        {
+            var warehouse = db.Warehouses.SingleOrDefault(w => w.Id == model.WarehouseId);
+            var openStoragePlace = warehouse.StoragePlace.First(s => s.Vacant);
+            var product = db.Products.SingleOrDefault(p => p.Id == model.Id);
+            openStoragePlace.ProductId = product.Id;
+            openStoragePlace.Vacant = false;
+            db.SaveChanges();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Kundbolaget.EntityFramework.Repositories;
 using Kundbolaget.Models.EntityModels;
+using Kundbolaget.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Kundbolaget.Controllers
 {
     public class ProductsController : Controller
     {
-        IStoreRepository repository;
+        DbStoreRepository repository;
 
         public ProductsController()
         {
@@ -29,7 +30,7 @@ namespace Kundbolaget.Controllers
         {
             return View();
         }
-
+        
         // POST: Products/Create
         [HttpPost]
         public ActionResult Create(Product model)
@@ -81,6 +82,27 @@ namespace Kundbolaget.Controllers
                 return View(model);
             }
             repository.DeleteProduct(id);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult AddToWarehouse(int id)
+        {
+            List<SelectListItem> listItems = repository.GetWarehouses().Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
+
+            CreateProductVM model = new CreateProductVM { WarehouseList = listItems };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult AddToWarehouse(CreateProductVM model)
+        {
+            repository.AddToStorage(model);
+
             return RedirectToAction("Index");
         }
 
