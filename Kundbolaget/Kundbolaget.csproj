@@ -158,10 +158,12 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\WarehouseController.cs" />
     <Compile Include="EntityFramework\Context\StoreContext.cs" />
     <Compile Include="EntityFramework\Repositories\DbAddressRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbCustomerRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbStoreRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\DbWarehouseRepository.cs" />
     <Compile Include="EntityFramework\Repositories\IGenericRepository.cs" />
     <Compile Include="EntityFramework\Repositories\IStoreRepository.cs" />
     <Compile Include="Global.asax.cs">
@@ -174,6 +176,18 @@
     <Compile Include="Migrations\201612011310117_OneToMany.cs" />
     <Compile Include="Migrations\201612011310117_OneToMany.Designer.cs">
       <DependentUpon>201612011310117_OneToMany.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612061041137_WarehouseStorageplace.cs" />
+    <Compile Include="Migrations\201612061041137_WarehouseStorageplace.Designer.cs">
+      <DependentUpon>201612061041137_WarehouseStorageplace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612061046171_WarehouseStorageplace2.cs" />
+    <Compile Include="Migrations\201612061046171_WarehouseStorageplace2.Designer.cs">
+      <DependentUpon>201612061046171_WarehouseStorageplace2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612071008073_dbStoragePlace.cs" />
+    <Compile Include="Migrations\201612071008073_dbStoragePlace.Designer.cs">
+      <DependentUpon>201612071008073_dbStoragePlace.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201612052000555_address.cs" />
     <Compile Include="Migrations\201612052000555_address.Designer.cs">
@@ -191,6 +205,8 @@
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\Customer.cs" />
     <Compile Include="Models\EntityModels\Product.cs" />
+    <Compile Include="Models\EntityModels\StoragePlace.cs" />
+    <Compile Include="Models\EntityModels\Warehouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +230,11 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Customer\Details.cshtml" />
     <Content Include="Views\Customer\Edit.cshtml" />
+    <Content Include="Views\Warehouse\Index.cshtml" />
+    <Content Include="Views\Warehouse\Create.cshtml" />
+    <Content Include="Views\Warehouse\Edit.cshtml" />
+    <Content Include="Views\Warehouse\Details.cshtml" />
+    <Content Include="Views\Warehouse\Delete.cshtml" />
     <Content Include="Views\Address\Index.cshtml" />
     <Content Include="Views\Address\Create.cshtml" />
     <Content Include="Views\Address\Edit.cshtml" />
@@ -239,6 +260,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612011310117_OneToMany.resx">
       <DependentUpon>201612011310117_OneToMany.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612061041137_WarehouseStorageplace.resx">
+      <DependentUpon>201612061041137_WarehouseStorageplace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612061046171_WarehouseStorageplace2.resx">
+      <DependentUpon>201612061046171_WarehouseStorageplace2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612071008073_dbStoragePlace.resx">
+      <DependentUpon>201612071008073_dbStoragePlace.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612052000555_address.resx">
       <DependentUpon>201612052000555_address.cs</DependentUpon>
