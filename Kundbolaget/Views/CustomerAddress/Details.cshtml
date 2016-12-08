@@ -1,0 +1,42 @@
+﻿@model Kundbolaget.Models.EntityModels.CustomerAddress
+
+@{
+    ViewBag.Title = "Detaljer";
+}
+
+<h2>Detaljer</h2>
+
+<div>
+    <h4>Kundadress</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.AddressString)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.AddressString)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressType)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Uppdatera", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Tillbaka till listan", "Index")
+</p>

@@ -155,12 +155,14 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AddressController.cs" />
+    <Compile Include="Controllers\CustomerAddressController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\WarehouseController.cs" />
     <Compile Include="EntityFramework\Context\StoreContext.cs" />
     <Compile Include="EntityFramework\Repositories\DbAddressRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\DbCustomerAddressRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbCustomerRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbStoreRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbWarehouseRepository.cs" />
@@ -209,13 +211,23 @@
     <Compile Include="Migrations\201612081306236_NewProduct.Designer.cs">
       <DependentUpon>201612081306236_NewProduct.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612082009563_CustomerAddress.cs" />
+    <Compile Include="Migrations\201612082009563_CustomerAddress.Designer.cs">
+      <DependentUpon>201612082009563_CustomerAddress.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612082041386_CustomerAddress2.cs" />
+    <Compile Include="Migrations\201612082041386_CustomerAddress2.Designer.cs">
+      <DependentUpon>201612082041386_CustomerAddress2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\Customer.cs" />
+    <Compile Include="Models\EntityModels\CustomerAddress.cs" />
     <Compile Include="Models\EntityModels\Product.cs" />
     <Compile Include="Models\EntityModels\StoragePlace.cs" />
     <Compile Include="Models\EntityModels\Warehouse.cs" />
     <Compile Include="Models\ViewModels\CreateProductVM.cs" />
+    <Compile Include="Models\ViewModels\CustomerAddressVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -251,6 +263,11 @@
     <Content Include="Views\Address\Delete.cshtml" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\Products\AddToWarehouse.cshtml" />
+    <Content Include="Views\CustomerAddress\Index.cshtml" />
+    <Content Include="Views\CustomerAddress\Create.cshtml" />
+    <Content Include="Views\CustomerAddress\Edit.cshtml" />
+    <Content Include="Views\CustomerAddress\Details.cshtml" />
+    <Content Include="Views\CustomerAddress\Delete.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -294,6 +311,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612081306236_NewProduct.resx">
       <DependentUpon>201612081306236_NewProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612082009563_CustomerAddress.resx">
+      <DependentUpon>201612082009563_CustomerAddress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612082041386_CustomerAddress2.resx">
+      <DependentUpon>201612082041386_CustomerAddress2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -24,9 +24,9 @@ namespace Kundbolaget.Migrations
 
             var addresses = new Address[]
             {
-                new Address { Id = 1, StreetName = "Kungsgatan", Number = 1, PostalCode = "11232", Area = "Stockholm", Type = AddressType.Invoice, CustomerId = 1 },
-                new Address { Id = 2, StreetName = "Kungsgatan", Number = 2, PostalCode = "11232", Area = "Stockholm", Type = AddressType.Delievery, CustomerId = 1 },
-                new Address { Id = 3, StreetName = "Kungsgatan", Number = 3, PostalCode = "11232", Area = "Stockholm", Type = AddressType.Visit, CustomerId = 1 }
+                new Address { Id = 1, StreetName = "Kungsgatan", Number = 1, PostalCode = "11232", Area = "Stockholm"},
+                new Address { Id = 2, StreetName = "Kungsgatan", Number = 2, PostalCode = "11232", Area = "Stockholm"},
+                new Address { Id = 3, StreetName = "Kungsgatan", Number = 3, PostalCode = "11232", Area = "Stockholm"}
             };
 
             var warehouses = new Warehouse[]
@@ -44,7 +44,7 @@ namespace Kundbolaget.Migrations
             //    new Product { Id = 4, Name = "P4", Price = 100}
             //};
 
-            customers[0].Addresses.AddRange(addresses);
+            //customers[0].Addresses.AddRange(addresses);
 
             context.Customers.AddOrUpdate(customers);
             context.Addresses.AddOrUpdate(addresses);
