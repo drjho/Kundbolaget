@@ -211,6 +211,10 @@
     <Compile Include="Migrations\201612081306236_NewProduct.Designer.cs">
       <DependentUpon>201612081306236_NewProduct.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612081516081_OrderProducts.cs" />
+    <Compile Include="Migrations\201612081516081_OrderProducts.Designer.cs">
+      <DependentUpon>201612081516081_OrderProducts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201612082009563_CustomerAddress.cs" />
     <Compile Include="Migrations\201612082009563_CustomerAddress.Designer.cs">
       <DependentUpon>201612082009563_CustomerAddress.cs</DependentUpon>
@@ -226,11 +230,14 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\Customer.cs" />
+    <Compile Include="Models\EntityModels\Order.cs" />
+    <Compile Include="Models\EntityModels\OrderProduct.cs" />
     <Compile Include="Models\EntityModels\CustomerAddress.cs" />
     <Compile Include="Models\EntityModels\Product.cs" />
     <Compile Include="Models\EntityModels\StoragePlace.cs" />
     <Compile Include="Models\EntityModels\Warehouse.cs" />
     <Compile Include="Models\ViewModels\CreateProductVM.cs" />
+    <Compile Include="Models\ViewModels\OrderUploadVM.cs" />
     <Compile Include="Models\ViewModels\CustomerAddressVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -315,6 +322,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612081306236_NewProduct.resx">
       <DependentUpon>201612081306236_NewProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612081516081_OrderProducts.resx">
+      <DependentUpon>201612081516081_OrderProducts.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612082009563_CustomerAddress.resx">
       <DependentUpon>201612082009563_CustomerAddress.cs</DependentUpon>
