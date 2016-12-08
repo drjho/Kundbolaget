@@ -5,6 +5,11 @@ using System.Web;
 
 namespace Kundbolaget.Models.EntityModels
 {
+    public enum Side
+    {
+        Left, Right
+    }
+
     public class StoragePlace
     {
 
@@ -15,7 +20,7 @@ namespace Kundbolaget.Models.EntityModels
         /// <summary>
         /// Sets the storageplaceId by the following constructor
         /// </summary>
-        public StoragePlace(int aNr, char side, int s, int sNr)
+        public StoragePlace(int aNr, Side side, int s, int sNr)
         {
             AisleNr = aNr;
             Side = side;
@@ -27,9 +32,12 @@ namespace Kundbolaget.Models.EntityModels
         {
             get
             {
-                return $"{AisleNr} + {Side} + {Spot} + {ShelfNr}";
+                return $"Aisle:{AisleNr} Side:{Side.ToString()} Spot:{Spot} Shelf:{ShelfNr}";
             }
         }
+
+        public int? WarehouseId { get; set; }
+        public virtual Warehouse Warehouse { get; set; }
 
         public virtual Product Product { get; set; }
         public int? ProductId { get; set; }
@@ -43,11 +51,10 @@ namespace Kundbolaget.Models.EntityModels
         /// </summary>
         // TODO : Kanske numreringen ska börja med 1.
         public int AisleNr { get; set; }
-
         /// <summary>
-        /// What side of the aisle, A or B.
+        /// What side of the aisle, Left or Right
         /// </summary>
-        public char Side { get; set; }
+        public Side Side { get; set; }
         /// <summary>
         /// The spot number on the aisle.
         /// </summary>
@@ -60,7 +67,9 @@ namespace Kundbolaget.Models.EntityModels
         /// The arrival time of the product.
         /// </summary>
         public DateTime ArrivalDate { get; set; } = DateTime.Today;
-
+        /// <summary>
+        /// Set to false when it is occupied.
+        /// </summary>
         public bool Vacant { get; set; } = true;
     }
 }

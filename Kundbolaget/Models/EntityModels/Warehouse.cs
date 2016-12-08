@@ -27,13 +27,13 @@ namespace Kundbolaget.Models.EntityModels
             StoragePlace = new List<StoragePlace>();
             for (int row = 0; row < 11; row++)
             {
-                for (int side = 0; side < 2; side++)
+                foreach( Side s in Enum.GetValues(typeof(Side)))
                 {
                     for (int place = 0; place < 22; place++)
                     {
                         for (int shelf = 0; shelf < 3; shelf++)
                         {
-                            StoragePlace.Add(new StoragePlace(row, ((side == 0) ? 'A' : 'B'), place, shelf));
+                            StoragePlace.Add(new StoragePlace(row, s, place, shelf));
                         }
                     }
                 }

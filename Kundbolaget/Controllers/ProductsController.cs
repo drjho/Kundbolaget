@@ -87,13 +87,16 @@ namespace Kundbolaget.Controllers
 
         public ActionResult AddToWarehouse(int id)
         {
+            var prod = repository.GetProduct(id);
+
             List<SelectListItem> listItems = repository.GetWarehouses().Select(c => new SelectListItem
             {
                 Value = c.Id.ToString(),
                 Text = c.Name
             }).ToList();
 
-            CreateProductVM model = new CreateProductVM { WarehouseList = listItems };
+            CreateProductVM model = new CreateProductVM { Id = prod.Id, Name = prod.Name,
+                Price = prod.Price, WarehouseList = listItems };
 
             return View(model);
         }
@@ -101,6 +104,10 @@ namespace Kundbolaget.Controllers
         [HttpPost]
         public ActionResult AddToWarehouse(CreateProductVM model)
         {
+
+            if (!ModelState.IsValid)
+                return View(model);
+
             repository.AddToStorage(model);
 
             return RedirectToAction("Index");

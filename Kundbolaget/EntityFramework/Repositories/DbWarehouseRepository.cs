@@ -35,7 +35,8 @@ namespace Kundbolaget.EntityFramework.Repositories
         {
             using (var db = new StoreContext())
             {
-                return db.Warehouses.SingleOrDefault(w => w.Id == Id);
+                var warehouse = db.Warehouses.Include(w => w.StoragePlace.Select(s => s.Product)).SingleOrDefault(w => w.Id == Id);
+                return warehouse;
             }
         }
 

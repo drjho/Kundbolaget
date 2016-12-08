@@ -50,10 +50,21 @@ namespace Kundbolaget.EntityFramework.Repositories
         public void AddToStorage(CreateProductVM model)
         {
             var warehouse = db.Warehouses.SingleOrDefault(w => w.Id == model.WarehouseId);
-            var openStoragePlace = warehouse.StoragePlace.First(s => s.Vacant);
+            var openStoragePlace = db.StoragePlaces.First(s => s.WarehouseId == warehouse.Id && s.Vacant);
+            //var openStoragePlace = warehouse.StoragePlace.First(s => s.Vacant);
             var product = db.Products.SingleOrDefault(p => p.Id == model.Id);
             openStoragePlace.ProductId = product.Id;
             openStoragePlace.Vacant = false;
+
+            UpdateStoragePlace(openStoragePlace);
+            UpdateProduct(product);
+        }
+
+        public void UpdateStoragePlace(StoragePlace updatedStoragePlace)
+        {
+            db.StoragePlaces.Attach(updatedStoragePlace);
+            var entry = db.Entry(updatedStoragePlace);
+            entry.State = EntityState.Modified;
             db.SaveChanges();
         }
     }

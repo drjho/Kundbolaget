@@ -2,6 +2,7 @@ namespace Kundbolaget.Migrations
 {
     using Models.EntityModels;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
@@ -15,14 +16,6 @@ namespace Kundbolaget.Migrations
 
         protected override void Seed(Kundbolaget.EntityFramework.Context.StoreContext context)
         {
-            var products = new Product[]
-                       {
-                new Product { Id = 1, Name = "P1", Price = 100 },
-                new Product { Id = 2, Name = "P2", Price = 100 },
-                new Product { Id = 3, Name = "P3", Price = 100 },
-                new Product { Id = 4, Name = "P4", Price = 100 }
-                       };
-            context.Products.AddOrUpdate(products);
 
             var customers = new Customer[]
             {
@@ -36,10 +29,29 @@ namespace Kundbolaget.Migrations
                 new Address { Id = 3, StreetName = "Kungsgatan", Number = 3, PostalCode = "11232", Area = "Stockholm", Type = AddressType.Visit, CustomerId = 1 }
             };
 
+            var warehouses = new Warehouse[]
+            {
+                new Warehouse { Id = 1, Name = "W1", City = "Stockholm", Country = "Sweden", ZipCode = 11111 },
+                new Warehouse { Id = 2, Name = "W2", City = "Stockholm", Country = "Sweden", ZipCode = 11760 }
+            };
+
+
+            var products = new Product[]
+            {
+                new Product { Id = 1, Name = "P1", Price = 100},
+                new Product { Id = 2, Name = "P2", Price = 100},
+                new Product { Id = 3, Name = "P3", Price = 100},
+                new Product { Id = 4, Name = "P4", Price = 100}
+            };
+
             customers[0].Addresses.AddRange(addresses);
 
             context.Customers.AddOrUpdate(customers);
             context.Addresses.AddOrUpdate(addresses);
+
+            context.Products.AddOrUpdate(products);
+            context.Warehouses.AddOrUpdate(warehouses);
+
         }
     }
 }
