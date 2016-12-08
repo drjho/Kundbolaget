@@ -49,6 +49,13 @@ namespace Kundbolaget.Migrations
             //context.Customers.AddOrUpdate(customers);
             //context.Addresses.AddOrUpdate(addresses);
 
+            //var ca = new CustomerAddress[]
+            //{
+            //    new CustomerAddress {Id = 1, Cu }
+            //}
+
+            //context.Products.AddOrUpdate(products);
+         
             ////context.Products.AddOrUpdate(products);
             //context.Warehouses.AddOrUpdate(warehouses);
 

@@ -22,9 +22,9 @@ namespace Kundbolaget.Models.EntityModels
         [Display( Name ="Planerad leveransdatum")]
         public DateTime PlannedDeliveryDate { get; set; }    
 
-        [Required, Display(Name ="Kund id")]
-        public int  CustomerId { get; set; }
-        public virtual Customer Customer { get; set; }
+        [Required, Display(Name ="Kundadress id")]
+        public int CustomerAddressId { get; set; }
+        public virtual CustomerAddress CustomerAddress { get; set; }
 
         public virtual List<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
 
