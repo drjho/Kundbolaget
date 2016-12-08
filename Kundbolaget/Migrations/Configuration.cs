@@ -36,20 +36,20 @@ namespace Kundbolaget.Migrations
             };
 
 
-            var products = new Product[]
-            {
-                new Product { Id = 1, Name = "P1", Price = 100},
-                new Product { Id = 2, Name = "P2", Price = 100},
-                new Product { Id = 3, Name = "P3", Price = 100},
-                new Product { Id = 4, Name = "P4", Price = 100}
-            };
+            //var products = new Product[]
+            //{
+            //    new Product { Id = 1, Name = "P1", Price = 100},
+            //    new Product { Id = 2, Name = "P2", Price = 100},
+            //    new Product { Id = 3, Name = "P3", Price = 100},
+            //    new Product { Id = 4, Name = "P4", Price = 100}
+            //};
 
             customers[0].Addresses.AddRange(addresses);
 
             context.Customers.AddOrUpdate(customers);
             context.Addresses.AddOrUpdate(addresses);
 
-            context.Products.AddOrUpdate(products);
+            //context.Products.AddOrUpdate(products);
             context.Warehouses.AddOrUpdate(warehouses);
 
         }

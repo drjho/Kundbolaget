@@ -205,6 +205,10 @@
     <Compile Include="Migrations\201612071504375_storagePlaceProductIdNullable.Designer.cs">
       <DependentUpon>201612071504375_storagePlaceProductIdNullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612081306236_NewProduct.cs" />
+    <Compile Include="Migrations\201612081306236_NewProduct.Designer.cs">
+      <DependentUpon>201612081306236_NewProduct.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\Customer.cs" />
@@ -287,6 +291,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612071504375_storagePlaceProductIdNullable.resx">
       <DependentUpon>201612071504375_storagePlaceProductIdNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612081306236_NewProduct.resx">
+      <DependentUpon>201612081306236_NewProduct.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
