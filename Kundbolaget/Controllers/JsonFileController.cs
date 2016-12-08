@@ -41,22 +41,35 @@ namespace Kundbolaget.Controllers
 
             var json = Encoding.Default.GetString(data);
 
-            //JObject jo = JObject.Parse(json);
-            //JToken jOrder = jo["customerorder"];
+            JObject jo = JObject.Parse(json);
+            JToken jOrder = jo["customerorder"];
 
-            //var custoer = new DbCustomerRepository().GetItems().
-            //    Where(c => c.Name == (string)jOrder["name"]).FirstOrDefault();
+            var customer = new DbCustomerRepository().GetItems().
+                Where(c => c.Name == (string)jOrder["name"]).FirstOrDefault();
 
-            //// Skulle man kolla upp att adressen stämmer?
+            // Skulle man kolla upp att adressen stämmer?
+            var address = jo["shipto"];
+            var street = (string)address["street"];
+            var no = (string)address["streetno"];
+            var code = (string)address["areacode"];
+            var area = (string)address["area"];
+            var country = (string)address["country"];
 
-            //var order = new Order
+            JToken[] products = jOrder["products"].ToArray();
+            var date = (string)jOrder["date"];
+
+            //products.Select(p => new OrderProduct
             //{
+                
+            //})
 
-            //};
+            var order = new Order
+            {
+                CustomerId = customer.Id,
+                
 
-            //var address = (string)jOrder["address"];
-            //JToken[] products = jOrder["products"].ToArray();
-            //var date = (string)jOrder["date"];
+            };
+
 
             var entity = JsonConvert.DeserializeObject<Order[]>(json);
 
