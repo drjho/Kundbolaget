@@ -21,6 +21,7 @@ namespace Kundbolaget.EntityFramework.Context
         public DbSet<CustomerAddress> CustomerAddresses { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<StoragePlace> StoragePlaces { get; set; }
-        
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
     }
 }
