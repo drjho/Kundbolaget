@@ -1,4 +1,5 @@
-﻿using Kundbolaget.EntityFramework.Repositories;
+﻿using Kundbolaget.EntityFramework.Context;
+using Kundbolaget.EntityFramework.Repositories;
 using Kundbolaget.Models.EntityModels;
 using Kundbolaget.Models.ViewModels;
 using Newtonsoft.Json;
@@ -41,37 +42,57 @@ namespace Kundbolaget.Controllers
 
             var json = Encoding.Default.GetString(data);
 
-            JObject jo = JObject.Parse(json);
-            JToken jOrder = jo["customerorder"];
+            JObject jOrder = JObject.Parse(json);
+            //JToken jOrder = jo["customerorder"];
 
             var customer = new DbCustomerRepository().GetItems().
                 Where(c => c.Name == (string)jOrder["name"]).FirstOrDefault();
 
+            if (customer == null)
+                return RedirectToAction("Index", "Customer");
+
+            var customerAddresses = new DbCustomerAddressRepository().GetItems().
+                Where(c => c.CustomerId == customer.Id).ToList();
+
+            if (customerAddresses.Count == 0)
+                return RedirectToAction("Index", "CustomerAddress");
+
             // Skulle man kolla upp att adressen stämmer?
-            var address = jo["shipto"];
-            var street = (string)address["street"];
-            var no = (string)address["streetno"];
-            var code = (string)address["areacode"];
-            var area = (string)address["area"];
-            var country = (string)address["country"];
+            var shipto = jOrder["shipto"];
+            var street = (string)shipto["street"];
+            var no = (int)shipto["streetno"];
+            var code = (string)shipto["areacode"];
+            var area = (string)shipto["area"];
+            var country = (string)shipto["country"];
+
+            var address = customerAddresses.Where(c => c.Address.StreetName == street &&
+            c.Address.Number == no && c.Address.PostalCode == code && c.Address.Area == area).FirstOrDefault();
+
+            if (address == null)
+                return RedirectToAction("Index", "Address");
 
             JToken[] products = jOrder["products"].ToArray();
-            var date = (string)jOrder["date"];
-
-            //products.Select(p => new OrderProduct
-            //{
-                
-            //})
-
+            
             var order = new Order
             {
-                CustomerId = customer.Id,
-                
-
+                CustomerAddressId = address.Id,
+                //DesiredDeliveryDate = Convert.ToDateTime(jOrder["date"]),
+                DesiredDeliveryDate = DateTime.Today,
+                OrderDate = DateTime.Today,
+                PlannedDeliveryDate = DateTime.Today,
+                OrderProducts = products.Select(p => new OrderProduct
+                {
+                    ProductId = (int)p["pno"],
+                    OrderedAmount = (int)p["amount"]
+                }).ToList()
             };
 
+            //var entity = JsonConvert.DeserializeObject<Order[]>(json);
 
-            var entity = JsonConvert.DeserializeObject<Order[]>(json);
+            var db = new StoreContext();
+            db.OrderProducts.AddRange(order.OrderProducts);
+            db.Orders.Add(order);
+            db.SaveChanges();
 
             return RedirectToAction("Index", "Home");
         }

@@ -7,7 +7,7 @@ namespace Kundbolaget.Models.EntityModels
         public int Id { get; set; }
 
         [Display(Name = "Produkt id")]
-        public int ProductId { get; set; }
+        public int? ProductId { get; set; }
         public virtual Product Product { get; set; }
 
 

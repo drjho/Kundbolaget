@@ -280,6 +280,8 @@
     <Content Include="Views\CustomerAddress\Edit.cshtml" />
     <Content Include="Views\CustomerAddress\Details.cshtml" />
     <Content Include="Views\CustomerAddress\Delete.cshtml" />
+    <Content Include="Views\JsonFile\Index.cshtml" />
+    <Content Include="Views\JsonFile\UploadJson.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -289,7 +291,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\JsonFile\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
