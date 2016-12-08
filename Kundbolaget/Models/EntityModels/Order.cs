@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace Kundbolaget.Models.EntityModels
         public int  CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
 
-        public virtual List<OrderProduct> OrderProducts { get; set; }
+        public virtual List<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
+
     }
 }
