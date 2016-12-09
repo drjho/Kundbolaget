@@ -212,6 +212,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\Customer.cs" />
+    <Compile Include="Models\EntityModels\PriceList.cs" />
     <Compile Include="Models\EntityModels\Product.cs" />
     <Compile Include="Models\EntityModels\StoragePlace.cs" />
     <Compile Include="Models\EntityModels\Warehouse.cs" />
