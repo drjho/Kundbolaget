@@ -9,11 +9,13 @@ namespace Kundbolaget.Models.EntityModels
     public class Warehouse
     {
         public int Id { get; set; }
-
+        [Display(Name = "Namn")]
         public string Name { get; set; }
-
+        [Display(Name = "Ort")]
         public string City { get; set; }
+        [Display(Name = "Land")]
         public string Country { get; set; }
+        [Display(Name = "Postnummer")]
         public int ZipCode { get; set; }
         public virtual List<StoragePlace> StoragePlace { get; set; }
 

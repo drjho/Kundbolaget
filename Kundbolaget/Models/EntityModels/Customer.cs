@@ -10,9 +10,9 @@ namespace Kundbolaget.Models.EntityModels
     {
         public int Id { get; set; }
         [Required]
-        [Display(Name ="Customer Name")]
+        [Display(Name ="Kundnamn")]
         public string Name { get; set; }
-
+        [Display(Name = "Adresser")]
         public virtual List<Address> Addresses{ get; set; }
 
 

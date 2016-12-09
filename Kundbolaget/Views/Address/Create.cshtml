@@ -1,17 +1,17 @@
 ﻿@model Kundbolaget.Models.EntityModels.Address
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Skapa Adress";
 }
 
-<h2>Create</h2>
+<h2>Skapa</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Address</h4>
+        <h4>Adress</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -64,12 +64,12 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Skapa" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Tillbaka till listan", "Index")
 </div>

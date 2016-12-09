@@ -10,7 +10,7 @@ namespace Kundbolaget.Models.EntityModels
 {
     public enum AddressType
     {
-        Invoice, Delievery, Visit
+        Fakturaadress, Leveransadress, Besöksadress
     }
 
     public class Address
@@ -19,27 +19,29 @@ namespace Kundbolaget.Models.EntityModels
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Street name")]
+        [Display(Name = "Gatuadress")]
         public string StreetName { get; set; }
 
         [Required]
-        [Display(Name = "No.")]
+        [Display(Name = "Nr.")]
         public int Number { get; set; }
 
         [Required]
-        [Display(Name = "Area code")]
+        [Display(Name = "Postnummer")]
         public string PostalCode { get; set; }
 
         [Required]
+        [Display(Name = "Ort")]
         public string Area { get; set; }
 
         /// <summary>
         /// Type: 0 = Faktura, 1 = Leverans, 2 = Besök.
         /// </summary>
+        [Display(Name = "Typ")]
         public AddressType Type { get; set; }
 
         public int CustomerId { get; set; }
-
+        [Display(Name = "Kund")]
         public virtual Customer Customer { get; set; }
 
     }

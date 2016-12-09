@@ -24,9 +24,9 @@ namespace Kundbolaget.Migrations
 
             var addresses = new Address[]
             {
-                new Address { Id = 1, StreetName = "Kungsgatan", Number = 1, PostalCode = "11232", Area = "Stockholm", Type = AddressType.Invoice, CustomerId = 1 },
-                new Address { Id = 2, StreetName = "Kungsgatan", Number = 2, PostalCode = "11232", Area = "Stockholm", Type = AddressType.Delievery, CustomerId = 1 },
-                new Address { Id = 3, StreetName = "Kungsgatan", Number = 3, PostalCode = "11232", Area = "Stockholm", Type = AddressType.Visit, CustomerId = 1 }
+                new Address { Id = 1, StreetName = "Kungsgatan", Number = 1, PostalCode = "11232", Area = "Stockholm", Type = AddressType.Fakturaadress, CustomerId = 1 },
+                new Address { Id = 2, StreetName = "Kungsgatan", Number = 2, PostalCode = "11232", Area = "Stockholm", Type = AddressType.Leveransadress, CustomerId = 1 },
+                new Address { Id = 3, StreetName = "Kungsgatan", Number = 3, PostalCode = "11232", Area = "Stockholm", Type = AddressType.Besöksadress, CustomerId = 1 }
             };
 
             var warehouses = new Warehouse[]
