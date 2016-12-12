@@ -46,7 +46,7 @@ namespace Kundbolaget.Controllers
             //JToken jOrder = jo["customerorder"];
 
             var customer = new DbCustomerRepository().GetItems().
-                Where(c => c.Name == (string)jOrder["name"]).FirstOrDefault();
+                Where(c => c.Name == (string)jOrder["customerid"]).FirstOrDefault();
 
             if (customer == null)
                 return RedirectToAction("Index", "Customer");
