@@ -11,11 +11,12 @@ namespace Kundbolaget.Models.EntityModels
         public int Id { get; set; }
 
         [Required]
-        [Display(Name ="Kund")]
+        [Display(Name = "Kund")]
         public string Name { get; set; }
 
+        [Display(Name = "Kundorder id")]
         public string CustomerOrderId { get { return Id.ToString().PadLeft(6, '0'); } }
-        
+
         [Display(Name = "Koncern struktur")]
         public string CorporateStucture { get; set; }
 
