@@ -54,6 +54,11 @@ namespace Kundbolaget.Migrations
             //    new CustomerAddress {Id = 1, Cu }
             //}
 
+            //var ca = new CustomerAddress[]
+            //{
+            //    new CustomerAddress {Id = 1, Cu }
+            //}
+
             //context.Products.AddOrUpdate(products);
          
             ////context.Products.AddOrUpdate(products);
