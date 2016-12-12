@@ -16,11 +16,11 @@ namespace Kundbolaget.Models.EntityModels
         public int Id { get; set; }
 
         [Display(Name ="Kund id")]
-        public int CustomerId { get; set; }
+        public int? CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
 
         [Display(Name = "Adress id")]
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
         public virtual Address Address { get; set; }
 
         [Display(Name = "Adresstyp")]
