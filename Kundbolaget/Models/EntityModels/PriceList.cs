@@ -8,21 +8,23 @@ namespace Kundbolaget.Models.EntityModels
 {
     public class PriceList
     {
+        public int Id { get; set; }
+
         [Display(Name = "Giltig från")]
         public DateTime StartDate { get; set; }
-        [Display(Name = "Giltig till")]
-        public DateTime EndTime { get; set; }
-        [Display(Name = "Landkod")]
-        public string CountryCode { get; set; }
-        [Display(Name = "Produkt nr")]
-        public string ProductNr { get; set; }
-        [Display(Name = "Kund")]
-        public Customer Customer { get; set; }
-        [Display(Name = "PrisLista")]
-        public List<decimal> Price { get; set; }
+
+        [Display(Name = "Pris")]
+        public decimal Price { get; set; }
+
+        [Display(Name = "Kundgrupp")]
+        public virtual CustomerGroup CustomerGroup { get; set; }
+
+        public virtual Product Product { get; set; }
+
+        public virtual int? ProductId { get; set; }
+
+        public int RebatePerPallet { get; set; } // Rabatt i procent
 
     }
-    /* prislista i SEK men även EUR. måste ha ett startdatum.
-    prislista bör ha en landkod, kundgruppskod, produkt nr, pris/lagerförpackning, rabatt / pall
-*/
+   
 }
