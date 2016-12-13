@@ -23,7 +23,8 @@ namespace Kundbolaget.Models.EntityModels
 
         public virtual int? ProductId { get; set; }
 
-        public int RebatePerPallet { get; set; } // Rabatt i procent
+        [Display(Name = "Rabatt i %")]
+        public int RebatePerPallet { get; set; }
 
     }
    

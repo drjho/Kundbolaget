@@ -8,38 +8,38 @@ using Kundbolaget.Models.EntityModels;
 
 namespace Kundbolaget.EntityFramework.Repositories
 {
-    public class DbCustomerGroupRepository : IGenericRepository<CustomerGroup>
+    public class DbPriceListRepository : IGenericRepository<PriceList>
     {
-        public CustomerGroup GetItem(int id)
+        public PriceList GetItem(int id)
         {
             using (var db = new StoreContext())
             {
-                return db.CustomerGroups.SingleOrDefault(c => c.Id == id);
+                return db.PriceLists.SingleOrDefault(p => p.Id == id);
             }
         }
 
-        public CustomerGroup[] GetItems()
+        public PriceList[] GetItems()
         {
             using (var db = new StoreContext())
             {
-                return db.CustomerGroups.ToArray();
+                return db.PriceLists.ToArray();
             }
         }
 
-        public void CreateItem(CustomerGroup newItem)
+        public void CreateItem(PriceList newItem)
         {
             using (var db = new StoreContext())
             {
-                db.CustomerGroups.Add(newItem);
+                db.PriceLists.Add(newItem);
                 db.SaveChanges();
             }
         }
 
-        public void UpdateItem(CustomerGroup updatedItem)
+        public void UpdateItem(PriceList updatedItem)
         {
             using (var db = new StoreContext())
             {
-                db.CustomerGroups.Attach(updatedItem);
+                db.PriceLists.Attach(updatedItem);
                 var entry = db.Entry(updatedItem);
                 entry.State = EntityState.Modified;
                 db.SaveChanges();
@@ -50,13 +50,10 @@ namespace Kundbolaget.EntityFramework.Repositories
         {
             using (var db = new StoreContext())
             {
-                var customerGroup = db.CustomerGroups.Include(p => p.ListOfCustomers).SingleOrDefault(c => c.Id == id);
-                db.Customers.RemoveRange(customerGroup.ListOfCustomers);
-                db.CustomerGroups.Remove(customerGroup);
+                var pricelist = db.PriceLists.SingleOrDefault(c => c.Id == id);
+                db.PriceLists.Remove(pricelist);
                 db.SaveChanges();
             }
         }
-
-
     }
 }

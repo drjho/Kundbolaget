@@ -34,6 +34,12 @@ namespace Kundbolaget.Migrations
                 new Warehouse { Id = 1, Name = "W1", City = "Stockholm", Country = "Sweden", ZipCode = 11111 },
                 new Warehouse { Id = 2, Name = "W2", City = "Stockholm", Country = "Sweden", ZipCode = 11760 }
             };
+            //var customerGroup = new CustomerGroup
+            //{
+            //    Id = 1,
+            //    ListOfCustomers = customers.ToList(),
+            //    Name = "Matbutiker"
+            //};
 
 
             //var products = new Product[]
@@ -49,6 +55,8 @@ namespace Kundbolaget.Migrations
             context.Customers.AddOrUpdate(customers);
             context.Addresses.AddOrUpdate(addresses);
 
+            //context.CustomerGroups.AddOrUpdate(customerGroup);
+            
             //context.Products.AddOrUpdate(products);
             context.Warehouses.AddOrUpdate(warehouses);
 
