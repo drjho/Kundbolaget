@@ -10,6 +10,7 @@ namespace Kundbolaget.EntityFramework.Repositories
 {
     public class DbCustomerGroupRepository : IGenericRepository<CustomerGroup>
     {
+        StoreContext db = new StoreContext();
         public CustomerGroup GetItem(int id)
         {
             using (var db = new StoreContext())
@@ -57,6 +58,11 @@ namespace Kundbolaget.EntityFramework.Repositories
             }
         }
 
+        public void AddToProductGroup(CustomerGroup model)
+        {
+            var group = db.CustomerGroups.SingleOrDefault(g => g.Id == model.Id);
+            
+        }
 
     }
 }
