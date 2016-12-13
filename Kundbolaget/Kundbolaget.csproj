@@ -178,65 +178,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201611282307296_InitialCreate.cs" />
-    <Compile Include="Migrations\201611282307296_InitialCreate.Designer.cs">
-      <DependentUpon>201611282307296_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612011310117_OneToMany.cs" />
-    <Compile Include="Migrations\201612011310117_OneToMany.Designer.cs">
-      <DependentUpon>201612011310117_OneToMany.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612061041137_WarehouseStorageplace.cs" />
-    <Compile Include="Migrations\201612061041137_WarehouseStorageplace.Designer.cs">
-      <DependentUpon>201612061041137_WarehouseStorageplace.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612061046171_WarehouseStorageplace2.cs" />
-    <Compile Include="Migrations\201612061046171_WarehouseStorageplace2.Designer.cs">
-      <DependentUpon>201612061046171_WarehouseStorageplace2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612071008073_dbStoragePlace.cs" />
-    <Compile Include="Migrations\201612071008073_dbStoragePlace.Designer.cs">
-      <DependentUpon>201612071008073_dbStoragePlace.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612052000555_address.cs" />
-    <Compile Include="Migrations\201612052000555_address.Designer.cs">
-      <DependentUpon>201612052000555_address.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612052040585_addressCustomer.cs" />
-    <Compile Include="Migrations\201612052040585_addressCustomer.Designer.cs">
-      <DependentUpon>201612052040585_addressCustomer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612070818224_AddressCustomer2.cs" />
-    <Compile Include="Migrations\201612070818224_AddressCustomer2.Designer.cs">
-      <DependentUpon>201612070818224_AddressCustomer2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612071504375_storagePlaceProductIdNullable.cs" />
-    <Compile Include="Migrations\201612071504375_storagePlaceProductIdNullable.Designer.cs">
-      <DependentUpon>201612071504375_storagePlaceProductIdNullable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612081306236_NewProduct.cs" />
-    <Compile Include="Migrations\201612081306236_NewProduct.Designer.cs">
-      <DependentUpon>201612081306236_NewProduct.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612081516081_OrderProducts.cs" />
-    <Compile Include="Migrations\201612081516081_OrderProducts.Designer.cs">
-      <DependentUpon>201612081516081_OrderProducts.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612082009563_CustomerAddress.cs" />
-    <Compile Include="Migrations\201612082009563_CustomerAddress.Designer.cs">
-      <DependentUpon>201612082009563_CustomerAddress.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612082041386_CustomerAddress2.cs" />
-    <Compile Include="Migrations\201612082041386_CustomerAddress2.Designer.cs">
-      <DependentUpon>201612082041386_CustomerAddress2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612121200470_newcustomerAddress.cs" />
-    <Compile Include="Migrations\201612121200470_newcustomerAddress.Designer.cs">
-      <DependentUpon>201612121200470_newcustomerAddress.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612121226543_newCustomerAddressOrder.cs" />
-    <Compile Include="Migrations\201612121226543_newCustomerAddressOrder.Designer.cs">
-      <DependentUpon>201612121226543_newCustomerAddressOrder.cs</DependentUpon>
+    <Compile Include="Migrations\201612131319142_Init2.cs" />
+    <Compile Include="Migrations\201612131319142_Init2.Designer.cs">
+      <DependentUpon>201612131319142_Init2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
@@ -316,50 +260,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201611282307296_InitialCreate.resx">
-      <DependentUpon>201611282307296_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612011310117_OneToMany.resx">
-      <DependentUpon>201612011310117_OneToMany.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612061041137_WarehouseStorageplace.resx">
-      <DependentUpon>201612061041137_WarehouseStorageplace.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612061046171_WarehouseStorageplace2.resx">
-      <DependentUpon>201612061046171_WarehouseStorageplace2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612071008073_dbStoragePlace.resx">
-      <DependentUpon>201612071008073_dbStoragePlace.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612052000555_address.resx">
-      <DependentUpon>201612052000555_address.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612052040585_addressCustomer.resx">
-      <DependentUpon>201612052040585_addressCustomer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612070818224_AddressCustomer2.resx">
-      <DependentUpon>201612070818224_AddressCustomer2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612071504375_storagePlaceProductIdNullable.resx">
-      <DependentUpon>201612071504375_storagePlaceProductIdNullable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612081306236_NewProduct.resx">
-      <DependentUpon>201612081306236_NewProduct.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612081516081_OrderProducts.resx">
-      <DependentUpon>201612081516081_OrderProducts.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612082009563_CustomerAddress.resx">
-      <DependentUpon>201612082009563_CustomerAddress.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612082041386_CustomerAddress2.resx">
-      <DependentUpon>201612082041386_CustomerAddress2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612121200470_newcustomerAddress.resx">
-      <DependentUpon>201612121200470_newcustomerAddress.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612121226543_newCustomerAddressOrder.resx">
-      <DependentUpon>201612121226543_newCustomerAddressOrder.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201612131319142_Init2.resx">
+      <DependentUpon>201612131319142_Init2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
