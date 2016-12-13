@@ -54,5 +54,7 @@ namespace Kundbolaget.Models.EntityModels
 
 
         public virtual List<StoragePlace> StoragePlaces { get; set; }
+
+        public string ProductOrderId => Id.ToString().PadLeft(6, '0');
     }
 }

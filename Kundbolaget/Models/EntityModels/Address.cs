@@ -14,6 +14,9 @@ namespace Kundbolaget.Models.EntityModels
 
         public int Id { get; set; }
 
+        [Display(Name = "AdressId för kundorder")]
+        public string AddressOrderId { get { return Id.ToString().PadLeft(8, '0'); } }
+
         [Required]
         [Display(Name = "Gatunamn")]
         public string StreetName { get; set; }
@@ -34,7 +37,7 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Land")]
         public string Country { get; set; }
 
-        [Display(Name ="Adress")]
+        [Display(Name = "Adress")]
         public string AddressString
         {
             get

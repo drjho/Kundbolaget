@@ -42,11 +42,10 @@ namespace Kundbolaget.Controllers
 
             var json = Encoding.Default.GetString(data);
 
-            JObject jOrder = JObject.Parse(json);
-            //JToken jOrder = jo["customerorder"];
+            JObject jCustomerOrder = JObject.Parse(json);
 
             var customer = new DbCustomerRepository().GetItems().
-                Where(c => c.Name == (string)jOrder["customerid"]).FirstOrDefault();
+                Where(c => c.CustomerOrderId == (string)jCustomerOrder["customerid"]).FirstOrDefault();
 
             if (customer == null)
                 return RedirectToAction("Index", "Customer");
@@ -57,42 +56,52 @@ namespace Kundbolaget.Controllers
             if (customerAddresses.Count == 0)
                 return RedirectToAction("Index", "CustomerAddress");
 
-            // Skulle man kolla upp att adressen stämmer?
-            var shipto = jOrder["shipto"];
-            var street = (string)shipto["street"];
-            var no = (int)shipto["streetno"];
-            var code = (string)shipto["areacode"];
-            var area = (string)shipto["area"];
-            var country = (string)shipto["country"];
-
-            var address = customerAddresses.Where(c => c.Address.StreetName == street &&
-            c.Address.Number == no && c.Address.PostalCode == code && c.Address.Area == area).FirstOrDefault();
-
-            if (address == null)
-                return RedirectToAction("Index", "Address");
-
-            JToken[] products = jOrder["products"].ToArray();
-            
-            var order = new Order
-            {
-                CustomerAddressId = address.Id,
-                //DesiredDeliveryDate = Convert.ToDateTime(jOrder["date"]),
-                DesiredDeliveryDate = DateTime.Today,
-                OrderDate = DateTime.Today,
-                PlannedDeliveryDate = DateTime.Today,
-                OrderProducts = products.Select(p => new OrderProduct
-                {
-                    ProductId = (int)p["pno"],
-                    OrderedAmount = (int)p["amount"]
-                }).ToList()
-            };
-
-            //var entity = JsonConvert.DeserializeObject<Order[]>(json);
-
+            var allProducts = new DbStoreRepository().GetProducts();
             var db = new StoreContext();
-            db.OrderProducts.AddRange(order.OrderProducts);
-            db.Orders.Add(order);
-            db.SaveChanges();
+
+            JToken[] jOrders = jCustomerOrder["orders"].ToArray();
+            foreach (var o in jOrders)
+            {
+
+                // Skulle man kolla upp att adressen stämmer?
+                var addressid = (string)o["addressid"];
+
+                var address = customerAddresses.Where(c => c.Address.AddressOrderId == addressid).FirstOrDefault();
+
+                if (address == null)
+                    return RedirectToAction("Index", "Address");
+
+                var dDate = Convert.ToDateTime(o["date"]);
+
+                var order = new Order
+                {
+                    CustomerAddressId = address.Id,
+                    DesiredDeliveryDate = dDate,
+                    OrderDate = DateTime.Today,
+                    PlannedDeliveryDate = dDate.AddDays(customer.DaysToDelievery),
+                };
+
+                List<OrderProduct> orderProducts = new List<OrderProduct>();
+                var jProducts = o["products"].ToArray();
+                foreach (var prod in jProducts)
+                {
+                    var p = allProducts.SingleOrDefault(a => a.ProductOrderId == (string)prod["pno"]);
+                    if (p != null)
+                        orderProducts.Add(new OrderProduct {OrderId = order.Id, Comment = (string)o["comments"],
+                            ProductId = p.Id, OrderedAmount = (int)prod["amount"] });
+                    else
+                        return RedirectToAction("Index", "Order");
+
+                }
+                order.OrderProducts = orderProducts;
+
+                db.OrderProducts.AddRange(order.OrderProducts);
+                db.Orders.Add(order);
+                db.SaveChanges();
+
+            }
+
+
 
             return RedirectToAction("Index", "Home");
         }
