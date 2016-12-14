@@ -5,16 +5,18 @@ using System.Web;
 using System.Web.Mvc;
 using Kundbolaget.EntityFramework.Repositories;
 using Kundbolaget.Models.EntityModels;
+using Kundbolaget.Models.ViewModels;
 
 namespace Kundbolaget.Controllers
 {
     public class WarehouseController : Controller
     {
-        IGenericRepository<Warehouse> repository;
+        DbWarehouseRepository repository;
 
         public WarehouseController()
         {
             repository = new DbWarehouseRepository();
+
         }
         // GET: Warehouse
         public ActionResult Index()
@@ -59,7 +61,12 @@ namespace Kundbolaget.Controllers
         //Get: Warehouse/Details/{id}
         public ActionResult Details(int id)
         {
-            var model = repository.GetItem(id);
+            WarehouseVM model = new WarehouseVM
+
+            {
+                Id = id,
+                Places = repository.GetOccupiedStoragePlaces(id).ToList()
+            };
             return View(model);
         }
 
@@ -75,7 +82,7 @@ namespace Kundbolaget.Controllers
         {
             if (id != model.Id)
             {
-               ModelState.AddModelError("Name", "Bad request");
+                ModelState.AddModelError("Name", "Bad request");
                 return View(model);
             }
             repository.DeleteItem(id);

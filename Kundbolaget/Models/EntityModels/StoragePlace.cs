@@ -71,5 +71,9 @@ namespace Kundbolaget.Models.EntityModels
         /// Set to false when it is occupied.
         /// </summary>
         public bool Vacant { get; set; } = true;
+
+        public int TotalAmount { get; set; }
+
+        public int ReservedAmount { get; set; }
     }
 }
