@@ -15,7 +15,7 @@ namespace Kundbolaget.Models.EntityModels
 
         public StoragePlace()
         {
-
+            StockAmount = TotalAmount - ReservedAmount; 
         }
         /// <summary>
         /// Sets the storageplaceId by the following constructor
@@ -75,5 +75,7 @@ namespace Kundbolaget.Models.EntityModels
         public int TotalAmount { get; set; }
 
         public int ReservedAmount { get; set; }
+
+        public int StockAmount { get; private set; }
     }
 }

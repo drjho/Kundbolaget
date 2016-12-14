@@ -62,11 +62,11 @@ namespace Kundbolaget.Controllers
         public ActionResult Details(int id)
         {
             WarehouseVM model = new WarehouseVM
-
             {
                 Id = id,
-                Places = repository.GetOccupiedStoragePlaces(id).ToList()
+                Places = repository.GetOccupiedStoragePlaces(id).ToList(),
             };
+
             return View(model);
         }
 
