@@ -24,5 +24,7 @@ namespace Kundbolaget.EntityFramework.Context
         public DbSet <AlcoholLicense> AlcoholLicense { get; set; }
         public DbSet<CustomerGroup> CustomerGroups { get; set; }
         public DbSet<PriceList> PriceLists { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
     }
 }
