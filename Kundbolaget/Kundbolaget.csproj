@@ -163,10 +163,8 @@
     <Compile Include="EntityFramework\Repositories\DbAddressRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbCustomerRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbProductRepository.cs" />
-    <Compile Include="EntityFramework\Repositories\DbStoreRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbWarehouseRepository.cs" />
     <Compile Include="EntityFramework\Repositories\IGenericRepository.cs" />
-    <Compile Include="EntityFramework\Repositories\IStoreRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

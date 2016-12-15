@@ -11,17 +11,17 @@ namespace Kundbolaget.Controllers
 {
     public class ProductsController : Controller
     {
-        DbStoreRepository repository;
+        DbProductRepository repository;
 
         public ProductsController()
         {
-            repository = new DbStoreRepository();
+            repository = new DbProductRepository();
         }
 
         // GET: Products
         public ActionResult Index()
         {
-            var model = repository.GetProducts();
+            var model = repository.GetItems();
             return View(model);
         }
 
@@ -37,14 +37,14 @@ namespace Kundbolaget.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            repository.CreateProduct(model);
+            repository.CreateItem(model);
             return RedirectToAction("Index");
         }
 
         // GET: Products/Edit/{id}
         public ActionResult Edit(int id)
         {
-            var model = repository.GetProduct(id);
+            var model = repository.GetItem(id);
             return View(model);
         }
 
@@ -54,21 +54,21 @@ namespace Kundbolaget.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            repository.UpdateProduct(model);
+            repository.UpdateItem(model);
             return RedirectToAction("Index");
         }
 
         // GET: Products/Details/{id}
         public ActionResult Details(int id)
         {
-            var model = repository.GetProduct(id);
+            var model = repository.GetItem(id);
             return View(model);
         }
 
         // GET: Products/Delete/{id}
         public ActionResult Delete(int id)
         {
-            var model = repository.GetProduct(id);
+            var model = repository.GetItem(id);
             return View(model);
         }
 
@@ -81,13 +81,13 @@ namespace Kundbolaget.Controllers
                 ModelState.AddModelError("Name", "Bad request");
                 return View(model);
             }
-            repository.DeleteProduct(id);
+            repository.DeleteItem(id);
             return RedirectToAction("Index");
         }
 
         public ActionResult AddToWarehouse(int id)
         {
-            var prod = repository.GetProduct(id);
+            var prod = repository.GetItem(id);
 
             List<SelectListItem> listItems = repository.GetWarehouses().Select(c => new SelectListItem
             {

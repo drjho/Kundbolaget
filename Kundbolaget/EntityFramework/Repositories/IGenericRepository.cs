@@ -1,4 +1,5 @@
 ﻿using Kundbolaget.Models.EntityModels;
+using Kundbolaget.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,6 @@ namespace Kundbolaget.EntityFramework.Repositories
         T[] GetItems();
         void CreateItem(T newItem);
         void UpdateItem(T updatedItem);
-        void DeleteItem(int id);       
+        void DeleteItem(int id);        
     }
 }
