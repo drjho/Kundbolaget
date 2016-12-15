@@ -8,10 +8,6 @@ using System.Web;
 
 namespace Kundbolaget.Models.EntityModels
 {
-    public enum AddressType
-    {
-        Invoice, Delievery, Visit
-    }
 
     public class Address
     {
@@ -19,28 +15,33 @@ namespace Kundbolaget.Models.EntityModels
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Street name")]
+        [Display(Name = "Gatunamn")]
         public string StreetName { get; set; }
 
         [Required]
-        [Display(Name = "No.")]
+        [Display(Name = "Gatunummer")]
         public int Number { get; set; }
 
         [Required]
-        [Display(Name = "Area code")]
+        [Display(Name = "Postnummer")]
         public string PostalCode { get; set; }
 
         [Required]
+        [Display(Name = "Ort")]
         public string Area { get; set; }
 
-        /// <summary>
-        /// Type: 0 = Faktura, 1 = Leverans, 2 = Besök.
-        /// </summary>
-        public AddressType Type { get; set; }
+        [Required]
+        [Display(Name = "Land")]
+        public string Country { get; set; }
 
-        public int CustomerId { get; set; }
+        [Display(Name ="Adress")]
+        public string AddressString
+        {
+            get
+            {
+                return $"{StreetName} {Number}, {PostalCode} {Area} {Country}";
+            }
 
-        public virtual Customer Customer { get; set; }
-
+        }
     }
 }

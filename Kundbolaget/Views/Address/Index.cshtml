@@ -23,12 +23,6 @@
         <th>
             @Html.DisplayNameFor(model => model.Area)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Type)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Customer)
-        </th>
     </tr>
 
 @foreach (var item in Model) {
@@ -44,12 +38,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Area)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Customer.Name)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

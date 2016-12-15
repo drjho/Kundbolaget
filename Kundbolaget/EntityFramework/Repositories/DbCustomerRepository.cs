@@ -15,7 +15,7 @@ namespace Kundbolaget.EntityFramework.Repositories
         {
             using (var db = new StoreContext())
             {
-                return db.Customers.Include(c => c.Addresses).SingleOrDefault(c => c.Id == customerId);
+                return db.Customers.SingleOrDefault(c => c.Id == customerId);
             }
         }
 
@@ -23,7 +23,7 @@ namespace Kundbolaget.EntityFramework.Repositories
         {
             using (var db = new StoreContext())
             {
-                return db.Customers.Include(c => c.Addresses).ToArray();
+                return db.Customers.ToArray();
             }
         }
 
