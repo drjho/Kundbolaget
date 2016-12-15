@@ -10,7 +10,7 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li class="active">
+                <li>
                     @Html.ActionLink("Hem", "Index", "Home")
                 </li>
                 <li>
@@ -24,6 +24,15 @@
                 </li>
                 <li>
                     @Html.ActionLink("Adresser", "Index", "Address")
+                </li>
+                <li>
+                    @Html.ActionLink("Kundgrupp", "Index", "CustomerGroup")
+                </li>
+                <li>
+                    @Html.ActionLink("Kundadresser", "Index", "CustomerAddress")
+                </li>
+                <li>
+                    @Html.ActionLink("Ladda upp fil", "Index", "JsonFile")
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

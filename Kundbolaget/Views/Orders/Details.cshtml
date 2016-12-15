@@ -1,0 +1,50 @@
+﻿@model Kundbolaget.Models.EntityModels.Order
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerAddress.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerAddress.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DesiredDeliveryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DesiredDeliveryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PlannedDeliveryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PlannedDeliveryDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

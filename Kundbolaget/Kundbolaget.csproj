@@ -85,6 +85,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -155,13 +159,25 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AddressController.cs" />
+    <Compile Include="Controllers\CustomerAddressController.cs" />
+    <Compile Include="Controllers\AlcoholLicenseController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\CustomerGroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JsonFileController.cs" />
+    <Compile Include="Controllers\OrderProductsController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\PriceListController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\WarehouseController.cs" />
     <Compile Include="EntityFramework\Context\StoreContext.cs" />
     <Compile Include="EntityFramework\Repositories\DbAddressRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\DbCustomerAddressRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\DbCustomerGroupRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\DbAlcoholLicenseRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbCustomerRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\DbStoragePlaceRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\DbPriceListRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbStoreRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbWarehouseRepository.cs" />
     <Compile Include="EntityFramework\Repositories\IGenericRepository.cs" />
@@ -169,53 +185,25 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201611282307296_InitialCreate.cs" />
-    <Compile Include="Migrations\201611282307296_InitialCreate.Designer.cs">
-      <DependentUpon>201611282307296_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612011310117_OneToMany.cs" />
-    <Compile Include="Migrations\201612011310117_OneToMany.Designer.cs">
-      <DependentUpon>201612011310117_OneToMany.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612061041137_WarehouseStorageplace.cs" />
-    <Compile Include="Migrations\201612061041137_WarehouseStorageplace.Designer.cs">
-      <DependentUpon>201612061041137_WarehouseStorageplace.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612061046171_WarehouseStorageplace2.cs" />
-    <Compile Include="Migrations\201612061046171_WarehouseStorageplace2.Designer.cs">
-      <DependentUpon>201612061046171_WarehouseStorageplace2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612071008073_dbStoragePlace.cs" />
-    <Compile Include="Migrations\201612071008073_dbStoragePlace.Designer.cs">
-      <DependentUpon>201612071008073_dbStoragePlace.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612052000555_address.cs" />
-    <Compile Include="Migrations\201612052000555_address.Designer.cs">
-      <DependentUpon>201612052000555_address.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612052040585_addressCustomer.cs" />
-    <Compile Include="Migrations\201612052040585_addressCustomer.Designer.cs">
-      <DependentUpon>201612052040585_addressCustomer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612070818224_AddressCustomer2.cs" />
-    <Compile Include="Migrations\201612070818224_AddressCustomer2.Designer.cs">
-      <DependentUpon>201612070818224_AddressCustomer2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612071504375_storagePlaceProductIdNullable.cs" />
-    <Compile Include="Migrations\201612071504375_storagePlaceProductIdNullable.Designer.cs">
-      <DependentUpon>201612071504375_storagePlaceProductIdNullable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612081306236_NewProduct.cs" />
-    <Compile Include="Migrations\201612081306236_NewProduct.Designer.cs">
-      <DependentUpon>201612081306236_NewProduct.cs</DependentUpon>
+    <Compile Include="Migrations\201612131319142_Init2.cs" />
+    <Compile Include="Migrations\201612131319142_Init2.Designer.cs">
+      <DependentUpon>201612131319142_Init2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
+    <Compile Include="Models\EntityModels\AlcoholLicense.cs" />
     <Compile Include="Models\EntityModels\Customer.cs" />
+    <Compile Include="Models\EntityModels\Order.cs" />
+    <Compile Include="Models\EntityModels\OrderProduct.cs" />
+    <Compile Include="Models\EntityModels\CustomerAddress.cs" />
+    <Compile Include="Models\EntityModels\CustomerGroup.cs" />
+    <Compile Include="Models\EntityModels\PriceList.cs" />
     <Compile Include="Models\EntityModels\Product.cs" />
     <Compile Include="Models\EntityModels\StoragePlace.cs" />
     <Compile Include="Models\EntityModels\Warehouse.cs" />
     <Compile Include="Models\ViewModels\CreateProductVM.cs" />
+    <Compile Include="Models\ViewModels\OrderUploadVM.cs" />
+    <Compile Include="Models\ViewModels\CustomerAddressVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -251,6 +239,38 @@
     <Content Include="Views\Address\Delete.cshtml" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\Products\AddToWarehouse.cshtml" />
+    <Content Include="Views\CustomerGroup\Index.cshtml" />
+    <Content Include="Views\CustomerGroup\Create.cshtml" />
+    <Content Include="Views\CustomerGroup\Edit.cshtml" />
+    <Content Include="Views\CustomerGroup\Details.cshtml" />
+    <Content Include="Views\CustomerGroup\Delete.cshtml" />
+    <Content Include="Views\PriceList\Index.cshtml" />
+    <Content Include="Views\PriceList\Create.cshtml" />
+    <Content Include="Views\PriceList\Edit.cshtml" />
+    <Content Include="Views\PriceList\Details.cshtml" />
+    <Content Include="Views\PriceList\Delete.cshtml" />
+    <Content Include="Views\AlcoholLicense\Index.cshtml" />
+    <Content Include="Views\AlcoholLicense\Create.cshtml" />
+    <Content Include="Views\AlcoholLicense\Edit.cshtml" />
+    <Content Include="Views\AlcoholLicense\Details.cshtml" />
+    <Content Include="Views\AlcoholLicense\Delete.cshtml" />
+    <Content Include="Views\CustomerAddress\Index.cshtml" />
+    <Content Include="Views\CustomerAddress\Create.cshtml" />
+    <Content Include="Views\CustomerAddress\Edit.cshtml" />
+    <Content Include="Views\CustomerAddress\Details.cshtml" />
+    <Content Include="Views\CustomerAddress\Delete.cshtml" />
+    <Content Include="Views\JsonFile\Index.cshtml" />
+    <Content Include="Views\JsonFile\UploadJson.cshtml" />
+    <Content Include="Views\Orders\Create.cshtml" />
+    <Content Include="Views\Orders\Delete.cshtml" />
+    <Content Include="Views\Orders\Details.cshtml" />
+    <Content Include="Views\Orders\Edit.cshtml" />
+    <Content Include="Views\Orders\Index.cshtml" />
+    <Content Include="Views\OrderProducts\Create.cshtml" />
+    <Content Include="Views\OrderProducts\Delete.cshtml" />
+    <Content Include="Views\OrderProducts\Details.cshtml" />
+    <Content Include="Views\OrderProducts\Edit.cshtml" />
+    <Content Include="Views\OrderProducts\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -265,35 +285,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201611282307296_InitialCreate.resx">
-      <DependentUpon>201611282307296_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612011310117_OneToMany.resx">
-      <DependentUpon>201612011310117_OneToMany.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612061041137_WarehouseStorageplace.resx">
-      <DependentUpon>201612061041137_WarehouseStorageplace.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612061046171_WarehouseStorageplace2.resx">
-      <DependentUpon>201612061046171_WarehouseStorageplace2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612071008073_dbStoragePlace.resx">
-      <DependentUpon>201612071008073_dbStoragePlace.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612052000555_address.resx">
-      <DependentUpon>201612052000555_address.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612052040585_addressCustomer.resx">
-      <DependentUpon>201612052040585_addressCustomer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612070818224_AddressCustomer2.resx">
-      <DependentUpon>201612070818224_AddressCustomer2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612071504375_storagePlaceProductIdNullable.resx">
-      <DependentUpon>201612071504375_storagePlaceProductIdNullable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612081306236_NewProduct.resx">
-      <DependentUpon>201612081306236_NewProduct.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201612131319142_Init2.resx">
+      <DependentUpon>201612131319142_Init2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

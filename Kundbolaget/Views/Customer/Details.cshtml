@@ -19,27 +19,44 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Addresses)
+            @Html.DisplayNameFor(model => model.CorporateStucture)
         </dt>
 
-        @* Loop through and render each category name *@
         <dd>
-            @foreach (var address in Model.Addresses)
-            {
-                <dl class="dl-horizontal">
-                    <dt>
-                        @address.StreetName @address.Number
-                    </dt>
-                    <dt>
-                        @address.PostalCode @address.Area
-                    </dt>
-                    <dt>
-                        Type: @address.Type
-                    </dt>
-                </dl>
-            }
+            @Html.DisplayFor(model => model.CorporateStucture)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditLimit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreditLimit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DaysToDelievery)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DaysToDelievery)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerAuditCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerAuditCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrganisationNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrganisationNumber)
+        </dd>
 
     </dl>
 </div>

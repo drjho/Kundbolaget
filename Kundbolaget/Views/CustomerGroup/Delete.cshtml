@@ -1,0 +1,31 @@
+﻿@model Kundbolaget.Models.EntityModels.CustomerGroup
+
+@{
+    ViewBag.Title = "Ta bort kundgrupp";
+}
+
+<h2>Ta bort kundgrupp</h2>
+
+<h3>Är du säker på att du vill ta bort denna kundgrupp?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Ta bort" class="btn btn-default" /> |
+            @Html.ActionLink("Tillbaka till listan", "Index")
+        </div>
+    }
+</div>
