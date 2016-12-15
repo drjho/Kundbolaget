@@ -16,6 +16,7 @@ namespace Kundbolaget.Controllers
         {
             repository = new DbWarehouseRepository();
         }
+
         // GET: Warehouse
         public ActionResult Index()
         {
@@ -69,6 +70,7 @@ namespace Kundbolaget.Controllers
             var model = repository.GetItem(id);
             return View(model);
         }
+
         // Post: Customer/Delete{Id}
         [HttpPost]
         public ActionResult Delete(int id, Warehouse model)
