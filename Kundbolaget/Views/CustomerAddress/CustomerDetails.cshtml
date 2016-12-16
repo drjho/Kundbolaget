@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<Kundbolaget.Models.EntityModels.CustomerAddress>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "CustomerDetails";
 }
 
-<h2>Kundadresslista</h2>
+<h2>Adresser till @Html.DisplayFor(modelItem => Model.First().Customer.Name)</h2>
 
-<p>
-    @Html.ActionLink("Skapa ny koppling mellan en kund och en adress", "Create")
-</p>
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
 <table class="table">
     <tr>
         <th>
@@ -35,16 +35,11 @@
             @Html.DisplayFor(modelItem => item.AddressType)
         </td>
         <td>
-            @Html.ActionLink("Uppdatera", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Detaljer", "Details", new { id=item.Id }) |
-            @*@Html.ActionLink("Andra detaljer", "CustomerDetails", new { id = item.CustomerId }) |*@
-            @Html.ActionLink("Ta bort", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>
 }
 
 </table>
-<p>
-    @Html.ActionLink("Tillbaka till kunderna", "Index", "Customer") |
-    @Html.ActionLink("Tillbaka till adresserna", "Index", "Address")
-</p>

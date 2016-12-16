@@ -42,7 +42,11 @@ namespace Kundbolaget.Controllers
                  Text = c.Name
              }).ToList();
 
-            var model = new CustomerAddressVM { AddressList = addresses, CustomerList = customers };
+
+            var addressList = new SelectList(repository.GetAddress(), "Id", "AddressString" );
+            var customerList = new SelectList(repository.GetCustomers(), "Id", "Name");
+
+            var model = new CustomerAddressVM { AddressSelections = addressList, CustomerSelections = customerList };
             return View(model);
         }
 
@@ -60,6 +64,8 @@ namespace Kundbolaget.Controllers
         public ActionResult Edit(int id)
         {
             var item = repository.GetItem(id);
+
+            // TODO: Redudant code
             List<SelectListItem> addresses = repository.GetAddress().
                 Select(a => new SelectListItem
                 {
@@ -67,6 +73,8 @@ namespace Kundbolaget.Controllers
                     Text = a.AddressString
                 }).ToList();
 
+            
+            // TODO: Redudant code
             List<SelectListItem> customers = repository.GetCustomers().
                 Select(c => new SelectListItem
                 {
@@ -74,8 +82,17 @@ namespace Kundbolaget.Controllers
                     Text = c.Name
                 }).ToList();
 
+            customers.Find(c => c.Text == item.Customer.Name).Selected = true;
+
+            var addressList = new SelectList(repository.GetAddress(), "Id", "AddressString", item.AddressId);
+            var customerList = new SelectList(repository.GetCustomers(), "Id", "Name", item.CustomerId);
+
             var model = new CustomerAddressVM { Id = item.Id,
-                AddressList = addresses, CustomerList = customers };
+                AddressSelections = addressList, CustomerSelections = customerList
+            };
+
+                
+
             return View(model);
         }
 
@@ -87,6 +104,12 @@ namespace Kundbolaget.Controllers
                 return View(model);
             repository.UpdateItem(model);
             return RedirectToAction("Index");
+        }
+
+        public ActionResult CustomerDetails(int id)
+        {
+            var model = repository.GetItems(id);
+            return View(model);
         }
 
         // GET: CustomerAddress/Details/{id}

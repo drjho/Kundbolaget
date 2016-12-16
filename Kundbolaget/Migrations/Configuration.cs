@@ -21,7 +21,7 @@ namespace Kundbolaget.Migrations
             {
                 new Customer { Id = 1, Name = "Coop", CorporateStucture = "Koncern",
                     CreditLimit = -1, DaysToDelievery = 3,
-                    CustomerAuditCode = 1, OrganisationNumber = 55555555}
+                    CustomerAuditCode = 1, OrganisationNumber = "555555-5455"}
             };
 
             var addresses = new Address[]
