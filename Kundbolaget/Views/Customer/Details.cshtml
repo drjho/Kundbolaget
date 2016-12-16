@@ -68,12 +68,18 @@
         <th>
             @ViewBag.Descriptions[1]
         </th>
+        <th>
+            @ViewBag.Descriptions[2]
+        </th>
         <th></th>
     </tr>
 
     @foreach (var item in ViewBag.Addresses)
     {
         <tr>
+            <td>
+                @item.Address.AddressOrderId
+            </td>
             <td>
                 @item.Address.AddressString
             </td>

@@ -66,7 +66,7 @@ namespace Kundbolaget.Controllers
             var model = repository.GetItem(id);
             var addresses = customerAdresses.GetItems(id);
             ViewBag.Addresses = addresses;
-            ViewBag.Descriptions = new string[] { (addresses.Length > 1) ? "Adresser" : "Adress", "Adresstyp" };
+            ViewBag.Descriptions = new string[] { "AdressId för kundorder", (addresses.Length > 1) ? "Adresser" : "Adress", "Adresstyp" };
             return View(model);
         }
 
