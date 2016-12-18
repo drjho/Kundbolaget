@@ -12,35 +12,13 @@ namespace Kundbolaget.Models.EntityModels
 
     public class StoragePlace
     {
-
-        public StoragePlace()
-        {
-
-        }
-        /// <summary>
-        /// Sets the storageplaceId by the following constructor
-        /// </summary>
-        public StoragePlace(int aNr, Side side, int s, int sNr)
-        {
-            AisleNr = aNr;
-            Side = side;
-            Spot = s;
-            ShelfNr = sNr;
-        }
-
-        public string StoragePlaceId
-        {
-            get
-            {
-                return $"Aisle:{AisleNr} Side:{Side.ToString()} Spot:{Spot} Shelf:{ShelfNr}";
-            }
-        }
+        public string StoragePlaceId => $"Aisle:{AisleNr} Side:{Side.ToString()} Spot:{Spot} Shelf:{ShelfNr}";
 
         public int? WarehouseId { get; set; }
         public virtual Warehouse Warehouse { get; set; }
 
-        public virtual Product Product { get; set; }
         public int? ProductId { get; set; }
+        public virtual Product Product { get; set; }
 
         /// <summary>
         /// Primary key.
@@ -71,5 +49,11 @@ namespace Kundbolaget.Models.EntityModels
         /// Set to false when it is occupied.
         /// </summary>
         public bool Vacant { get; set; } = true;
+
+        public int TotalAmount { get; set; }
+
+        public int ReservedAmount { get; set; }
+
+        public int AvailableAmount => TotalAmount - ReservedAmount;
     }
 }
