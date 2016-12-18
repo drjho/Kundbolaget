@@ -38,6 +38,9 @@ namespace Kundbolaget.Controllers
         {
             byte[] data;
 
+            if (model.File == null)
+                return View();
+
             using (MemoryStream ms = new MemoryStream())
             {
                 model.File.InputStream.CopyTo(ms);
@@ -59,7 +62,9 @@ namespace Kundbolaget.Controllers
             //    return RedirectToAction("Index", "CustomerAddress");
 
             var allProducts = new DbStoreRepository().GetProducts();
-            var db = new StoreContext();
+            //var db = new StoreContext();
+
+            List<Order> orderList = new List<Order>();
 
             JToken[] jOrders = jCustomerOrder["orders"].ToArray();
             foreach (var o in jOrders)
@@ -96,7 +101,7 @@ namespace Kundbolaget.Controllers
                     var orderProduct = new OrderProduct
                     {
                         OrderId = order.Id,
-                        Comment = (string)jProduct["comments"],
+                        Comment = (string)jProduct["comment"],
                         Product = productRepo.GetProduct((string)jProduct["pno"]),
                         OrderedAmount = (int)jProduct["amount"]
                     };
@@ -106,17 +111,11 @@ namespace Kundbolaget.Controllers
                 }
 
                 order.OrderProducts = orderProducts;
-                order.Comments = (string)o["comments"];
+                order.Comment = (string)o["comment"];
 
-                //db.OrderProducts.AddRange(order.OrderProducts);
-                //db.Orders.Add(order);
-                //db.SaveChanges();
-
+                orderList.Add(order);
             }
-
-
-
-            return RedirectToAction("Index", "Orders");
+            return RedirectToAction("CreateFromFile", "Orders", orderList);
         }
     }
 }

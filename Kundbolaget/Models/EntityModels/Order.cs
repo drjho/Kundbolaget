@@ -30,8 +30,8 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Kundadress")]
         public virtual CustomerAddress CustomerAddress { get; set; }
 
-        [Required, Display(Name = "Kommentarer")]
-        public string Comments { get; set; }
+        [Display(Name = "Kommentarer")]
+        public string Comment { get; set; }
 
         public virtual List<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
 

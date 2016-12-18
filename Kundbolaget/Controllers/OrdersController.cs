@@ -37,6 +37,11 @@ namespace Kundbolaget.Controllers
             return View(order);
         }
 
+        public ActionResult CreateFromFile(Order orderFromFile)
+        {
+            return View(orderFromFile);
+        }
+
         // GET: Orders/Create
         public ActionResult Create()
         {
