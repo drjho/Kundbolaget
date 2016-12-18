@@ -9,36 +9,36 @@ using Kundbolaget.Models.ViewModels;
 
 namespace Kundbolaget.EntityFramework.Repositories
 {
-    public class DbStoreRepository : IStoreRepository
+    public class DbStoreRepository : IGenericRepository<Product>, IDisposable
     {
         StoreContext db = new StoreContext();
-        public Product[] GetProducts()
+        public Product[] GetItems()
         {
             return db.Products.ToArray();
         }
 
-        public void CreateProduct(Product newProduct)
+        public void CreateItem(Product newProduct)
         {
             db.Products.Add(newProduct);
             db.SaveChanges();
         }
-        public void DeleteProduct(int id)
+        public void DeleteItem(int id)
         {
             var product = db.Products.SingleOrDefault(p => p.Id == id);
             db.Products.Remove(product);
             db.SaveChanges();
         }
 
-        public Product GetProduct(string productOrderId)
+        public Product GetItem(string productOrderId)
         {
-            return GetProducts().SingleOrDefault(p => p.ProductOrderId == productOrderId);
+            return GetItems().SingleOrDefault(p => p.ProductOrderId == productOrderId);
         }
 
-        public Product GetProduct(int id)
+        public Product GetItem(int id)
         {
             return db.Products.SingleOrDefault(p => p.Id == id);
         }
-        public void UpdateProduct(Product updatedProduct)
+        public void UpdateItem(Product updatedProduct)
         {
             db.Products.Attach(updatedProduct);
             var entry = db.Entry(updatedProduct);
@@ -63,7 +63,7 @@ namespace Kundbolaget.EntityFramework.Repositories
             openStoragePlace.Vacant = false;
 
             UpdateStoragePlace(openStoragePlace);
-            UpdateProduct(product);
+            UpdateItem(product);
         }
 
         public void UpdateStoragePlace(StoragePlace updatedStoragePlace)
@@ -72,6 +72,11 @@ namespace Kundbolaget.EntityFramework.Repositories
             var entry = db.Entry(updatedStoragePlace);
             entry.State = EntityState.Modified;
             db.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            db.Dispose();
         }
     }
 }
