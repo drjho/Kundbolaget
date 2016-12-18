@@ -29,25 +29,6 @@ namespace Kundbolaget.Controllers
 
         public ActionResult Create()
         {
-            //List<SelectListItem> addresses = repository.GetAddress().
-            //    Select(a => new SelectListItem
-            //    {
-            //        Value = a.Id.ToString(),
-            //        Text = a.AddressString
-            //    }).ToList();
-
-            //List<SelectListItem> customers = repository.GetCustomers().
-            // Select(c => new SelectListItem
-            // {
-            //     Value = c.Id.ToString(),
-            //     Text = c.Name
-            // }).ToList();
-
-
-            //var addressList = new SelectList(repository.GetAddress(), "Id", "AddressString" );
-            //var customerList = new SelectList(repository.GetCustomers(), "Id", "Name");
-
-            //var model = new CustomerAddressVM { AddressSelections = addressList, CustomerSelections = customerList };
 
             ViewBag.AddressId = new SelectList(addressRepo.GetItems(), "Id", "AddressString");
             ViewBag.CustomerId = new SelectList(customerRepo.GetItems(), "Id", "Name");
@@ -69,33 +50,6 @@ namespace Kundbolaget.Controllers
         public ActionResult Edit(int id)
         {
             var model = repository.GetItem(id);
-
-            //// TODO: Redudant code
-            //List<SelectListItem> addresses = repository.GetAddress().
-            //    Select(a => new SelectListItem
-            //    {
-            //        Value = a.Id.ToString(),
-            //        Text = a.AddressString
-            //    }).ToList();
-
-            
-            //// TODO: Redudant code
-            //List<SelectListItem> customers = repository.GetCustomers().
-            //    Select(c => new SelectListItem
-            //    {
-            //        Value = c.Id.ToString(),
-            //        Text = c.Name
-            //    }).ToList();
-
-            //customers.Find(c => c.Text == item.Customer.Name).Selected = true;
-
-            //var addressList = new SelectList(repository.GetAddress(), "Id", "AddressString", item.AddressId);
-            //var customerList = new SelectList(repository.GetCustomers(), "Id", "Name", item.CustomerId);
-
-            //var model = new CustomerAddressVM { Id = item.Id,
-            //    AddressSelections = addressList, CustomerSelections = customerList
-            //};
-
 
             ViewBag.AddressId = new SelectList(addressRepo.GetItems(), "Id", "AddressString", model.AddressId);
             ViewBag.CustomerId = new SelectList(customerRepo.GetItems(), "Id", "Name", model.CustomerId);
