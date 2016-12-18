@@ -211,7 +211,6 @@
     <Compile Include="Models\EntityModels\Warehouse.cs" />
     <Compile Include="Models\ViewModels\CreateProductVM.cs" />
     <Compile Include="Models\ViewModels\OrderUploadVM.cs" />
-    <Compile Include="Models\ViewModels\CustomerAddressVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
