@@ -17,15 +17,16 @@ namespace Kundbolaget.Models.EntityModels
         [Display( Name ="Orderdatum")]
         public DateTime OrderDate { get; set; }
 
-        [Required]
-        [Display( Name ="Önskad leveransdatum")]
-        public DateTime DesiredDeliveryDate { get; set; }
+        //[Display( Name ="Önskad leveransdatum")]
+        //public DateTime DesiredDeliveryDate { get; set; }
         
+        [Required]
         [Display( Name ="Planerad leveransdatum")]
-        public DateTime PlannedDeliveryDate { get; set; }    
+        public DateTime PlannedDeliveryDate { get; set; }
 
-        [Required, Display(Name ="Kundadress id")]
-        public int CustomerAddressId { get; set; }
+        [Display(Name ="Kundadress id")]
+        public int? CustomerAddressId { get; set; }
+        [Required]
         [Display(Name = "Kundadress")]
         public virtual CustomerAddress CustomerAddress { get; set; }
 

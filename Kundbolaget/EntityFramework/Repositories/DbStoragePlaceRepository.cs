@@ -8,7 +8,7 @@ using System.Web;
 
 namespace Kundbolaget.EntityFramework.Repositories
 {
-    public class DbStoragePlaceRepository : IGenericRepository<StoragePlace>
+    public class DbStoragePlaceRepository : IGenericRepository<StoragePlace>, IDisposable
     {
         StoreContext db = new StoreContext();
 
@@ -38,6 +38,25 @@ namespace Kundbolaget.EntityFramework.Repositories
         public StoragePlace[] GetItems()
         {
             return db.StoragePlaces.Include(s => s.Warehouse).ToArray();
+        }
+
+        public int ReserveItem(int? productId, int orderedAmount)
+        {
+            int remainAmount = orderedAmount;
+            // This assume that there is only 1 warehouse!!!
+            var storagePlaces = db.StoragePlaces.Where(sp => sp.ProductId == productId);
+            foreach (var storagePlace in storagePlaces)
+            {
+                db.StoragePlaces.Attach(storagePlace);
+                storagePlace.ReservedAmount += Math.Min(storagePlace.AvailableAmount, remainAmount);
+                var entry = db.Entry(storagePlace);
+                entry.State = EntityState.Modified;
+                db.SaveChanges();
+                remainAmount -= storagePlace.ReservedAmount;
+                if (remainAmount < 1)
+                    break;
+            }
+            return orderedAmount - remainAmount;
         }
 
         public void UpdateItem(StoragePlace updatedItem)

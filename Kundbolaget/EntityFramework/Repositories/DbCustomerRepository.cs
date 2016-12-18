@@ -9,52 +9,49 @@ using Kundbolaget.Models.EntityModels;
 
 namespace Kundbolaget.EntityFramework.Repositories
 {
-    public class DbCustomerRepository : IGenericRepository<Customer>
+    public class DbCustomerRepository : IGenericRepository<Customer>, IDisposable
     {
+        StoreContext db = new StoreContext();
+
+        public Customer GetItem(string customerOrderId)
+        {
+            return GetItems().SingleOrDefault(c => c.CustomerOrderId == customerOrderId);
+        }
+
         public Customer GetItem(int customerId)
         {
-            using (var db = new StoreContext())
-            {
-                return db.Customers.SingleOrDefault(c => c.Id == customerId);
-            }
+            return db.Customers.SingleOrDefault(c => c.Id == customerId);
         }
 
         public Customer[] GetItems()
         {
-            using (var db = new StoreContext())
-            {
-                return db.Customers.ToArray();
-            }
+            return db.Customers.ToArray();
         }
 
         public void CreateItem(Customer newCustomer)
         {
-            using (var db = new StoreContext())
-            {
-                db.Customers.Add(newCustomer);
-                db.SaveChanges();
-            }
+            db.Customers.Add(newCustomer);
+            db.SaveChanges();
         }
 
         public void UpdateItem(Customer updatedCustomer)
         {
-            using (var db = new StoreContext())
-            {
-                db.Customers.Attach(updatedCustomer);
-                var entry = db.Entry(updatedCustomer);
-                entry.State = EntityState.Modified;
-                db.SaveChanges();
-            }
+            db.Customers.Attach(updatedCustomer);
+            var entry = db.Entry(updatedCustomer);
+            entry.State = EntityState.Modified;
+            db.SaveChanges();
         }
 
         public void DeleteItem(int customerId)
         {
-            using (var db = new StoreContext())
-            {
-                var customer = db.Customers.SingleOrDefault(c => c.Id == customerId);
-                db.Customers.Remove(customer);
-                db.SaveChanges();
-            }
+            var customer = db.Customers.SingleOrDefault(c => c.Id == customerId);
+            db.Customers.Remove(customer);
+            db.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            db.Dispose();
         }
     }
 }

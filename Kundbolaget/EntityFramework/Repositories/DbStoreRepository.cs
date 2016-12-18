@@ -28,6 +28,12 @@ namespace Kundbolaget.EntityFramework.Repositories
             db.Products.Remove(product);
             db.SaveChanges();
         }
+
+        public Product GetProduct(string productOrderId)
+        {
+            return GetProducts().SingleOrDefault(p => p.ProductOrderId == productOrderId);
+        }
+
         public Product GetProduct(int id)
         {
             return db.Products.SingleOrDefault(p => p.Id == id);

@@ -1,13 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Kundbolaget.Models.EntityModels
 {
-    public class OrderProduct
+    public class OrderProduct : IValidatableObject
     {
         public int Id { get; set; }
 
         [Display(Name = "Produkt id")]
         public int? ProductId { get; set; }
+
+        [Required]
         public virtual Product Product { get; set; }
 
 
@@ -25,5 +29,12 @@ namespace Kundbolaget.Models.EntityModels
 
         public int? OrderId { get; set; }
         public virtual Order Order { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var result = new List<ValidationResult>();
+            // Prepared for further validation.
+            return result;
+        }
     }
 }

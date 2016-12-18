@@ -9,7 +9,7 @@ using System.Web;
 
 namespace Kundbolaget.EntityFramework.Repositories
 {
-    public class DbCustomerAddressRepository : IGenericRepository<CustomerAddress>
+    public class DbCustomerAddressRepository : IGenericRepository<CustomerAddress>, IDisposable
     {
         StoreContext db = new StoreContext();
 
@@ -25,9 +25,9 @@ namespace Kundbolaget.EntityFramework.Repositories
             db.SaveChanges();
         }
 
-        public CustomerAddress[] GetItems(int customerId)
+        public CustomerAddress[] GetItems(int? customerId)
         {
-            return db.CustomerAddresses.Where(ca => ca.CustomerId == customerId).ToArray();
+            return db.CustomerAddresses.Where(ca => ca.CustomerId == customerId).Include(ca => ca.Address).ToArray();
         }
 
         public CustomerAddress GetItem(int id)
@@ -56,6 +56,11 @@ namespace Kundbolaget.EntityFramework.Repositories
         public Customer[] GetCustomers()
         {
             return db.Customers.ToArray();
+        }
+
+        public void Dispose()
+        {
+            db.Dispose();
         }
     }
 }

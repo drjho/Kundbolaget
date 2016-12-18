@@ -17,6 +17,10 @@ namespace Kundbolaget.Controllers
     public class JsonFileController : Controller
     {
 
+        DbCustomerRepository customerRepo = new DbCustomerRepository();
+        DbCustomerAddressRepository customerAddressRepo = new DbCustomerAddressRepository();
+        DbStoreRepository productRepo = new DbStoreRepository();
+        DbStoragePlaceRepository storageRepo = new DbStoragePlaceRepository();
 
         // GET: JsonFile
         public ActionResult Index()
@@ -44,17 +48,15 @@ namespace Kundbolaget.Controllers
 
             JObject jCustomerOrder = JObject.Parse(json);
 
-            var customer = new DbCustomerRepository().GetItems().
-                Where(c => c.CustomerOrderId == (string)jCustomerOrder["customerid"]).FirstOrDefault();
+            var customer = customerRepo.GetItem((string)jCustomerOrder["customerid"]);
 
-            if (customer == null)
-                return RedirectToAction("Index", "Customer");
+            //if (customer == null)
+            //    return RedirectToAction("Index", "Customer");
 
-            var customerAddresses = new DbCustomerAddressRepository().GetItems().
-                Where(c => c.CustomerId == customer.Id).ToList();
+            var customerAddresses = customerAddressRepo.GetItems(customer?.Id);
 
-            if (customerAddresses.Count == 0)
-                return RedirectToAction("Index", "CustomerAddress");
+            //if (customerAddresses?.Length == 0)
+            //    return RedirectToAction("Index", "CustomerAddress");
 
             var allProducts = new DbStoreRepository().GetProducts();
             var db = new StoreContext();
@@ -66,39 +68,49 @@ namespace Kundbolaget.Controllers
                 // Skulle man kolla upp att adressen stämmer?
                 var addressid = (string)o["addressid"];
 
-                var address = customerAddresses.Where(c => c.Address.AddressOrderId == addressid).FirstOrDefault();
+                var address = customerAddresses?.SingleOrDefault(c => c.Address.AddressOrderId == addressid);
 
-                if (address == null)
-                    return RedirectToAction("Index", "Address");
+                //if (address == null)
+                //    return RedirectToAction("Index", "Address");
 
-                var dDate = Convert.ToDateTime(o["date"]);
 
                 var order = new Order
                 {
-                    CustomerAddressId = address.Id,
-                    DesiredDeliveryDate = dDate,
+                    CustomerAddressId = address?.Id,
+                    //DesiredDeliveryDate = desiredDate,
                     OrderDate = DateTime.Today,
-                    PlannedDeliveryDate = dDate.AddDays(customer.DaysToDelievery),
+                    PlannedDeliveryDate = Convert.ToDateTime(o["date"])
                 };
+
+                if (customer != null)
+                {
+                    var firstPossibleDate = DateTime.Today.AddDays(customer.DaysToDelievery);
+                    if (order.PlannedDeliveryDate.CompareTo(firstPossibleDate) < 0)
+                        order.PlannedDeliveryDate = firstPossibleDate;
+                }
 
                 List<OrderProduct> orderProducts = new List<OrderProduct>();
                 var jProducts = o["products"].ToArray();
-                foreach (var prod in jProducts)
+                foreach (var jProduct in jProducts)
                 {
-                    var p = allProducts.SingleOrDefault(a => a.ProductOrderId == (string)prod["pno"]);
-                    if (p != null)
-                        orderProducts.Add(new OrderProduct {OrderId = order.Id, Comment = (string)prod["comments"],
-                            ProductId = p.Id, OrderedAmount = (int)prod["amount"] });
-                    else
-                        return RedirectToAction("Index", "Order");
+                    var orderProduct = new OrderProduct
+                    {
+                        OrderId = order.Id,
+                        Comment = (string)jProduct["comments"],
+                        Product = productRepo.GetProduct((string)jProduct["pno"]),
+                        OrderedAmount = (int)jProduct["amount"]
+                    };
 
+                    orderProduct.OrderedAmount = storageRepo.ReserveItem(orderProduct.Product?.Id, orderProduct.OrderedAmount);
+                    orderProducts.Add(orderProduct);
                 }
+
                 order.OrderProducts = orderProducts;
                 order.Comments = (string)o["comments"];
 
-                db.OrderProducts.AddRange(order.OrderProducts);
-                db.Orders.Add(order);
-                db.SaveChanges();
+                //db.OrderProducts.AddRange(order.OrderProducts);
+                //db.Orders.Add(order);
+                //db.SaveChanges();
 
             }
 
