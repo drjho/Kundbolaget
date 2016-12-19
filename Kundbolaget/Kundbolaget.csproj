@@ -203,7 +203,7 @@
     <Compile Include="Models\EntityModels\Product.cs" />
     <Compile Include="Models\EntityModels\StoragePlace.cs" />
     <Compile Include="Models\EntityModels\Warehouse.cs" />
-    <Compile Include="Models\ViewModels\AddProductToWarehouseVM.cs" />
+    <Compile Include="Models\ViewModels\StoragePlaceProductVM.cs" />
     <Compile Include="Models\ViewModels\CreateProductVM.cs" />
     <Compile Include="Models\ViewModels\OrderUploadVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

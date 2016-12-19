@@ -27,6 +27,6 @@ namespace Kundbolaget.EntityFramework.Context
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
 
-        public System.Data.Entity.DbSet<Kundbolaget.Models.ViewModels.AddProductToWarehouseVM> AddProductToWarehouseVMs { get; set; }
+        public System.Data.Entity.DbSet<Kundbolaget.Models.ViewModels.StoragePlaceProductVM> AddProductToWarehouseVMs { get; set; }
     }
 }

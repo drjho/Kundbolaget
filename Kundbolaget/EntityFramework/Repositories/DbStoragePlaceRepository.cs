@@ -39,6 +39,7 @@ namespace Kundbolaget.EntityFramework.Repositories
         {
             return db.StoragePlaces.Include(s => s.Warehouse).ToArray();
         }
+
         public void UpdateItem(StoragePlace updatedItem)
         {
             db.StoragePlaces.Attach(updatedItem);
@@ -58,11 +59,11 @@ namespace Kundbolaget.EntityFramework.Repositories
                 storagePlace.ReservedAmount += Math.Min(storagePlace.AvailableAmount, remainAmount);
                 var entry = db.Entry(storagePlace);
                 entry.State = EntityState.Modified;
-                db.SaveChanges();
                 remainAmount -= storagePlace.ReservedAmount;
                 if (remainAmount < 1)
                     break;
             }
+            db.SaveChanges();
             return orderedAmount - remainAmount;
         }
 
@@ -74,15 +75,15 @@ namespace Kundbolaget.EntityFramework.Repositories
             //var product = db.Products.SingleOrDefault(p => p.Id == productId);
             //if (product == null)
             //    return false;
-            UpdateProduct(storagePlace.Id, productId, amount);
             //storagePlace.ProductId = productId;
             //storagePlace.TotalAmount = amount;
             //storagePlace.Vacant = false;
             //UpdateItem(storagePlace);
+            UpdateProduct(storagePlace.Id, productId, amount, 0);
             return true;
         }
 
-        public bool UpdateProduct(int id, int productId, int newAmount)
+        public bool UpdateProduct(int id, int productId, int newAmount, int newReservedAmount)
         {
             var storagePlace = db.StoragePlaces.SingleOrDefault(s => s.Id == id);
             if (storagePlace == null)
@@ -94,6 +95,7 @@ namespace Kundbolaget.EntityFramework.Repositories
                 return RemoveProduct(id);
             storagePlace.ProductId = product.Id;
             storagePlace.TotalAmount = newAmount;
+            storagePlace.ReservedAmount = newReservedAmount;
             storagePlace.Vacant = false;
             UpdateItem(storagePlace);
             return true;
@@ -106,6 +108,7 @@ namespace Kundbolaget.EntityFramework.Repositories
                 return false;
             storagePlace.ProductId = null;
             storagePlace.TotalAmount = 0;
+            storagePlace.ReservedAmount = 0;
             storagePlace.Vacant = true;
             UpdateItem(storagePlace);
             return true;

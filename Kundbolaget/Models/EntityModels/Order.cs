@@ -44,10 +44,10 @@ namespace Kundbolaget.Models.EntityModels
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var result = new List<ValidationResult>();
-            foreach (var op in OrderProducts)
-            {
-                result.AddRange(op.Validate(validationContext));
-            }
+            //foreach (var op in OrderProducts)
+            //{
+            //    result.AddRange(op.Validate(validationContext));
+            //}
             return result;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -50,10 +51,13 @@ namespace Kundbolaget.Models.EntityModels
         /// </summary>
         public bool Vacant { get; set; } = true;
 
+        [Display(Name = "Totalt")]
         public int TotalAmount { get; set; }
 
+        [Display(Name = "Reserverat")]
         public int ReservedAmount { get; set; }
 
+        [Display(Name = "Tillgängligt")]
         public int AvailableAmount => TotalAmount - ReservedAmount;
     }
 }

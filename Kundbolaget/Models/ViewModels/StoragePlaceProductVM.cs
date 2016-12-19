@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Kundbolaget.Models.ViewModels
 {
-    public class AddProductToWarehouseVM
+    public class StoragePlaceProductVM
     {
         public int Id { get; set; }
 
@@ -16,7 +16,10 @@ namespace Kundbolaget.Models.ViewModels
         [Required, Display( Name = "Lagerhus id")]
         public int WarehouseId { get; set; }
 
-        [Required, Display( Name = "Antal")] 
-        public int Amount { get; set; }
+        [Required, Display( Name = "Totalt")] 
+        public int TotalAmount { get; set; }
+
+        [Required, Display(Name = "Reserverat")]
+        public int ReservedAmount { get; set; }
     }
 }

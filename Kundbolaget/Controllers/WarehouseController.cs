@@ -103,16 +103,16 @@ namespace Kundbolaget.Controllers
             var model = storageRepo.GetItem(id);
             ViewBag.PlaceName = model.StoragePlaceId;
             ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name", model.ProductId);
-            return View(new AddProductToWarehouseVM { Id = id, ProductId = (int)model.ProductId, WarehouseId = id, Amount = model.TotalAmount });
+            return View(new StoragePlaceProductVM { Id = id, ProductId = (int)model.ProductId, WarehouseId = id, TotalAmount = model.TotalAmount, ReservedAmount = model.ReservedAmount });
         }
 
         [HttpPost]
-        public ActionResult UpdateStoragePlace(AddProductToWarehouseVM model)
+        public ActionResult UpdateStoragePlace(StoragePlaceProductVM model)
         {
             ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name");
             if (!ModelState.IsValid)
                 return View(model);
-            if (!storageRepo.UpdateProduct(model.Id, model.ProductId, model.Amount))
+            if (!storageRepo.UpdateProduct(model.Id, model.ProductId, model.TotalAmount, model.ReservedAmount))
                 return View(model);
             return RedirectToAction("Index");
         }
@@ -122,11 +122,11 @@ namespace Kundbolaget.Controllers
             var model = storageRepo.GetItem(id);
             ViewBag.PlaceName = model.StoragePlaceId;
             ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name", model.ProductId);
-            return View(new AddProductToWarehouseVM { Id = id, ProductId = (int)model.ProductId, WarehouseId = id, Amount = model.TotalAmount });
+            return View(new StoragePlaceProductVM { Id = id, ProductId = (int)model.ProductId, WarehouseId = id, TotalAmount = model.TotalAmount, ReservedAmount = model.ReservedAmount });
         }
 
         [HttpPost]
-        public ActionResult UnregisterProduct(AddProductToWarehouseVM model)
+        public ActionResult UnregisterProduct(StoragePlaceProductVM model)
         {
             ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name");
             if (!ModelState.IsValid)
@@ -141,16 +141,16 @@ namespace Kundbolaget.Controllers
             var model = warehouseRepo.GetItem(id);
             ViewBag.WarehouseName = model.Name;
             ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name");
-            return View(new AddProductToWarehouseVM { WarehouseId = id } );
+            return View(new StoragePlaceProductVM { WarehouseId = id } );
         }
 
         [HttpPost]
-        public ActionResult AddProductToWareHouse(AddProductToWarehouseVM model)
+        public ActionResult AddProductToWareHouse(StoragePlaceProductVM model)
         {
             ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name");
             if (!ModelState.IsValid)
                 return View(model);
-            if (!storageRepo.AddProduct(model.WarehouseId, model.ProductId, model.Amount))
+            if (!storageRepo.AddProduct(model.WarehouseId, model.ProductId, model.TotalAmount))
                 return View(model);
             return RedirectToAction("Index");
         }
