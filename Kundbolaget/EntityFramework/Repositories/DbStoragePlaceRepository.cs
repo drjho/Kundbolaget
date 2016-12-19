@@ -39,6 +39,13 @@ namespace Kundbolaget.EntityFramework.Repositories
         {
             return db.StoragePlaces.Include(s => s.Warehouse).ToArray();
         }
+        public void UpdateItem(StoragePlace updatedItem)
+        {
+            db.StoragePlaces.Attach(updatedItem);
+            var entry = db.Entry(updatedItem);
+            entry.State = EntityState.Modified;
+            db.SaveChanges();
+        }
 
         public int ReserveItem(int? productId, int orderedAmount)
         {
@@ -59,25 +66,47 @@ namespace Kundbolaget.EntityFramework.Repositories
             return orderedAmount - remainAmount;
         }
 
-        public void UpdateItem(StoragePlace updatedItem)
-        {
-            db.StoragePlaces.Attach(updatedItem);
-            var entry = db.Entry(updatedItem);
-            entry.State = EntityState.Modified;
-            db.SaveChanges();
-        }
-
         public bool AddProduct(int warehouseId, int productId, int amount)
         {
             var storagePlace = db.StoragePlaces.Where(s => s.WarehouseId == warehouseId).FirstOrDefault(s => s.Vacant);
             if (storagePlace == null)
                 return false;
+            //var product = db.Products.SingleOrDefault(p => p.Id == productId);
+            //if (product == null)
+            //    return false;
+            UpdateProduct(storagePlace.Id, productId, amount);
+            //storagePlace.ProductId = productId;
+            //storagePlace.TotalAmount = amount;
+            //storagePlace.Vacant = false;
+            //UpdateItem(storagePlace);
+            return true;
+        }
+
+        public bool UpdateProduct(int id, int productId, int newAmount)
+        {
+            var storagePlace = db.StoragePlaces.SingleOrDefault(s => s.Id == id);
+            if (storagePlace == null)
+                return false;
             var product = db.Products.SingleOrDefault(p => p.Id == productId);
             if (product == null)
                 return false;
-            storagePlace.ProductId = productId;
-            storagePlace.TotalAmount = amount;
+            if (newAmount == 0)
+                return RemoveProduct(id);
+            storagePlace.ProductId = product.Id;
+            storagePlace.TotalAmount = newAmount;
             storagePlace.Vacant = false;
+            UpdateItem(storagePlace);
+            return true;
+        }
+
+        public bool RemoveProduct(int id)
+        {
+            var storagePlace = db.StoragePlaces.SingleOrDefault(s => s.Id == id);
+            if (storagePlace == null)
+                return false;
+            storagePlace.ProductId = null;
+            storagePlace.TotalAmount = 0;
+            storagePlace.Vacant = true;
             UpdateItem(storagePlace);
             return true;
         }

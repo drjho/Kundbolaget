@@ -14,7 +14,7 @@ namespace Kundbolaget.Models.EntityModels
     {
         public string StoragePlaceId => $"Aisle:{AisleNr} Side:{Side.ToString()} Spot:{Spot} Shelf:{ShelfNr}";
 
-        public int? WarehouseId { get; set; }
+        public int WarehouseId { get; set; }
         public virtual Warehouse Warehouse { get; set; }
 
         public int? ProductId { get; set; }

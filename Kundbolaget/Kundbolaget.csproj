@@ -276,6 +276,8 @@
     <Content Include="Views\Orders\Index.cshtml" />
     <Content Include="Views\Orders\CreateFromFile.cshtml" />
     <Content Include="Views\Warehouse\AddProductToWareHouse.cshtml" />
+    <Content Include="Views\Warehouse\UpdateStoragePlace.cshtml" />
+    <Content Include="Views\Warehouse\UnregisterProduct.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

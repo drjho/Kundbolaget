@@ -46,24 +46,6 @@ namespace Kundbolaget.Controllers
 
         }
 
-        public ActionResult AddProductToWareHouse(int id)
-        {
-            var model = warehouseRepo.GetItem(id);
-            ViewBag.WarehouseName = model.Name;
-            ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name");
-            return View(new AddProductToWarehouseVM { WarehouseId = id } );
-        }
-
-        [HttpPost]
-        public ActionResult AddProductToWareHouse(AddProductToWarehouseVM model)
-        {
-            ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name");
-            if (!ModelState.IsValid)
-                return View(model);
-            if (!storageRepo.AddProduct(model.WarehouseId, model.ProductId, model.Amount))
-                return View(model);
-            return RedirectToAction("Index");
-        }
 
         // Get: Warehouse/Edit{id}
         public ActionResult Edit(int id)
@@ -113,6 +95,63 @@ namespace Kundbolaget.Controllers
                 return View(model);
             }
             warehouseRepo.DeleteItem(id);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult UpdateStoragePlace(int id)
+        {
+            var model = storageRepo.GetItem(id);
+            ViewBag.PlaceName = model.StoragePlaceId;
+            ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name", model.ProductId);
+            return View(new AddProductToWarehouseVM { Id = id, ProductId = (int)model.ProductId, WarehouseId = id, Amount = model.TotalAmount });
+        }
+
+        [HttpPost]
+        public ActionResult UpdateStoragePlace(AddProductToWarehouseVM model)
+        {
+            ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name");
+            if (!ModelState.IsValid)
+                return View(model);
+            if (!storageRepo.UpdateProduct(model.Id, model.ProductId, model.Amount))
+                return View(model);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult UnregisterProduct(int id)
+        {
+            var model = storageRepo.GetItem(id);
+            ViewBag.PlaceName = model.StoragePlaceId;
+            ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name", model.ProductId);
+            return View(new AddProductToWarehouseVM { Id = id, ProductId = (int)model.ProductId, WarehouseId = id, Amount = model.TotalAmount });
+        }
+
+        [HttpPost]
+        public ActionResult UnregisterProduct(AddProductToWarehouseVM model)
+        {
+            ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name");
+            if (!ModelState.IsValid)
+                return View(model);
+            if (!storageRepo.RemoveProduct(model.Id))
+                return View(model);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult AddProductToWareHouse(int id)
+        {
+            var model = warehouseRepo.GetItem(id);
+            ViewBag.WarehouseName = model.Name;
+            ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name");
+            return View(new AddProductToWarehouseVM { WarehouseId = id } );
+        }
+
+        [HttpPost]
+        public ActionResult AddProductToWareHouse(AddProductToWarehouseVM model)
+        {
+            ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name");
+            if (!ModelState.IsValid)
+                return View(model);
+            if (!storageRepo.AddProduct(model.WarehouseId, model.ProductId, model.Amount))
+                return View(model);
             return RedirectToAction("Index");
         }
     }

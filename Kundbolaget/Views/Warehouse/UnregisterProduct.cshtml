@@ -1,0 +1,48 @@
+﻿@model Kundbolaget.Models.ViewModels.AddProductToWarehouseVM
+
+@{
+    ViewBag.Title = "UnregisterProduct";
+}
+
+<h2>UnregisterProduct</h2>
+
+<h3>Vill du ta bort produkten från pallplatsen?</h3>
+<div>
+    <h4>Pallplats: @ViewBag.PlaceName</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductId)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.WarehouseId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WarehouseId)
+        </dd>*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Ta bort" class="btn btn-default" /> |
+            @Html.ActionLink("Tillbaka till lager", "Index")
+        </div>
+    }
+</div>
