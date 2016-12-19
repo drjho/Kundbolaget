@@ -9,7 +9,7 @@ using Kundbolaget.Models.ViewModels;
 
 namespace Kundbolaget.EntityFramework.Repositories
 {
-    public class DbStoreRepository : IGenericRepository<Product>, IDisposable
+    public class DbProductRepository : IGenericRepository<Product>, IDisposable
     {
         StoreContext db = new StoreContext();
         public Product[] GetItems()

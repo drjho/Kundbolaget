@@ -66,5 +66,20 @@ namespace Kundbolaget.EntityFramework.Repositories
             entry.State = EntityState.Modified;
             db.SaveChanges();
         }
+
+        public bool AddProduct(int warehouseId, int productId, int amount)
+        {
+            var storagePlace = db.StoragePlaces.Where(s => s.WarehouseId == warehouseId).FirstOrDefault(s => s.Vacant);
+            if (storagePlace == null)
+                return false;
+            var product = db.Products.SingleOrDefault(p => p.Id == productId);
+            if (product == null)
+                return false;
+            storagePlace.ProductId = productId;
+            storagePlace.TotalAmount = amount;
+            storagePlace.Vacant = false;
+            UpdateItem(storagePlace);
+            return true;
+        }
     }
 }

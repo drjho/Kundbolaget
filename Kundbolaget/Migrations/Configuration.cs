@@ -21,14 +21,19 @@ namespace Kundbolaget.Migrations
             {
                 new Customer { Id = 1, Name = "Coop", CorporateStucture = "Koncern",
                     CreditLimit = -1, DaysToDelievery = 3,
-                    CustomerAuditCode = 1, OrganisationNumber = "555555-5455"}
+                    CustomerAuditCode = 1, OrganisationNumber = "555555-5455"},
+                new Customer { Id = 2, Name = "ICA", CorporateStucture = "Koncern",
+                    CreditLimit = -1, DaysToDelievery = 3,
+                    CustomerAuditCode = 1, OrganisationNumber = "345555-7645"}
             };
 
             var addresses = new Address[]
             {
                 new Address { Id = 1, StreetName = "Kungsgatan", Number = 1, PostalCode = "11232", Area = "Stockholm", Country = "Sweden"},
                 new Address { Id = 2, StreetName = "Kungsgatan", Number = 2, PostalCode = "11232", Area = "Stockholm", Country = "Sweden"},
-                new Address { Id = 3, StreetName = "Kungsgatan", Number = 3, PostalCode = "11232", Area = "Stockholm", Country = "Sweden"}
+                new Address { Id = 3, StreetName = "Kungsgatan", Number = 3, PostalCode = "11232", Area = "Stockholm", Country = "Sweden"},
+                new Address { Id = 4, StreetName = "Bergsgatan", Number = 77, PostalCode = "11632", Area = "Stockholm", Country = "Sweden"}
+
             };
 
             var warehouses = new Warehouse[]
@@ -54,9 +59,13 @@ namespace Kundbolaget.Migrations
 
             var ca = new CustomerAddress[]
             {
-                new CustomerAddress { Id = 1, CustomerId =1, AddressId = 1 },
-                new CustomerAddress { Id = 1, CustomerId =1, AddressId = 2 },
-                new CustomerAddress { Id = 1, CustomerId =1, AddressId = 3 }
+                new CustomerAddress { Id = 1, CustomerId =1, AddressId = 1, AddressType = AddressType.Leverans },
+                new CustomerAddress { Id = 2, CustomerId =1, AddressId = 2, AddressType = AddressType.Leverans },
+                new CustomerAddress { Id = 3, CustomerId =1, AddressId = 3, AddressType = AddressType.Faktura },
+                new CustomerAddress { Id = 4, CustomerId =1, AddressId = 3, AddressType = AddressType.Besök },
+                new CustomerAddress { Id = 5, CustomerId =2, AddressId = 4, AddressType = AddressType.Leverans },
+                new CustomerAddress { Id = 6, CustomerId =2, AddressId = 4, AddressType = AddressType.Faktura },
+
 
             };
 

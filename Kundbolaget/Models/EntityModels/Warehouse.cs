@@ -25,7 +25,7 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Postnummer")]
         public int ZipCode { get; set; }
 
-        public virtual List<StoragePlace> StoragePlace { get; set; }
+        public virtual List<StoragePlace> StoragePlaces { get; set; }
 
         public Warehouse()
         {
@@ -34,7 +34,7 @@ namespace Kundbolaget.Models.EntityModels
 
         void CreatePlaces(int places)
         {
-            StoragePlace = new List<StoragePlace>();
+            StoragePlaces = new List<StoragePlace>();
             for (int aisle = 0; aisle < 11; aisle++)
             {
                 foreach (Side side in Enum.GetValues(typeof(Side)))
@@ -43,7 +43,7 @@ namespace Kundbolaget.Models.EntityModels
                     {
                         for (int shelf = 0; shelf < 3; shelf++)
                         {
-                            StoragePlace.Add(new StoragePlace
+                            StoragePlaces.Add(new StoragePlace
                             {
                                 AisleNr = aisle,
                                 Side = side,

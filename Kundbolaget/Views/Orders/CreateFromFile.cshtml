@@ -10,7 +10,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Order</h4>
         <hr />
@@ -26,6 +26,15 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.CustomerId, "CustomerId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CustomerId, new { htmlAttributes = new { @class = "form-control" } })
+                @*@Html.DropDownList("CustomerId", null, htmlAttributes: new { @class = "form-control" })*@
+                @Html.ValidationMessageFor(model => model.CustomerId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.PlannedDeliveryDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.PlannedDeliveryDate, new { htmlAttributes = new { @class = "form-control" } })
@@ -34,10 +43,11 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CustomerAddressId, "CustomerAddressId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.AddressId, "AddressId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("CustomerAddressId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CustomerAddressId, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.AddressId, new { htmlAttributes = new { @class = "form-control" } })
+                @*@Html.DropDownList("AddressId", null, htmlAttributes: new { @class = "form-control" })*@
+                @Html.ValidationMessageFor(model => model.AddressId, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -48,17 +58,31 @@
                 @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        @*<table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderProducts.First().ProductId)
+                </th>
+            </tr>
+            @foreach (var item in Model.OrderProducts)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Id)
+                    </td>
+                </tr>
+            }
+        </table>*@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Skicka in order" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Tillbaka till sida för filuppladdning", "UploadJson", "JsonFile")
 </div>
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>

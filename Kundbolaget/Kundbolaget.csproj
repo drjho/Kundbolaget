@@ -144,6 +144,8 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Data\test_beta.json" />
+    <Content Include="Data\test_beta2.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -176,30 +178,18 @@
     <Compile Include="EntityFramework\Repositories\DbCustomerGroupRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbAlcoholLicenseRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbCustomerRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\DbProductRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbStoragePlaceRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbPriceListRepository.cs" />
-    <Compile Include="EntityFramework\Repositories\DbStoreRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbWarehouseRepository.cs" />
     <Compile Include="EntityFramework\Repositories\IGenericRepository.cs" />
     <Compile Include="EntityFramework\Repositories\IStoreRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612131319142_Init2.cs" />
-    <Compile Include="Migrations\201612131319142_Init2.Designer.cs">
-      <DependentUpon>201612131319142_Init2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612160123217_ordercommentsadded.cs" />
-    <Compile Include="Migrations\201612160123217_ordercommentsadded.Designer.cs">
-      <DependentUpon>201612160123217_ordercommentsadded.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612160242346_organisationnumberAsString.cs" />
-    <Compile Include="Migrations\201612160242346_organisationnumberAsString.Designer.cs">
-      <DependentUpon>201612160242346_organisationnumberAsString.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612180829361_revisedOrder.cs" />
-    <Compile Include="Migrations\201612180829361_revisedOrder.Designer.cs">
-      <DependentUpon>201612180829361_revisedOrder.cs</DependentUpon>
+    <Compile Include="Migrations\201612181433343_initCreate3.cs" />
+    <Compile Include="Migrations\201612181433343_initCreate3.Designer.cs">
+      <DependentUpon>201612181433343_initCreate3.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
@@ -213,6 +203,7 @@
     <Compile Include="Models\EntityModels\Product.cs" />
     <Compile Include="Models\EntityModels\StoragePlace.cs" />
     <Compile Include="Models\EntityModels\Warehouse.cs" />
+    <Compile Include="Models\ViewModels\AddProductToWarehouseVM.cs" />
     <Compile Include="Models\ViewModels\CreateProductVM.cs" />
     <Compile Include="Models\ViewModels\OrderUploadVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -272,18 +263,19 @@
     <Content Include="Views\CustomerAddress\Delete.cshtml" />
     <Content Include="Views\JsonFile\Index.cshtml" />
     <Content Include="Views\JsonFile\UploadJson.cshtml" />
-    <Content Include="Views\Orders\Create.cshtml" />
-    <Content Include="Views\Orders\Delete.cshtml" />
-    <Content Include="Views\Orders\Details.cshtml" />
-    <Content Include="Views\Orders\Edit.cshtml" />
-    <Content Include="Views\Orders\Index.cshtml" />
     <Content Include="Views\OrderProducts\Create.cshtml" />
     <Content Include="Views\OrderProducts\Delete.cshtml" />
     <Content Include="Views\OrderProducts\Details.cshtml" />
     <Content Include="Views\OrderProducts\Edit.cshtml" />
     <Content Include="Views\OrderProducts\Index.cshtml" />
     <Content Include="Views\CustomerAddress\CustomerDetails.cshtml" />
+    <Content Include="Views\Orders\Create.cshtml" />
+    <Content Include="Views\Orders\Delete.cshtml" />
+    <Content Include="Views\Orders\Details.cshtml" />
+    <Content Include="Views\Orders\Edit.cshtml" />
+    <Content Include="Views\Orders\Index.cshtml" />
     <Content Include="Views\Orders\CreateFromFile.cshtml" />
+    <Content Include="Views\Warehouse\AddProductToWareHouse.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -298,17 +290,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201612131319142_Init2.resx">
-      <DependentUpon>201612131319142_Init2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612160123217_ordercommentsadded.resx">
-      <DependentUpon>201612160123217_ordercommentsadded.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612160242346_organisationnumberAsString.resx">
-      <DependentUpon>201612160242346_organisationnumberAsString.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612180829361_revisedOrder.resx">
-      <DependentUpon>201612180829361_revisedOrder.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201612181433343_initCreate3.resx">
+      <DependentUpon>201612181433343_initCreate3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

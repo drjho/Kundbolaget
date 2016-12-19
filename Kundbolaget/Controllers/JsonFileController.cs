@@ -19,7 +19,7 @@ namespace Kundbolaget.Controllers
 
         DbCustomerRepository customerRepo = new DbCustomerRepository();
         DbCustomerAddressRepository customerAddressRepo = new DbCustomerAddressRepository();
-        DbStoreRepository productRepo = new DbStoreRepository();
+        DbProductRepository productRepo = new DbProductRepository();
         DbStoragePlaceRepository storageRepo = new DbStoragePlaceRepository();
 
         // GET: JsonFile
@@ -53,69 +53,53 @@ namespace Kundbolaget.Controllers
 
             var customer = customerRepo.GetItem((string)jCustomerOrder["customerid"]);
 
-            //if (customer == null)
-            //    return RedirectToAction("Index", "Customer");
-
             var customerAddresses = customerAddressRepo.GetItems(customer?.Id);
 
-            //if (customerAddresses?.Length == 0)
-            //    return RedirectToAction("Index", "CustomerAddress");
+            var allProducts = productRepo.GetItems();
 
-            var allProducts = new DbStoreRepository().GetProducts();
-            //var db = new StoreContext();
 
-            List<Order> orderList = new List<Order>();
+            var addressOrderId = (string)jCustomerOrder["addressid"];
+            var address = customerAddresses?.SingleOrDefault(
+                c => c.AddressType == AddressType.Leverans && c.Address.AddressOrderId == addressOrderId)?.Address;
 
-            JToken[] jOrders = jCustomerOrder["orders"].ToArray();
-            foreach (var o in jOrders)
+            var order = new Order
             {
+                CustomerId = customer?.Id,
+                AddressId = address?.Id,
+                OrderDate = DateTime.Today,
+                PlannedDeliveryDate = Convert.ToDateTime(jCustomerOrder["date"])
+            };
 
-                // Skulle man kolla upp att adressen stämmer?
-                var addressid = (string)o["addressid"];
+            if (customer != null)
+            {
+                var firstPossibleDate = DateTime.Today.AddDays(customer.DaysToDelievery);
+                if (order.PlannedDeliveryDate.CompareTo(firstPossibleDate) < 0)
+                    order.PlannedDeliveryDate = firstPossibleDate;
+            }
 
-                var address = customerAddresses?.SingleOrDefault(c => c.Address.AddressOrderId == addressid);
-
-                //if (address == null)
-                //    return RedirectToAction("Index", "Address");
-
-
-                var order = new Order
+            List<OrderProduct> orderProducts = new List<OrderProduct>();
+            var jProducts = jCustomerOrder["products"].ToArray();
+            foreach (var jProduct in jProducts)
+            {
+                var orderProduct = new OrderProduct
                 {
-                    CustomerAddressId = address?.Id,
-                    //DesiredDeliveryDate = desiredDate,
-                    OrderDate = DateTime.Today,
-                    PlannedDeliveryDate = Convert.ToDateTime(o["date"])
+                    OrderId = order.Id,
+                    Comment = (string)jProduct["comment"],
+                    Product = productRepo.GetItem((string)jProduct["pno"]),
+                    OrderedAmount = (int)jProduct["amount"]
                 };
 
-                if (customer != null)
-                {
-                    var firstPossibleDate = DateTime.Today.AddDays(customer.DaysToDelievery);
-                    if (order.PlannedDeliveryDate.CompareTo(firstPossibleDate) < 0)
-                        order.PlannedDeliveryDate = firstPossibleDate;
-                }
+                orderProduct.DeliveredAmount = storageRepo.ReserveItem(orderProduct.Product?.Id, orderProduct.OrderedAmount);
+                orderProducts.Add(orderProduct);
 
-                List<OrderProduct> orderProducts = new List<OrderProduct>();
-                var jProducts = o["products"].ToArray();
-                foreach (var jProduct in jProducts)
-                {
-                    var orderProduct = new OrderProduct
-                    {
-                        OrderId = order.Id,
-                        Comment = (string)jProduct["comment"],
-                        Product = productRepo.GetProduct((string)jProduct["pno"]),
-                        OrderedAmount = (int)jProduct["amount"]
-                    };
-
-                    orderProduct.OrderedAmount = storageRepo.ReserveItem(orderProduct.Product?.Id, orderProduct.OrderedAmount);
-                    orderProducts.Add(orderProduct);
-                }
-
-                order.OrderProducts = orderProducts;
-                order.Comment = (string)o["comment"];
-
-                orderList.Add(order);
             }
-            return RedirectToAction("CreateFromFile", "Orders", orderList);
+
+            order.OrderProducts = orderProducts;
+            order.Comment = (string)jCustomerOrder["comment"];
+
+            // Lägg till importkommentarer i order när delieveredamount blir mindre än hälften av beställt antal.
+
+            return RedirectToAction("CreateFromFile", "Orders", order);
         }
     }
 }

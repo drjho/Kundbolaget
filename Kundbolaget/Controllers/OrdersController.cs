@@ -18,7 +18,7 @@ namespace Kundbolaget.Controllers
         // GET: Orders
         public ActionResult Index()
         {
-            var orders = db.Orders.Include(o => o.OrderProducts).Include(o => o.CustomerAddress);
+            var orders = db.Orders.Include(o => o.Address).Include(o => o.Customer);
             return View(orders.ToList());
         }
 
@@ -37,15 +37,19 @@ namespace Kundbolaget.Controllers
             return View(order);
         }
 
-        public ActionResult CreateFromFile(Order orderFromFile)
+        // GET: Orders/Create
+        public ActionResult CreateFromFile(Order newOrder)
         {
-            return View(orderFromFile);
+            ViewBag.AddressId = new SelectList(db.Addresses, "Id", "AddressString");
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name");
+            return View(newOrder);
         }
 
         // GET: Orders/Create
         public ActionResult Create()
         {
-            ViewBag.CustomerAddressId = new SelectList(db.CustomerAddresses, "Id", "Id");
+            ViewBag.AddressId = new SelectList(db.Addresses, "Id", "AddressString");
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name");
             return View();
         }
 
@@ -54,7 +58,7 @@ namespace Kundbolaget.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,OrderDate,DesiredDeliveryDate,PlannedDeliveryDate,CustomerAddressId")] Order order)
+        public ActionResult Create([Bind(Include = "Id,OrderDate,CustomerId,PlannedDeliveryDate,AddressId,Comment")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -63,7 +67,8 @@ namespace Kundbolaget.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CustomerAddressId = new SelectList(db.CustomerAddresses, "Id", "Id", order.CustomerAddressId);
+            ViewBag.AddressId = new SelectList(db.Addresses, "Id", "AddressString", order.AddressId);
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name", order.CustomerId);
             return View(order);
         }
 
@@ -79,7 +84,8 @@ namespace Kundbolaget.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CustomerAddressId = new SelectList(db.CustomerAddresses, "Id", "Id", order.CustomerAddressId);
+            ViewBag.AddressId = new SelectList(db.Addresses, "Id", "StreetName", order.AddressId);
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name", order.CustomerId);
             return View(order);
         }
 
@@ -88,7 +94,7 @@ namespace Kundbolaget.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,OrderDate,DesiredDeliveryDate,PlannedDeliveryDate,CustomerAddressId")] Order order)
+        public ActionResult Edit([Bind(Include = "Id,OrderDate,CustomerId,PlannedDeliveryDate,AddressId,Comment")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +102,8 @@ namespace Kundbolaget.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CustomerAddressId = new SelectList(db.CustomerAddresses, "Id", "Id", order.CustomerAddressId);
+            ViewBag.AddressId = new SelectList(db.Addresses, "Id", "StreetName", order.AddressId);
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name", order.CustomerId);
             return View(order);
         }
 
@@ -122,8 +129,6 @@ namespace Kundbolaget.Controllers
         {
             Order order = db.Orders.Find(id);
             db.Orders.Remove(order);
-            var products = db.OrderProducts.Where(p => p.OrderId == order.Id).ToList();
-            db.OrderProducts.RemoveRange(products);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
