@@ -4,7 +4,7 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Detaljinfo</h2>
 
 <div>
     <h4>Order</h4>
@@ -49,10 +49,52 @@
         <dd>
             @Html.DisplayFor(model => model.Comment)
         </dd>
-
+        <dd>
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderProducts)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderProducts.First().Product)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderProducts.First().OrderedAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderProducts.First().DeliveredAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderProducts.First().AcceptedAmount)
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.OrderProducts)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderedAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DeliveredAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AcceptedAmount)
+                        </td>
+                        <td></td>
+                    </tr>
+                }
+            </table>
+        </dd>
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Tillbaka till listan", "Index")
 </p>
