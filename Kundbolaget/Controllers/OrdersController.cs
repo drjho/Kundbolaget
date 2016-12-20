@@ -37,12 +37,9 @@ namespace Kundbolaget.Controllers
             return View(order);
         }
 
-        // GET: Orders/Create
-        public ActionResult CreateFromFile(Order newOrder)
+        public ActionResult ReleaseReserved(Order newOrder)
         {
-            ViewBag.AddressId = new SelectList(db.Addresses, "Id", "AddressString");
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name");
-            return View(newOrder);
+            return RedirectToAction("UploadJson", "JsonFile");
         }
 
         // GET: Orders/Create
@@ -128,6 +125,8 @@ namespace Kundbolaget.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Order order = db.Orders.Find(id);
+            var products = db.OrderProducts.Where(p => p.OrderId == order.Id).ToList();
+            db.OrderProducts.RemoveRange(products);
             db.Orders.Remove(order);
             db.SaveChanges();
             return RedirectToAction("Index");

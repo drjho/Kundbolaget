@@ -17,10 +17,10 @@ namespace Kundbolaget.Controllers
     public class JsonFileController : Controller
     {
 
-        DbCustomerRepository customerRepo = new DbCustomerRepository();
         DbCustomerAddressRepository customerAddressRepo = new DbCustomerAddressRepository();
         DbProductRepository productRepo = new DbProductRepository();
         DbStoragePlaceRepository storageRepo = new DbStoragePlaceRepository();
+        DbOrderRepository orderRepo = new DbOrderRepository();
 
         // GET: JsonFile
         public ActionResult Index()
@@ -51,55 +51,53 @@ namespace Kundbolaget.Controllers
 
             JObject jCustomerOrder = JObject.Parse(json);
 
-            var customer = customerRepo.GetItem((string)jCustomerOrder["customerid"]);
+            var customerAddress = customerAddressRepo.GetItems().Where(
+                a => a.AddressType == AddressType.Leverans &&
+                a.Address.AddressOrderId == (string)jCustomerOrder["addressid"] &&
+                a.Customer.CustomerOrderId == (string)jCustomerOrder["customerid"]).SingleOrDefault();
 
-            var customerAddresses = customerAddressRepo.GetItems(customer?.Id);
+            var customer = customerAddress.Customer;
 
             var allProducts = productRepo.GetItems();
 
+            var deliveryDate = Convert.ToDateTime(jCustomerOrder["date"]);
 
-            var addressOrderId = (string)jCustomerOrder["addressid"];
-            var address = customerAddresses?.SingleOrDefault(
-                c => c.AddressType == AddressType.Leverans && c.Address.AddressOrderId == addressOrderId)?.Address;
-
+            var jProducts = jCustomerOrder["products"].ToArray();
             var order = new Order
             {
-                CustomerId = customer?.Id,
-                AddressId = address?.Id,
+                CustomerId = customerAddress.Customer.Id,
+                AddressId = customerAddress.Address.Id,
                 OrderDate = DateTime.Today,
-                PlannedDeliveryDate = Convert.ToDateTime(jCustomerOrder["date"])
+                DesiredDeliveryDate = Convert.ToDateTime(jCustomerOrder["date"]),
+                Comment = (string)jCustomerOrder["comment"],
             };
 
             if (customer != null)
             {
                 var firstPossibleDate = DateTime.Today.AddDays(customer.DaysToDelievery);
-                if (order.PlannedDeliveryDate.CompareTo(firstPossibleDate) < 0)
-                    order.PlannedDeliveryDate = firstPossibleDate;
+                order.PlannedDeliveryDate = (order.DesiredDeliveryDate.CompareTo(firstPossibleDate) < 0) ? firstPossibleDate : order.DesiredDeliveryDate;
             }
 
-            List<OrderProduct> orderProducts = new List<OrderProduct>();
-            var jProducts = jCustomerOrder["products"].ToArray();
             foreach (var jProduct in jProducts)
             {
                 var orderProduct = new OrderProduct
                 {
                     OrderId = order.Id,
                     Comment = (string)jProduct["comment"],
-                    Product = productRepo.GetItem((string)jProduct["pno"]),
+                    ProductId = productRepo.GetItem((string)jProduct["pno"]).Id,
                     OrderedAmount = (int)jProduct["amount"]
                 };
 
-                orderProduct.DeliveredAmount = storageRepo.ReserveItem(orderProduct.Product?.Id, orderProduct.OrderedAmount);
-                orderProducts.Add(orderProduct);
+
+                //orderProduct.DeliveredAmount = storageRepo.ReserveItem(orderProduct.Product?.Id, orderProduct.OrderedAmount);
+                order.OrderProducts.Add(orderProduct);
 
             }
 
-            order.OrderProducts = orderProducts;
-            order.Comment = (string)jCustomerOrder["comment"];
 
-            // Lägg till importkommentarer i order när delieveredamount blir mindre än hälften av beställt antal.
 
-            return RedirectToAction("CreateFromFile", "Orders", order);
+            orderRepo.HandleOrder(order);
+            return RedirectToAction("Index", "Orders");
         }
     }
 }

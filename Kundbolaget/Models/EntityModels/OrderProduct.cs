@@ -5,7 +5,7 @@ using System.Web.Mvc;
 
 namespace Kundbolaget.Models.EntityModels
 {
-    public class OrderProduct : IValidatableObject
+    public class OrderProduct
     {
         public int Id { get; set; }
 
@@ -34,21 +34,5 @@ namespace Kundbolaget.Models.EntityModels
         public int? OrderId { get; set; }
         [Display(Name = "Order")]
         public virtual Order Order { get; set; }
-
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            var result = new List<ValidationResult>();
-
-            if (ProductId == null)
-            {
-                result.Add(new ValidationResult("Angett fel produktorder id.", new[] { "ProductId" }));
-            }
-            if (DeliveredAmount < OrderedAmount >> 1)
-            {
-                result.Add(new ValidationResult("Det finns mindre än halva .", new[] { "DeliveredAmount" }));
-            }
-            return result;
-
-        }
     }
 }

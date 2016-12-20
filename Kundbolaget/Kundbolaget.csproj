@@ -134,6 +134,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Data\test_beta.json" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -144,8 +145,8 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Data\test_beta.json" />
     <Content Include="Data\test_beta2.json" />
+    <Content Include="Data\test_wrong_beta.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -178,6 +179,7 @@
     <Compile Include="EntityFramework\Repositories\DbCustomerGroupRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbAlcoholLicenseRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbCustomerRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\DbOrderRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbProductRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbStoragePlaceRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbPriceListRepository.cs" />
@@ -191,6 +193,10 @@
     <Compile Include="Migrations\201612181433343_initCreate3.Designer.cs">
       <DependentUpon>201612181433343_initCreate3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612200026029_orderDesiredDate.cs" />
+    <Compile Include="Migrations\201612200026029_orderDesiredDate.Designer.cs">
+      <DependentUpon>201612200026029_orderDesiredDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\AlcoholLicense.cs" />
@@ -203,6 +209,8 @@
     <Compile Include="Models\EntityModels\Product.cs" />
     <Compile Include="Models\EntityModels\StoragePlace.cs" />
     <Compile Include="Models\EntityModels\Warehouse.cs" />
+    <Compile Include="Models\ViewModels\OrderProductVM.cs" />
+    <Compile Include="Models\ViewModels\OrderVM.cs" />
     <Compile Include="Models\ViewModels\StoragePlaceProductVM.cs" />
     <Compile Include="Models\ViewModels\CreateProductVM.cs" />
     <Compile Include="Models\ViewModels\OrderUploadVM.cs" />
@@ -274,10 +282,11 @@
     <Content Include="Views\Orders\Details.cshtml" />
     <Content Include="Views\Orders\Edit.cshtml" />
     <Content Include="Views\Orders\Index.cshtml" />
-    <Content Include="Views\Orders\CreateFromFile.cshtml" />
     <Content Include="Views\Warehouse\AddProductToWareHouse.cshtml" />
     <Content Include="Views\Warehouse\UpdateStoragePlace.cshtml" />
     <Content Include="Views\Warehouse\UnregisterProduct.cshtml" />
+    <Content Include="Views\JsonFile\CreateFromFile.cshtml" />
+    <Content Include="Views\JsonFile\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -294,6 +303,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201612181433343_initCreate3.resx">
       <DependentUpon>201612181433343_initCreate3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612200026029_orderDesiredDate.resx">
+      <DependentUpon>201612200026029_orderDesiredDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

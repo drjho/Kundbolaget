@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace Kundbolaget.Models.EntityModels
 {
-    public class Order
+    public class OrderVM
     {
         [Display(Name = "Order id")]
         public int Id { get; set; }
@@ -19,30 +19,23 @@ namespace Kundbolaget.Models.EntityModels
 
         [Required (ErrorMessage = "Angett fel kundorder id")]
         [Display(Name = "Kund id")]
-        public int? CustomerId { get; set; }
+        public int CustomerId { get; set; }
         [Display(Name = "Kund")]
-        public virtual Customer Customer { get; set; }
-
-        [Required]
-        [Display(Name = "Önskad leveransdatum")]
-        public DateTime DesiredDeliveryDate { get; set; }
+        public Customer Customer { get; set; }
 
         [Display( Name ="Planerad leveransdatum")]
         public DateTime PlannedDeliveryDate { get; set; }
 
         [Required(ErrorMessage = "Angett fel adressorder id")]
         [Display(Name ="Kundadress id")]
-        public int? AddressId { get; set; }
+        public int AddressId { get; set; }
         [Display(Name = "Kundadress")]
-        public virtual Address Address { get; set; }
+        public Address Address { get; set; }
 
         [Display(Name = "Kommentarer")]
         public string Comment { get; set; }
 
-        [Display(Name = "Importkommentarer")]
-        public string ImportComments { get; set; }
-
-        public virtual List<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
+        public List<OrderProductVM> OrderProducts { get; set; } = new List<OrderProductVM>();
 
     }
 }

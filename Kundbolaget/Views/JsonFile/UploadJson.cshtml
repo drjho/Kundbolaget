@@ -18,6 +18,7 @@
                 <p>
                     @Html.TextBoxFor(model => model.File, new { type = "file" })
                     @Html.ValidationMessageFor(model => model.File)
+                    @ViewBag.ErrorMessage 
                 </p>
                 <p>
                     <input type="submit" value="Ladda upp filen" class="btn btn-default" />
