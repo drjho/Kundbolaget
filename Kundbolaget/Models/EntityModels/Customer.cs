@@ -23,15 +23,18 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Kreditgräns")]
         public int CreditLimit { get; set; }
 
-
         [Display(Name = "Leveranstid")]
         public int DaysToDelievery { get; set; }
-
 
         [Display(Name = "Kundbokföringskod")]
         public int CustomerAuditCode { get; set; }
 
         [Display(Name = "Organisationsnummer")]
         public int OrganisationNumber { get; set; }
+
+        [Display(Name = "Alkohollicens")]
+        public virtual AlcoholLicense AlcoholLicense { get; set; }
+
+        public int? AlcoholLicenseId { get; set; }
     }
 }

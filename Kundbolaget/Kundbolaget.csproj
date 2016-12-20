@@ -159,6 +159,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AddressController.cs" />
+    <Compile Include="Controllers\CustomerAlcoholLicenseController.cs" />
     <Compile Include="Controllers\CustomerAddressController.cs" />
     <Compile Include="Controllers\AlcoholLicenseController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="Controllers\WarehouseController.cs" />
     <Compile Include="EntityFramework\Context\StoreContext.cs" />
     <Compile Include="EntityFramework\Repositories\DbAddressRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\DbCustomerAlcoholLicenseRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbCustomerAddressRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbCustomerGroupRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbAlcoholLicenseRepository.cs" />
@@ -193,6 +195,7 @@
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\AlcoholLicense.cs" />
     <Compile Include="Models\EntityModels\Customer.cs" />
+    <Compile Include="Models\EntityModels\CustomerAlcoholLicense.cs" />
     <Compile Include="Models\EntityModels\Order.cs" />
     <Compile Include="Models\EntityModels\OrderProduct.cs" />
     <Compile Include="Models\EntityModels\CustomerAddress.cs" />
@@ -201,6 +204,7 @@
     <Compile Include="Models\EntityModels\Product.cs" />
     <Compile Include="Models\EntityModels\StoragePlace.cs" />
     <Compile Include="Models\EntityModels\Warehouse.cs" />
+    <Compile Include="Models\ViewModels\AlcoholLicenseVM.cs" />
     <Compile Include="Models\ViewModels\CreateProductVM.cs" />
     <Compile Include="Models\ViewModels\OrderUploadVM.cs" />
     <Compile Include="Models\ViewModels\CustomerAddressVM.cs" />
@@ -280,6 +284,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\AlcoholLicenseCustomer\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
