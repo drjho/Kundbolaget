@@ -1,0 +1,83 @@
+﻿
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Moq;
+using System.Web;
+using System.Data.Entity;
+using Kundbolaget.Controllers;
+using Kundbolaget.EntityFramework.Context;
+using Kundbolaget.Models.EntityModels;
+using NUnit.Framework;
+using Kundbolaget.EntityFramework.Repositories;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace UnitTestMoq
+{
+    [TestFixture]
+    //[TestClass]
+    internal class ProductControllerTest
+    {
+        private Mock<StoreContext> _mockContext;
+
+        private Mock<DbSet<Product>> _mockSetProduct;
+        private Mock<DbSet<StoragePlace>> _mockSetStoragePlace;
+        private Mock<DbSet<Warehouse>> _mockSetWarehouse;
+
+        private ProductsController _productController;
+
+        [SetUp]
+        public void Initializer()
+        {
+            _mockContext = new Mock<StoreContext>();
+
+            _mockSetProduct = new Mock<DbSet<Product>>();
+            _mockSetStoragePlace = new Mock<DbSet<StoragePlace>>();
+            _mockSetWarehouse = new Mock<DbSet<Warehouse>>();
+
+            var dataProduct = ResourceData.Products.AsQueryable();
+            var dataStoragePlace = ResourceData.StoragePlaces.AsQueryable();
+            var dataWarehouse = ResourceData.Warehouses.AsQueryable();
+
+            var setupDbProduct = Helper.SetupDb(_mockSetProduct, dataProduct);
+            var setupDbStorageplace = Helper.SetupDb(_mockSetStoragePlace, dataStoragePlace);
+            var setupDbWarehouse = Helper.SetupDb(_mockSetWarehouse, dataWarehouse);
+
+            _mockContext.Setup(p => p.Products).Returns(setupDbProduct.Object);
+            _mockContext.Setup(s => s.StoragePlaces).Returns(setupDbStorageplace.Object);
+            _mockContext.Setup(w => w.Warehouses).Returns(setupDbWarehouse.Object);
+            // _mockSetProduct.Setup(x => x.Include(It.IsAny<String>())).Returns(_mockSetProduct.Object);
+
+            //TODO: Ändra DbStoreRepository till DbProduct när vi fått in den mergen i Develop
+            var dbProductRepository = new DbStoreRepository(_mockContext.Object);
+            var dbStorageplaceRepository = new DbStoragePlaceRepository(_mockContext.Object);
+            var dbWarehouseRepository = new DbWarehouseRepository(_mockContext.Object);
+
+            _productController = new ProductsController (dbStorageplaceRepository, dbProductRepository, dbWarehouseRepository);
+        }
+
+        [Test]
+        public void Create()
+        {
+            var product = new Product
+            {
+                Id = 10,
+                Name = "Sleepy Bulldog",
+                ConsumerPackage = ConsumerPackage.Flaska,
+                Volume = 33,
+                StoragePackage = StoragePackage.Back,
+                Alcohol = 12,
+                ConsumerPerStorage = 6,
+                ProductGroup = ProductGroup.Öl,
+                AuditCode = 1,
+                VatCode = 32
+            };
+            _productController.Create(product);
+            _mockSetProduct.Verify(x => x.Add(product), Times.Once);
+            _mockContext.Verify(x => x.SaveChanges(), Times.Once);
+        }
+    }
+}
+

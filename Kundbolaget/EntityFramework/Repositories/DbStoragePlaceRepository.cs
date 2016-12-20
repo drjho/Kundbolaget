@@ -10,7 +10,17 @@ namespace Kundbolaget.EntityFramework.Repositories
 {
     public class DbStoragePlaceRepository : IGenericRepository<StoragePlace>
     {
-        StoreContext db = new StoreContext();
+        StoreContext db;
+
+        public DbStoragePlaceRepository()
+        {
+            db = new StoreContext();
+        }
+
+        public DbStoragePlaceRepository(StoreContext fakeContext)
+        {
+            db = fakeContext;
+        }
 
         public void CreateItem(StoragePlace newItem)
         {

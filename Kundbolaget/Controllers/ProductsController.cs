@@ -12,11 +12,24 @@ namespace Kundbolaget.Controllers
     public class ProductsController : Controller
     {
         DbStoreRepository repository;
+        DbStoragePlaceRepository repositoryStorage;
+        DbWarehouseRepository repositoryWarehouse;
+
+
 
         public ProductsController()
         {
             repository = new DbStoreRepository();
         }
+
+        public ProductsController(DbStoragePlaceRepository dbStorage, DbStoreRepository dbproduct, DbWarehouseRepository dbwarehouse)
+        {
+            repository = dbproduct;
+            repositoryStorage = dbStorage;
+            repositoryWarehouse = dbwarehouse;
+        }
+
+       
 
         // GET: Products
         public ActionResult Index()

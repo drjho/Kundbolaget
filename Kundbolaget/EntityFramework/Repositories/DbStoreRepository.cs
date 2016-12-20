@@ -11,7 +11,17 @@ namespace Kundbolaget.EntityFramework.Repositories
 {
     public class DbStoreRepository : IStoreRepository
     {
-        StoreContext db = new StoreContext();
+        StoreContext db; 
+
+        public DbStoreRepository()
+        {
+            db = new StoreContext();
+        }
+
+        public DbStoreRepository(StoreContext fakeContext)
+        {
+            db = fakeContext;
+        }
         public Product[] GetProducts()
         {
             return db.Products.ToArray();
