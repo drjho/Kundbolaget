@@ -103,7 +103,7 @@ namespace Kundbolaget.Controllers
             var model = storageRepo.GetItem(id);
             ViewBag.PlaceName = model.StoragePlaceId;
             ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name", model.ProductId);
-            return View(new StoragePlaceProductVM { Id = id, ProductId = (int)model.ProductId, WarehouseId = id, TotalAmount = model.TotalAmount, ReservedAmount = model.ReservedAmount });
+            return View(new StoragePlaceProductVM { Id = id, ProductId = (int)model.ProductId, WarehouseId = model.WarehouseId, TotalAmount = model.TotalAmount, ReservedAmount = model.ReservedAmount });
         }
 
         [HttpPost]
@@ -114,7 +114,7 @@ namespace Kundbolaget.Controllers
                 return View(model);
             if (!storageRepo.UpdateProduct(model.Id, model.ProductId, model.TotalAmount, model.ReservedAmount))
                 return View(model);
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", new { id = model.WarehouseId });
         }
 
         public ActionResult UnregisterProduct(int id)

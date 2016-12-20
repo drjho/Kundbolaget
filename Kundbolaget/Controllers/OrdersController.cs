@@ -23,6 +23,7 @@ namespace Kundbolaget.Controllers
         // GET: Orders
         public ActionResult Index()
         {
+            //var model = orderRepo.GetItems().Where(p => p.OrderStatus == OrderStatus.Behandlar);
             var model = orderRepo.GetItems();
             return View(model);
         }
@@ -78,21 +79,61 @@ namespace Kundbolaget.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult PrepareOrder(OrderVM orderVM)
         {
-            var order = new Order
+            var order = db.Orders.Single(o => o.Id == orderVM.Id);
+            order.OrderDate = orderVM.OrderDate;
+            order.CustomerId = orderVM.CustomerId;
+            order.PlannedDeliveryDate = orderVM.PlannedDeliveryDate;
+            order.AddressId = orderVM.AddressId;
+            order.Comment = orderVM.Comment;
+            for (int i = 0; i < order.OrderProducts.Count; i++)
             {
-                Id = orderVM.Id,
-                OrderDate = orderVM.OrderDate,
-                CustomerId = orderVM.CustomerId,
-                PlannedDeliveryDate = orderVM.PlannedDeliveryDate,
-                AddressId = orderVM.AddressId,
-                Comment = orderVM.Comment,
-            };
-            foreach (var item in orderRepo.GetItem(orderVM.Id).OrderProducts)
-            {
-                storageRepo.ReserveItem(item.ProductId, item.OrderedAmount);
+                var item = order.OrderProducts[i];
+                item.AvailabeAmount = ReserveItem(item.ProductId, item.OrderedAmount);
+                db.Entry(item).State = EntityState.Modified;
             }
             order.OrderStatus = OrderStatus.Plockar;
+            db.Entry(order).State = EntityState.Modified;
+            db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public void ReleaseItem(int? productId, int reservedAmount)
+        {
+            int remainAmount = reservedAmount;
+            // This assume that there is only 1 warehouse!!!
+            var storagePlaces = db.StoragePlaces.Where(sp => sp.ProductId == productId).ToArray();
+            for (int i = 0; i < storagePlaces.Length; i++)
+            {
+                int subAmount = Math.Min(storagePlaces[i].ReservedAmount, remainAmount);
+                remainAmount -= subAmount;
+                storagePlaces[i].ReservedAmount -= subAmount;
+                db.StoragePlaces.Attach(storagePlaces[i]);
+                var entry = db.Entry(storagePlaces[i]);
+                entry.State = EntityState.Modified;
+                if (remainAmount < 1)
+                    break;
+            }
+            //db.SaveChanges();
+        }
+
+        public int ReserveItem(int? productId, int orderedAmount)
+        {
+            int remainAmount = orderedAmount;
+            // This assume that there is only 1 warehouse!!!
+            var storagePlaces = db.StoragePlaces.Where(sp => sp.ProductId == productId).ToArray();
+            for (int i = 0; i < storagePlaces.Length; i++)
+            {
+                int addAmount = Math.Min(storagePlaces[i].AvailableAmount, remainAmount);
+                storagePlaces[i].ReservedAmount += addAmount;
+                db.StoragePlaces.Attach(storagePlaces[i]);
+                var entry = db.Entry(storagePlaces[i]);
+                entry.State = EntityState.Modified;
+                remainAmount -= addAmount;
+                if (remainAmount < 1)
+                    break;
+            }
+            //db.SaveChanges();
+            return orderedAmount - remainAmount;
         }
 
         // GET: Orders/Create
@@ -177,8 +218,13 @@ namespace Kundbolaget.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+
             Order order = db.Orders.Find(id);
             var products = db.OrderProducts.Where(p => p.OrderId == order.Id).ToList();
+            foreach (var item in products)
+            {
+                ReleaseItem(item.ProductId, item.OrderedAmount);
+            }
             db.OrderProducts.RemoveRange(products);
             db.Orders.Remove(order);
             db.SaveChanges();

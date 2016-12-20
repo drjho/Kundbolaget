@@ -53,27 +53,6 @@ namespace Kundbolaget.EntityFramework.Repositories
             return db.StoragePlaces.Where(sp => sp.ProductId == productId).Sum(sp => sp.TotalAmount-sp.ReservedAmount);
         }
 
-        public int ReserveItem(int? productId, int orderedAmount)
-        {
-            int remainAmount = orderedAmount;
-            // This assume that there is only 1 warehouse!!!
-            var storagePlaces = db.StoragePlaces.Where(sp => sp.ProductId == productId).ToArray();
-            for (int i = 0; i < storagePlaces.Length; i++)
-            {
-                
-                storagePlaces[i].ReservedAmount += Math.Min(storagePlaces[i].AvailableAmount, remainAmount);
-                //db.StoragePlaces.Attach(storagePlaces[i]);
-                var entry = db.Entry(storagePlaces[i]);
-                entry.State = EntityState.Modified;
-                // Do stuff here
-                remainAmount -= storagePlaces[i].ReservedAmount;
-                if (remainAmount < 1)
-                    break;
-            }
-            db.SaveChanges();
-            return orderedAmount - remainAmount;
-        }
-
         public bool AddProduct(int warehouseId, int productId, int amount)
         {
             var storagePlace = db.StoragePlaces.Where(s => s.WarehouseId == warehouseId).FirstOrDefault(s => s.Vacant);
