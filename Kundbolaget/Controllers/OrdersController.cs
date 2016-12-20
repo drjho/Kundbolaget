@@ -223,7 +223,7 @@ namespace Kundbolaget.Controllers
             var products = db.OrderProducts.Where(p => p.OrderId == order.Id).ToList();
             foreach (var item in products)
             {
-                ReleaseItem(item.ProductId, item.OrderedAmount);
+                ReleaseItem(item.ProductId, item.AvailabeAmount);
             }
             db.OrderProducts.RemoveRange(products);
             db.Orders.Remove(order);
