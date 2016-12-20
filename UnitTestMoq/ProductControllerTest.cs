@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 using Moq;
 using System.Web;
 using System.Data.Entity;
+using System.Web.Mvc;
 using Kundbolaget.Controllers;
 using Kundbolaget.EntityFramework.Context;
 using Kundbolaget.Models.EntityModels;
 using NUnit.Framework;
 using Kundbolaget.EntityFramework.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Assert = NUnit.Framework.Assert;
 
 namespace UnitTestMoq
 {
@@ -78,6 +80,38 @@ namespace UnitTestMoq
             _mockSetProduct.Verify(x => x.Add(product), Times.Once);
             _mockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
+
+        [Test]
+        public void Create_Post_Redirect_To_Index()
+        {
+            var result = _productController.Create(new Product
+                {
+                    Id = 10,
+                    Name = "Sleepy Bulldog",
+                    ConsumerPackage = ConsumerPackage.Flaska,
+                    Volume = 33,
+                    StoragePackage = StoragePackage.Back,
+                    Alcohol = 12,
+                    ConsumerPerStorage = 6,
+                    ProductGroup = ProductGroup.Öl,
+                    AuditCode = 1,
+                    VatCode = 32
+                }
+            ) as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+        }
+
+        //[Test] //TODO: Ska vi ha en IsRemoved prop?
+        //public void Delete_Change_IsRemoved()
+        //{
+        //    var product = _mockSetProduct.Object.First(x => x.Id == 1);
+        //    _productController.Delete(product.Id, product);
+        //    var result = _mockSetProduct.Object.First(x => x.Id == product.Id);
+        //    Assert.AreEqual(true, result.IsRemoved); //En bool i Product Model som visar om en produkt är bortagen eller inte.
+        //    _mockContext.Verify(x => x.SaveChanges(), Times.Once);
+        //}
+
+
     }
 }
 
