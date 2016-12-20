@@ -95,7 +95,6 @@ namespace Kundbolaget.Controllers
             }
 
 
-
             orderRepo.HandleOrder(order);
             return RedirectToAction("Index", "Orders");
         }

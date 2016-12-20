@@ -8,6 +8,10 @@ using System.Web.Mvc;
 
 namespace Kundbolaget.Models.EntityModels
 {
+    public enum OrderStatus
+    {
+        Behandlar, Plockar, Fraktar, Levererad, Arkiverad
+    }
     public class Order
     {
         [Display(Name = "Order id")]
@@ -39,8 +43,8 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Kommentarer")]
         public string Comment { get; set; }
 
-        [Display(Name = "Importkommentarer")]
-        public string ImportComments { get; set; }
+        [Display(Name = "Status")]
+        public OrderStatus OrderStatus { get; set; } = OrderStatus.Behandlar;
 
         public virtual List<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
 

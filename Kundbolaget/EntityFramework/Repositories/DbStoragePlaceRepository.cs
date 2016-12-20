@@ -61,11 +61,11 @@ namespace Kundbolaget.EntityFramework.Repositories
             for (int i = 0; i < storagePlaces.Length; i++)
             {
                 
-                db.StoragePlaces.Attach(storagePlaces[i]);
+                storagePlaces[i].ReservedAmount += Math.Min(storagePlaces[i].AvailableAmount, remainAmount);
+                //db.StoragePlaces.Attach(storagePlaces[i]);
                 var entry = db.Entry(storagePlaces[i]);
                 entry.State = EntityState.Modified;
                 // Do stuff here
-                storagePlaces[i].ReservedAmount += Math.Min(storagePlaces[i].AvailableAmount, remainAmount);
                 remainAmount -= storagePlaces[i].ReservedAmount;
                 if (remainAmount < 1)
                     break;

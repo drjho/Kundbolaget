@@ -10,7 +10,7 @@ namespace Kundbolaget.EntityFramework.Repositories
 {
     public class DbOrderRepository : IGenericRepository<Order>, IDisposable
     {
-        StoreContext db = new StoreContext();
+        private StoreContext db = new StoreContext();
 
         public void CreateItem(Order newItem)
         {
@@ -32,12 +32,12 @@ namespace Kundbolaget.EntityFramework.Repositories
 
         public Order GetItem(int id)
         {
-            return db.Orders.SingleOrDefault(o => o.Id == id);
+            return db.Orders.Include(o => o.Address).Include(o => o.Customer).SingleOrDefault(o => o.Id == id);
         }
 
         public Order[] GetItems()
         {
-            return db.Orders.ToArray();
+            return db.Orders.Include(o => o.Address).Include(o => o.Customer).Include(o => o.OrderProducts).ToArray();
         }
 
         public void UpdateItem(Order updatedItem)
@@ -46,8 +46,16 @@ namespace Kundbolaget.EntityFramework.Repositories
             db.Entry(updatedItem).State = EntityState.Modified;
             db.SaveChanges();
         }
+
+        public Order[] GetSimilarOrders(int customerId, int addressId)
+        {
+            return GetItems().Where(o => o.AddressId == addressId && o.CustomerId == customerId).ToArray();
+        }
+
+
         public void HandleOrder(Order order)
         {
+            // TODO: borde finnas i controller och inte här.
             var orders = db.Orders.Where(o => o.AddressId == order.AddressId && o.CustomerId == order.CustomerId).Include(o => o.OrderProducts);
 
             foreach (var item in orders)

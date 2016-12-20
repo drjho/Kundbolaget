@@ -8,18 +8,22 @@ using System.Web;
 using System.Web.Mvc;
 using Kundbolaget.EntityFramework.Context;
 using Kundbolaget.Models.EntityModels;
+using Kundbolaget.EntityFramework.Repositories;
 
 namespace Kundbolaget.Controllers
 {
     public class OrdersController : Controller
     {
         private StoreContext db = new StoreContext();
+        DbOrderRepository orderRepo = new DbOrderRepository();
+        DbAddressRepository addressRepo = new DbAddressRepository();
+        DbStoragePlaceRepository storageRepo = new DbStoragePlaceRepository();
 
         // GET: Orders
         public ActionResult Index()
         {
-            var orders = db.Orders.Include(o => o.Address).Include(o => o.Customer);
-            return View(orders.ToList());
+            var model = orderRepo.GetItems();
+            return View(model);
         }
 
         // GET: Orders/Details/5
@@ -29,7 +33,7 @@ namespace Kundbolaget.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            var order = orderRepo.GetItem((int)id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -37,9 +41,20 @@ namespace Kundbolaget.Controllers
             return View(order);
         }
 
-        public ActionResult ReleaseReserved(Order newOrder)
+        [HttpPost, ActionName("PrepareForPacking")]
+        [ValidateAntiForgeryToken]
+        public ActionResult PrepareForPacking(Order order)
         {
-            return RedirectToAction("UploadJson", "JsonFile");
+            //var order = orderRepo.GetItem((int)id);
+            foreach (var item in order.OrderProducts)
+            {
+                storageRepo.ReserveItem(item.ProductId, item.OrderedAmount);
+            }   
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            return RedirectToAction("Index");
         }
 
         // GET: Orders/Create
@@ -131,6 +146,8 @@ namespace Kundbolaget.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+
 
         protected override void Dispose(bool disposing)
         {

@@ -93,8 +93,17 @@
             </table>
         </dd>
     </dl>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" name="PrepareForPacking" value="Skicka in ordern" class="btn btn-default" /> |
+            @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |
+            @Html.ActionLink("Tillbaka till listan", "Index")
+        </div>
+    }
 </div>
 <p>
-    @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Tillbaka till listan", "Index")
+    @*@Html.ActionLink("Behandlar för plock", "PrepareForPacking", new { id = Model.Id })*@
 </p>

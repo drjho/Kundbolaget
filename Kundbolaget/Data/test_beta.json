@@ -4,7 +4,7 @@
   "products": [
     {
       "pno": "000001",
-      "amount": 100,
+      "amount": 1000,
       "comment": "minst 50"
     },
     {
@@ -13,6 +13,6 @@
       "comment": "minst 150"
     }
   ],
-  "date": "12/05/2016",
+  "date": "12/28/2016",
   "comment": "ring vid leverans"
 }
