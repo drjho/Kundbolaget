@@ -21,6 +21,10 @@ namespace Kundbolaget.Models.EntityModels
         public int OrderedAmount { get; set; }
 
         [Required]
+        [Display(Name = "Reserverat antal")]
+        public int AvailabeAmount { get; set; }
+
+        [Required]
         [Display(Name = "Levererat antal")]
         public int DeliveredAmount { get; set; }
 

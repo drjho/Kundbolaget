@@ -201,6 +201,10 @@
     <Compile Include="Migrations\201612200841423_addedOrderStatus.Designer.cs">
       <DependentUpon>201612200841423_addedOrderStatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612201959130_revisedForPrepareOrder.cs" />
+    <Compile Include="Migrations\201612201959130_revisedForPrepareOrder.Designer.cs">
+      <DependentUpon>201612201959130_revisedForPrepareOrder.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\AlcoholLicense.cs" />
@@ -291,6 +295,7 @@
     <Content Include="Views\Warehouse\UnregisterProduct.cshtml" />
     <Content Include="Views\JsonFile\CreateFromFile.cshtml" />
     <Content Include="Views\JsonFile\Edit.cshtml" />
+    <Content Include="Views\Orders\PrepareOrder.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -313,6 +318,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612200841423_addedOrderStatus.resx">
       <DependentUpon>201612200841423_addedOrderStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612201959130_revisedForPrepareOrder.resx">
+      <DependentUpon>201612201959130_revisedForPrepareOrder.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

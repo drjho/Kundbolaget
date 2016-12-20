@@ -19,7 +19,7 @@ namespace Kundbolaget.Models.EntityModels
 
         [Required (ErrorMessage = "Angett fel kundorder id")]
         [Display(Name = "Kund id")]
-        public int CustomerId { get; set; }
+        public int? CustomerId { get; set; }
         [Display(Name = "Kund")]
         public Customer Customer { get; set; }
 
@@ -28,14 +28,14 @@ namespace Kundbolaget.Models.EntityModels
 
         [Required(ErrorMessage = "Angett fel adressorder id")]
         [Display(Name ="Kundadress id")]
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
         [Display(Name = "Kundadress")]
         public Address Address { get; set; }
 
         [Display(Name = "Kommentarer")]
         public string Comment { get; set; }
 
-        public List<OrderProductVM> OrderProducts { get; set; } = new List<OrderProductVM>();
+        public List<OrderProductVM> OrderProducts { get; set; }
 
     }
 }

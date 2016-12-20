@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Kundbolaget.EntityFramework.Context;
 using Kundbolaget.Models.EntityModels;
 using Kundbolaget.EntityFramework.Repositories;
+using System.Reflection;
 
 namespace Kundbolaget.Controllers
 {
@@ -41,18 +42,46 @@ namespace Kundbolaget.Controllers
             return View(order);
         }
 
-        [HttpPost, ActionName("PrepareForPacking")]
-        [ValidateAntiForgeryToken]
-        public ActionResult PrepareForPacking(Order order)
+        public ActionResult PrepareOrder(int? id)
         {
-            //var order = orderRepo.GetItem((int)id);
-            foreach (var item in order.OrderProducts)
+            if (id == null)
             {
-                storageRepo.ReserveItem(item.ProductId, item.OrderedAmount);
-            }   
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var order = orderRepo.GetItem((int)id);
+
             if (order == null)
             {
                 return HttpNotFound();
+            }
+            var orderVM = new OrderVM
+            {
+                Id = order.Id,
+                OrderDate = order.OrderDate,
+                CustomerId = order.CustomerId,
+                PlannedDeliveryDate = order.PlannedDeliveryDate,
+                AddressId = order.AddressId,
+                Comment = order.Comment,
+                OrderProducts = order.OrderProducts.Select(p => new OrderProductVM
+                {
+                    Id = p.Id,
+                    ProductId = (int)p.ProductId,
+                    OrderedAmount = p.OrderedAmount,
+                    AvailabeAmount = p.AvailabeAmount,
+                    Comment = p.Comment
+                }).ToList()
+            };
+            return View(orderVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PrepareOrder([Bind(Include = "Id,OrderDate,CustomerId,PlannedDeliveryDate,AddressId,Comment,OrderProducts")] OrderVM order)
+        {
+            
+            foreach (var item in order.OrderProducts)
+            {
+                storageRepo.ReserveItem(item.ProductId, item.OrderedAmount);
             }
             return RedirectToAction("Index");
         }
@@ -157,5 +186,20 @@ namespace Kundbolaget.Controllers
             }
             base.Dispose(disposing);
         }
+    }
+
+    public class RequireRequestValueAttribute : ActionMethodSelectorAttribute
+    {
+        public RequireRequestValueAttribute(string valueName)
+        {
+            ValueName = valueName;
+        }
+
+        public override bool IsValidForRequest(ControllerContext controllerContext, MethodInfo methodInfo)
+        {
+            return (controllerContext.HttpContext.Request[ValueName] != null);
+        }
+
+        public string ValueName { get; private set; }
     }
 }

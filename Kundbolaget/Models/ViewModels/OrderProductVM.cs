@@ -9,10 +9,10 @@ namespace Kundbolaget.Models.EntityModels
     {
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Angett fel produktorder id")]
         [Display(Name = "Produkt id")]
         public int ProductId { get; set; }
 
-        [Required(ErrorMessage = "Angett fel produktorder id")]
         [Display(Name = "Produkt")]
         public Product Product { get; set; }
 
