@@ -76,13 +76,22 @@ namespace Kundbolaget.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult PrepareOrder([Bind(Include = "Id,OrderDate,CustomerId,PlannedDeliveryDate,AddressId,Comment,OrderProducts")] OrderVM order)
+        public ActionResult PrepareOrder(OrderVM orderVM)
         {
-            
-            foreach (var item in order.OrderProducts)
+            var order = new Order
+            {
+                Id = orderVM.Id,
+                OrderDate = orderVM.OrderDate,
+                CustomerId = orderVM.CustomerId,
+                PlannedDeliveryDate = orderVM.PlannedDeliveryDate,
+                AddressId = orderVM.AddressId,
+                Comment = orderVM.Comment,
+            };
+            foreach (var item in orderRepo.GetItem(orderVM.Id).OrderProducts)
             {
                 storageRepo.ReserveItem(item.ProductId, item.OrderedAmount);
             }
+            order.OrderStatus = OrderStatus.Plockar;
             return RedirectToAction("Index");
         }
 
