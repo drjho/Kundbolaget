@@ -10,7 +10,7 @@ namespace Kundbolaget.Controllers
 {
     public class WarehouseController : Controller
     {
-        IGenericRepository<Warehouse> repository;
+        private DbWarehouseRepository repository;
         private DbStoragePlaceRepository storagePlaceRepository;
 
         public WarehouseController()
