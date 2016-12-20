@@ -11,10 +11,17 @@ namespace Kundbolaget.Controllers
     public class WarehouseController : Controller
     {
         IGenericRepository<Warehouse> repository;
+        private DbStoragePlaceRepository storagePlaceRepository;
 
         public WarehouseController()
         {
             repository = new DbWarehouseRepository();
+        }
+
+        public WarehouseController(DbWarehouseRepository fakeDbWarehouseRepository, DbStoragePlaceRepository fakeDbStoragePlaceRepository)
+        {
+            repository = fakeDbWarehouseRepository;
+            storagePlaceRepository = fakeDbStoragePlaceRepository;
         }
 
         // GET: Warehouse
