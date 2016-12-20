@@ -13,6 +13,9 @@ using Kundbolaget.Models.EntityModels;
 using NUnit.Framework;
 using Kundbolaget.EntityFramework.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Web.Mvc;
+using Assert = NUnit.Framework.Assert;
+using System.Web.Routing;
 
 namespace UnitTestMoq
 {
@@ -78,6 +81,22 @@ namespace UnitTestMoq
             _mockSetProduct.Verify(x => x.Add(product), Times.Once);
             _mockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
+
+        [Test]
+        public void Delete_Get_Object()
+        {
+            var actionResult = _productController.Delete(1);
+            var viewResult = actionResult as ViewResult;
+            var product = (Product)viewResult.Model;
+            Assert.AreEqual(1, product.Id);
+        }
+
+        //[Test]
+        //public void Delete_Post_Redirect_To_Index()
+        //{
+        //    var result = _productController.Delete(1, ResourceData.Products[0]) as RedirectResult;
+        //    Assert.AreEqual("Index", result.RouteValues["action"]);
+        //}
     }
 }
 
