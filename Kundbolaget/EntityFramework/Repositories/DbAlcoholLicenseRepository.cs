@@ -14,7 +14,7 @@ namespace Kundbolaget.EntityFramework.Repositories
         {
             using (var db = new StoreContext())
             {
-                db.AlcoholLicenses.Add(newItem);
+                db.AlcoholLicense.Add(newItem);
                 db.SaveChanges();
             }
         }
@@ -23,8 +23,8 @@ namespace Kundbolaget.EntityFramework.Repositories
         {
             using (var db = new StoreContext())
             {
-                var alcholLicense = db.AlcoholLicenses.SingleOrDefault(a => a.Id == id);
-                db.AlcoholLicenses.Remove(alcholLicense);
+                var alcholLicense = db.AlcoholLicense.SingleOrDefault(a => a.Id == id);
+                db.AlcoholLicense.Remove(alcholLicense);
                 db.SaveChanges();
             }
         }
@@ -33,7 +33,7 @@ namespace Kundbolaget.EntityFramework.Repositories
         {
             using (var db = new StoreContext())
             {
-                return db.AlcoholLicenses.SingleOrDefault(a => a.Id == id);
+                return db.AlcoholLicense.SingleOrDefault(a => a.Id == id);
             }
         }
 
@@ -41,7 +41,7 @@ namespace Kundbolaget.EntityFramework.Repositories
         {
             using (var db = new StoreContext())
             {
-                return db.AlcoholLicenses.ToArray();
+                return db.AlcoholLicense.ToArray();
             }
         }
 
@@ -49,7 +49,7 @@ namespace Kundbolaget.EntityFramework.Repositories
         {
             using (var db = new StoreContext())
             {
-                db.AlcoholLicenses.Attach(updatedItem);
+                db.AlcoholLicense.Attach(updatedItem);
                 var entry = db.Entry(updatedItem);
                 entry.State = EntityState.Modified;
                 db.SaveChanges();

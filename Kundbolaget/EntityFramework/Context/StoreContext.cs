@@ -12,7 +12,7 @@ namespace Kundbolaget.EntityFramework.Context
         public StoreContext()
             : base("KundbolagetDB")
         {
-
+            
         }
 
         public DbSet<Product> Products { get; set; }
@@ -21,12 +21,10 @@ namespace Kundbolaget.EntityFramework.Context
         public DbSet<CustomerAddress> CustomerAddresses { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<StoragePlace> StoragePlaces { get; set; }
-        public DbSet<AlcoholLicense> AlcoholLicenses { get; set; }
+        public DbSet <AlcoholLicense> AlcoholLicense { get; set; }
         public DbSet<CustomerGroup> CustomerGroups { get; set; }
         public DbSet<PriceList> PriceLists { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
-        public DbSet<CustomerAlcoholLicense> CustomerAlcoholLicenses { get; set; }
-
     }
 }
