@@ -26,6 +26,7 @@ namespace Kundbolaget.Models.EntityModels
             Side = side;
             Spot = s;
             ShelfNr = sNr;
+            
         }
 
         public string StoragePlaceId

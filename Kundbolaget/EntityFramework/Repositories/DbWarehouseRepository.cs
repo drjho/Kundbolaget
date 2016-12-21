@@ -56,7 +56,10 @@ namespace Kundbolaget.EntityFramework.Repositories
 
         public void UpdateItem(Warehouse updatedWarehouse)
         {
-           
+            
+            //var includeStoragePLace =
+            //    db.Warehouses.Include(w => w.StoragePlace.Select(s => s.Warehouse))
+            //        .SingleOrDefault(w => w.Id == updatedWarehouse.Id);
                 db.Warehouses.Attach(updatedWarehouse);
                 var entry = db.Entry(updatedWarehouse);
                 entry.State = EntityState.Modified;

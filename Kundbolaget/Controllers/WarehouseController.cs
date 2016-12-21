@@ -16,6 +16,7 @@ namespace Kundbolaget.Controllers
         public WarehouseController()
         {
             repository = new DbWarehouseRepository();
+            storagePlaceRepository = new DbStoragePlaceRepository();
         }
 
         public WarehouseController(DbWarehouseRepository fakeDbWarehouseRepository, DbStoragePlaceRepository fakeDbStoragePlaceRepository)
