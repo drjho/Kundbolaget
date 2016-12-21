@@ -25,7 +25,7 @@ namespace Kundbolaget.EntityFramework.Repositories
 
         public Customer GetItem(int customerId)
         {
-            return db.Customers.SingleOrDefault(c => c.Id == customerId);   
+            return db.Customers.SingleOrDefault(c => c.Id == customerId);
         }
 
         public Customer[] GetItems()
@@ -36,28 +36,25 @@ namespace Kundbolaget.EntityFramework.Repositories
         public void CreateItem(Customer newCustomer)
         {
 
-             db.Customers.Add(newCustomer);
-             db.SaveChanges();
+            db.Customers.Add(newCustomer);
+            db.SaveChanges();
         }
 
         public void UpdateItem(Customer updatedCustomer)
         {
-             db.Customers.Attach(updatedCustomer);
-             var entry = db.Entry(updatedCustomer);
-             entry.State = EntityState.Modified;
-             db.SaveChanges();
+            db.Customers.Attach(updatedCustomer);
+            var entry = db.Entry(updatedCustomer);
+            entry.State = EntityState.Modified;
+            db.SaveChanges();
         }
 
         public void DeleteItem(int customerId)
         {
-            
-             var customer = db.Customers.SingleOrDefault(c => c.Id == customerId);
-             db.Customers.Remove(customer);
-             db.SaveChanges();
-            
+
             var customer = db.Customers.SingleOrDefault(c => c.Id == customerId);
             db.Customers.Remove(customer);
             db.SaveChanges();
+
         }
 
         public void Dispose()

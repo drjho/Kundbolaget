@@ -1,11 +1,5 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Moq;
-using System.Web;
 using System.Data.Entity;
 using System.Web.Mvc;
 using Kundbolaget.Controllers;
@@ -13,10 +7,7 @@ using Kundbolaget.EntityFramework.Context;
 using Kundbolaget.Models.EntityModels;
 using NUnit.Framework;
 using Kundbolaget.EntityFramework.Repositories;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Web.Mvc;
 using Assert = NUnit.Framework.Assert;
-using System.Web.Routing;
 
 namespace UnitTestMoq
 {
@@ -55,7 +46,7 @@ namespace UnitTestMoq
             // _mockSetProduct.Setup(x => x.Include(It.IsAny<String>())).Returns(_mockSetProduct.Object);
 
             //TODO: Ändra DbStoreRepository till DbProduct när vi fått in den mergen i Develop
-            var dbProductRepository = new DbStoreRepository(_mockContext.Object);
+            var dbProductRepository = new DbProductRepository(_mockContext.Object);
             var dbStorageplaceRepository = new DbStoragePlaceRepository(_mockContext.Object);
             var dbWarehouseRepository = new DbWarehouseRepository(_mockContext.Object);
 

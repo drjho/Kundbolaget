@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Moq;
-using System.Web;
 using System.Data.Entity;
 using System.Web.Mvc;
 using Kundbolaget.Controllers;
@@ -12,10 +7,7 @@ using Kundbolaget.EntityFramework.Context;
 using Kundbolaget.Models.EntityModels;
 using NUnit.Framework;
 using Kundbolaget.EntityFramework.Repositories;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Web.Mvc;
 using Assert = NUnit.Framework.Assert;
-using System.Web.Routing;
 
 namespace UnitTestMoq
 {

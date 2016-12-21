@@ -11,7 +11,7 @@ namespace Kundbolaget.Controllers
 {
     public class ProductsController : Controller
     {
-        DbStoreRepository repository;
+        DbProductRepository repository;
         DbStoragePlaceRepository repositoryStorage;
         DbWarehouseRepository repositoryWarehouse;
 
@@ -22,7 +22,7 @@ namespace Kundbolaget.Controllers
             repository = new DbProductRepository();
         }
 
-        public ProductsController(DbStoragePlaceRepository dbStorage, DbStoreRepository dbproduct, DbWarehouseRepository dbwarehouse)
+        public ProductsController(DbStoragePlaceRepository dbStorage, DbProductRepository dbproduct, DbWarehouseRepository dbwarehouse)
         {
             repository = dbproduct;
             repositoryStorage = dbStorage;
