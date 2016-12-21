@@ -25,27 +25,38 @@ namespace UnitTestMoq
         private Mock<StoreContext> _mockContext;
 
         private Mock<DbSet<Customer>> _mockSetCustomer;
+        private Mock<DbSet<CustomerAddress>> _mockSetCustomerAdress;
 
         private CustomerController _customerController;
+        private CustomerAddressController _customerAddressController;
 
         [SetUp]
         public void Initializer()
         {
             _mockContext = new Mock<StoreContext>();
+
             _mockSetCustomer = new Mock<DbSet<Customer>>();
+            _mockSetCustomerAdress = new Mock<DbSet<CustomerAddress>>();
 
             var dataCustomer = ResourceData.Customers.AsQueryable();
+            var dataCustomerAdress = ResourceData.CustomerAddresses.AsQueryable();
+
             var setupDbCustomer = Helper.SetupDb(_mockSetCustomer, dataCustomer);
+            var setupDbCustomerAdress = Helper.SetupDb(_mockSetCustomerAdress, dataCustomerAdress);
 
             _mockContext.Setup(c => c.Customers).Returns(setupDbCustomer.Object);
+            _mockContext.Setup(ca => ca.CustomerAddresses).Returns(setupDbCustomerAdress.Object);
 
             var dbCustomerRepository = new DbCustomerRepository(_mockContext.Object);
+            var dbCustomerAdressRepository = new DbCustomerAddressRepository(_mockContext.Object);
 
-            _customerController = new CustomerController(dbCustomerRepository);
+            _customerController = new CustomerController(dbCustomerRepository, dbCustomerAdressRepository);
+            _customerAddressController = new CustomerAddressController(dbCustomerAdressRepository);
+            
         }
 
         [Test]
-        public void Create()
+        public void Create_Customer()
         {
             var customer = new Customer
             {
@@ -60,7 +71,6 @@ namespace UnitTestMoq
             _mockSetCustomer.Verify(x => x.Add(customer), Times.Once);
             _mockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
-
         [Test]
         public void Delete_Customer()
         {
@@ -78,6 +88,19 @@ namespace UnitTestMoq
             var customer = (Customer) viewResult.Model;
             Assert.AreEqual(1, customer.Id);
         }
+ 
+        [Test]
+        public void Details_Customer()
+        {
+            var actionResult = _customerController.Details(1);
+            var actionResult2 = _customerAddressController.Details(1);
+            var viewResult = actionResult as ViewResult;
+            var viewResult2 = actionResult2 as ViewResult;
+            var customer = (Customer)viewResult.Model;
+            var adress = (CustomerAddress) viewResult2.Model;
+            Assert.AreEqual(1, customer.Id);
+            Assert.AreEqual(1, adress.Id);
+        }
 
         [Test]
         public void Create_Post_Redirect_To_Index()
@@ -94,5 +117,28 @@ namespace UnitTestMoq
             ) as RedirectToRouteResult;
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
+
+        [Test]
+        public void Index_Retrieve_All_Data()
+        {
+            var actionResult = _customerController.Index();
+            var viewResult = actionResult as ViewResult;
+            var viewResultModel = (Customer[]) viewResult.Model;
+            var customerInfo = viewResultModel.ToList();
+
+            Assert.AreEqual(3, customerInfo.Count);
+        }
+
+        [Test]
+        public void Index_Retrieve_All_Data_Fail()
+        {
+            var actionResult = _customerController.Index();
+            var viewResult = actionResult as ViewResult;
+            var viewResultModel = (Customer[])viewResult.Model;
+            var customerInfo = viewResultModel.ToList();
+
+            Assert.AreNotEqual(1, customerInfo.Count);
+        }
+
     }
 }

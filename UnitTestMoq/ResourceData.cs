@@ -132,5 +132,12 @@ namespace UnitTestMoq
                 Vacant = true
             }
         };
+        public static List<CustomerAddress> CustomerAddresses => new List<CustomerAddress>
+        {
+            new CustomerAddress
+            {
+                Id = 1
+            }
+        };
     }
 }
