@@ -29,7 +29,7 @@ namespace Kundbolaget.Models.EntityModels
 
         public Warehouse()
         {
-            CreatePlaces(1452);
+            //CreatePlaces(1452);
         }
 
         void CreatePlaces(int places)

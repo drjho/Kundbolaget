@@ -41,6 +41,8 @@ namespace Kundbolaget.Migrations
                 new Warehouse { Id = 1, Name = "Centrallagret", City = "Stockholm", Country = "Sweden", ZipCode = 11111 }
             };
 
+            var storagePlaces = Enumerable.Range(0, 1452).Select(x => new StoragePlace { Id = x, WarehouseId = 1 }).ToArray();
+
             //var customerGroup = new CustomerGroup
             //{
             //    Id = 1,
@@ -71,6 +73,7 @@ namespace Kundbolaget.Migrations
 
             context.Warehouses.AddOrUpdate(warehouses);
             context.Customers.AddOrUpdate(customers);
+            context.StoragePlaces.AddOrUpdate(x => x.Id, storagePlaces);
             context.Addresses.AddOrUpdate(addresses);
             context.Products.AddOrUpdate(products);
             context.CustomerAddresses.AddOrUpdate(ca);

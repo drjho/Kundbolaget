@@ -15,6 +15,8 @@ namespace Kundbolaget.Controllers
         DbProductRepository productRepo;
         DbStoragePlaceRepository storageRepo;
 
+        int storageplacesPerWarehouse = 1452;
+
         public WarehouseController()
         {
             warehouseRepo = new DbWarehouseRepository();
@@ -42,6 +44,10 @@ namespace Kundbolaget.Controllers
             if (!ModelState.IsValid)
                 return View(modelWarehouse);
             warehouseRepo.CreateItem(modelWarehouse);
+            for (int i = 0; i < storageplacesPerWarehouse; i++)
+            {
+                storageRepo.CreateItem(new StoragePlace { Id = i, WarehouseId = modelWarehouse.Id });
+            }
             return RedirectToAction("Index");
 
         }
@@ -95,6 +101,11 @@ namespace Kundbolaget.Controllers
                 return View(model);
             }
             warehouseRepo.DeleteItem(id);
+            var places = storageRepo.GetItems().Where(x => x.WarehouseId == id);
+            foreach (var place in places)
+            {
+                storageRepo.DeleteItem(place.Id);
+            }
             return RedirectToAction("Index");
         }
 

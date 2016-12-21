@@ -45,7 +45,7 @@ namespace Kundbolaget.Models.EntityModels
         /// <summary>
         /// The arrival time of the product.
         /// </summary>
-        public DateTime ArrivalDate { get; set; } = DateTime.Today;
+        public DateTime? ArrivalDate { get; set; }
         /// <summary>
         /// Set to false when it is occupied.
         /// </summary>
