@@ -13,14 +13,17 @@ namespace Kundbolaget.Models.EntityModels
 
     public class CustomerAddress
     {
+        [Display(Name = "Kundadress id")]
         public int Id { get; set; }
 
         [Display(Name ="Kund id")]
         public int? CustomerId { get; set; }
+        [Display(Name = "Kund")]
         public virtual Customer Customer { get; set; }
 
         [Display(Name = "Adress id")]
         public int? AddressId { get; set; }
+        [Display(Name = "Kundadress")]
         public virtual Address Address { get; set; }
 
         [Display(Name = "Adresstyp")]

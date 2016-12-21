@@ -19,15 +19,20 @@ namespace Kundbolaget.EntityFramework.Repositories
             db.SaveChanges();
         }
 
-        public void DeleteItem(int customerId)
+        public void DeleteItem(int id)
         {
-            db.CustomerAddresses.Remove(GetItem(customerId));
+            db.CustomerAddresses.Remove(GetItem(id));
             db.SaveChanges();
         }
 
-        public CustomerAddress GetItem(int customerId)
+        public CustomerAddress[] GetItems(int customerId)
         {
-            return db.CustomerAddresses.SingleOrDefault(c => c.Id == customerId);
+            return db.CustomerAddresses.Where(ca => ca.CustomerId == customerId).ToArray();
+        }
+
+        public CustomerAddress GetItem(int id)
+        {
+            return db.CustomerAddresses.SingleOrDefault(c => c.Id == id);
         }
 
         public CustomerAddress[] GetItems()

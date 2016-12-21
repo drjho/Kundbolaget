@@ -60,6 +60,36 @@
 
     </dl>
 </div>
+<table class="table">
+    <tr>
+        <th>
+            @ViewBag.Descriptions[0]
+        </th>
+        <th>
+            @ViewBag.Descriptions[1]
+        </th>
+        <th>
+            @ViewBag.Descriptions[2]
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in ViewBag.Addresses)
+    {
+        <tr>
+            <td>
+                @item.Address.AddressOrderId
+            </td>
+            <td>
+                @item.Address.AddressString
+            </td>
+            <td>
+                @item.AddressType
+            </td>
+
+        </tr>
+    }
+</table>
 <p>
     @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Tillbaka till listan", "Index")

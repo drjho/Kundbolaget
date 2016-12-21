@@ -189,6 +189,14 @@
     <Compile Include="Migrations\201612131319142_Init2.Designer.cs">
       <DependentUpon>201612131319142_Init2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612160123217_ordercommentsadded.cs" />
+    <Compile Include="Migrations\201612160123217_ordercommentsadded.Designer.cs">
+      <DependentUpon>201612160123217_ordercommentsadded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612160242346_organisationnumberAsString.cs" />
+    <Compile Include="Migrations\201612160242346_organisationnumberAsString.Designer.cs">
+      <DependentUpon>201612160242346_organisationnumberAsString.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\AlcoholLicense.cs" />
@@ -271,6 +279,7 @@
     <Content Include="Views\OrderProducts\Details.cshtml" />
     <Content Include="Views\OrderProducts\Edit.cshtml" />
     <Content Include="Views\OrderProducts\Index.cshtml" />
+    <Content Include="Views\CustomerAddress\CustomerDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -287,6 +296,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201612131319142_Init2.resx">
       <DependentUpon>201612131319142_Init2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612160123217_ordercommentsadded.resx">
+      <DependentUpon>201612160123217_ordercommentsadded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612160242346_organisationnumberAsString.resx">
+      <DependentUpon>201612160242346_organisationnumberAsString.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

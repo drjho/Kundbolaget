@@ -17,13 +17,16 @@ namespace Kundbolaget.Models.ViewModels
 
         [Display( Name ="Kund")]
         public int CustomerId { get; set; }
-
+        [Display(Name = "Kund")]
         public List<SelectListItem> CustomerList { get; set; }
+        [Display(Name = "Kund")]
+        public SelectList CustomerSelections { get; set; }
 
         [Display(Name = "Adress")]
         public int AddressId { get; set; }
         [Display(Name = "Adress")]
-
         public List<SelectListItem> AddressList { get; set; }
+        [Display(Name = "Adress")]
+        public SelectList AddressSelections { get; set; }
     }
 }

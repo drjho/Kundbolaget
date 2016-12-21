@@ -87,13 +87,14 @@ namespace Kundbolaget.Controllers
                 {
                     var p = allProducts.SingleOrDefault(a => a.ProductOrderId == (string)prod["pno"]);
                     if (p != null)
-                        orderProducts.Add(new OrderProduct {OrderId = order.Id, Comment = (string)o["comments"],
+                        orderProducts.Add(new OrderProduct {OrderId = order.Id, Comment = (string)prod["comments"],
                             ProductId = p.Id, OrderedAmount = (int)prod["amount"] });
                     else
                         return RedirectToAction("Index", "Order");
 
                 }
                 order.OrderProducts = orderProducts;
+                order.Comments = (string)o["comments"];
 
                 db.OrderProducts.AddRange(order.OrderProducts);
                 db.Orders.Add(order);
@@ -103,7 +104,7 @@ namespace Kundbolaget.Controllers
 
 
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Orders");
         }
     }
 }

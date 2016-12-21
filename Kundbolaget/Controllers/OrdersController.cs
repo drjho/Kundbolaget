@@ -117,6 +117,8 @@ namespace Kundbolaget.Controllers
         {
             Order order = db.Orders.Find(id);
             db.Orders.Remove(order);
+            var products = db.OrderProducts.Where(p => p.OrderId == order.Id).ToList();
+            db.OrderProducts.RemoveRange(products);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

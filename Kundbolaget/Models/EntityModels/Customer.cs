@@ -32,6 +32,6 @@ namespace Kundbolaget.Models.EntityModels
         public int CustomerAuditCode { get; set; }
 
         [Display(Name = "Organisationsnummer")]
-        public int OrganisationNumber { get; set; }
+        public string OrganisationNumber { get; set; }
     }
 }
