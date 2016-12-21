@@ -92,12 +92,12 @@ namespace UnitTestMoq
             Assert.AreEqual(1, product.Id);
         }
 
-        //[Test]
-        //public void Delete_Post_Redirect_To_Index()
-        //{
-        //    var result = _productController.Delete(1, ResourceData.Products[0]) as RedirectResult;
-        //    Assert.AreEqual("Index", result.RouteValues["action"]);
-        //}
+        [Test]
+        public void Delete_Post_Redirect_To_Index()
+        {
+            var result = _productController.Delete(1, ResourceData.Products[0]) as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+        }
 
         [Test]
         public void Create_Post_Redirect_To_Index()
@@ -119,6 +119,63 @@ namespace UnitTestMoq
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
 
+        [Test]
+        public void Details_Get_Objekt()
+        {
+            var actionResult = _productController.Details(1);
+            var viewResult = actionResult as ViewResult;
+            var result = (Product) viewResult.Model;
+
+            Assert.AreEqual(ResourceData.Products[0].Name, result.Name);
+            Assert.AreEqual(result.Id, 1);
+            Assert.AreEqual(ResourceData.Products[0].Name, result.Name);
+        }
+
+        [Test]
+        public void Edit_Get_Objekt()
+        {
+            var actionResult = _productController.Edit(1);
+            var viewRessult = actionResult as ViewResult;
+            var result = (Product) viewRessult.Model;
+
+            Assert.AreEqual(ResourceData.Products[0].Name, result.Name);
+            Assert.AreEqual(ResourceData.Products[0].Volume, result.Volume);
+            Assert.AreEqual(ResourceData.Products[0].VatCode, result.VatCode);
+        }
+
+        [Test]
+        public void Edit_Post_Redirect_To_Index()
+        {
+            var result = _productController.Edit(ResourceData.Products[0]) as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+        }
+
+        [Test]
+        public void Edit_Update_Db_New_Info_In_Objekt()
+        {
+            var produkt = _mockSetProduct.Object.ToList();
+            var tempObj = produkt[0];
+            tempObj.Name = "Sleepy Bulldog";
+            _productController.Edit(tempObj);
+
+            Assert.AreEqual("Sleepy Bulldog", produkt[0].Name);
+            _mockSetProduct.Verify(x => x.Attach(tempObj), Times.Once);
+            _mockContext.Verify(x => x.SaveChanges(), Times.Once);
+        }
+
+        //[Test]//OBS!!!kolla den vidare!!!!!
+        //public void Index_Retrieve_All_Data()
+        //{
+        //    var actionResult = _productController.Index();
+        //    var viewResult = actionResult as ViewResult;
+        //    var viewResultModel = (Product[]) viewResult.Model;
+        //    var product = viewResultModel.ToList();
+
+        //    Assert.AreEqual(2, product.Count);
+        //    Assert.IsTrue(product.All(x => x.ProductGroup == ProductGroup.Öl));
+        //} 
+
+
         //[Test] //TODO: Ska vi ha en IsRemoved prop?
         //public void Delete_Change_IsRemoved()
         //{
@@ -128,8 +185,6 @@ namespace UnitTestMoq
         //    Assert.AreEqual(true, result.IsRemoved); //En bool i Product Model som visar om en produkt är bortagen eller inte.
         //    _mockContext.Verify(x => x.SaveChanges(), Times.Once);
         //}
-
-
     }
 }
 
