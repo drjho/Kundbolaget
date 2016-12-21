@@ -19,6 +19,12 @@ namespace Kundbolaget.Controllers
             customerAdressRepo = new DbCustomerAddressRepository();
         }
 
+        public CustomerController(DbCustomerRepository dbCustomer, DbCustomerAddressRepository dbCustomerAddress)
+        {
+            repository = dbCustomer;
+            customerAdresses = dbCustomerAddress;
+        }
+
         // GET: Customer
         public ActionResult Index()
         {

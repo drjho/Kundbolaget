@@ -11,8 +11,16 @@ namespace Kundbolaget.EntityFramework.Repositories
 {
     public class DbWarehouseRepository : IGenericRepository<Warehouse>, IDisposable
     {
-        StoreContext db = new StoreContext();
+        StoreContext db;
+        public DbWarehouseRepository()
+        {
+            db  = new StoreContext();
+        }
 
+        public DbWarehouseRepository(StoreContext fakeContext)
+        {
+            db = fakeContext;
+        }
         public void CreateItem(Warehouse newWarehouse)
         {
             db.Warehouses.Add(newWarehouse);

@@ -11,7 +11,17 @@ namespace Kundbolaget.EntityFramework.Repositories
 {
     public class DbCustomerAddressRepository : IGenericRepository<CustomerAddress>, IDisposable
     {
-        StoreContext db = new StoreContext();
+        StoreContext db;
+
+        public DbCustomerAddressRepository()
+        {
+            db = new StoreContext();
+        }
+
+        public DbCustomerAddressRepository(StoreContext fakeContext)
+        {
+            db = fakeContext;
+        }
 
         public void CreateItem(CustomerAddress newCustomerAddress)
         {
