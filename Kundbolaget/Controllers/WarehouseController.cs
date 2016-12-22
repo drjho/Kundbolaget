@@ -26,8 +26,8 @@ namespace Kundbolaget.Controllers
 
         public WarehouseController(DbWarehouseRepository fakeDbWarehouseRepository, DbStoragePlaceRepository fakeDbStoragePlaceRepository)
         {
-            repository = fakeDbWarehouseRepository;
-            storagePlaceRepository = fakeDbStoragePlaceRepository;
+            warehouseRepo = fakeDbWarehouseRepository;
+            storageRepo = fakeDbStoragePlaceRepository;
         }
 
         // GET: Warehouse
