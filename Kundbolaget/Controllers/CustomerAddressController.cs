@@ -12,21 +12,26 @@ namespace Kundbolaget.Controllers
     public class CustomerAddressController : Controller
     {
         DbCustomerAddressRepository customerAddressRepo;
-        DbAddressRepository addressRepo;
         DbCustomerRepository customerRepo;
+        DbAddressRepository addressRepo;
 
         public CustomerAddressController()
         {
             customerAddressRepo = new DbCustomerAddressRepository();
-            addressRepo = new DbAddressRepository();
             customerRepo = new DbCustomerRepository();
+            addressRepo = new DbAddressRepository();
         }
 
-        public CustomerAddressController(DbCustomerAddressRepository dbCustomerAdressRepository, DbAddressRepository dbAddressRepository, DbCustomerRepository dbCustomerRepository)
+        public CustomerAddressController(DbCustomerAddressRepository dbCustomerAdressRepository)
         {
             customerAddressRepo = dbCustomerAdressRepository;
-            addressRepo = dbAddressRepository;
+        }
+
+        public CustomerAddressController(DbCustomerAddressRepository dbCustomerAdressRepository, DbCustomerRepository dbCustomerRepository, DbAddressRepository dbAddressRepository)
+        {
+            customerAddressRepo = dbCustomerAdressRepository;
             customerRepo = dbCustomerRepository;
+            addressRepo = dbAddressRepository;
         }
 
         // GET: CustomerAddress

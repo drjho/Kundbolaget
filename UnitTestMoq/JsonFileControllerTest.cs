@@ -68,7 +68,7 @@ namespace UnitTestMoq
             //Inject mock data via overload constructor
             var dbStoragePlaceRepository = new DbStoragePlaceRepository(_mockContext.Object);
             var dbOrderRepository = new DbOrderRepository(_mockContext.Object);
-            var dbCustomerAddressRepository = new DbCustomerAddressRepository(_mockContext.Object;)
+            var dbCustomerAddressRepository = new DbCustomerAddressRepository(_mockContext.Object);
             var dbProductRepository = new DbProductRepository(_mockContext.Object);
 
             //Setup fakerepo via overloaded constructor

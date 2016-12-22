@@ -10,6 +10,19 @@ namespace Kundbolaget.EntityFramework.Repositories
 {
     public class DbAddressRepository : IGenericRepository<Address>
     {
+        private StoreContext db;
+
+        public DbAddressRepository()
+        {
+            db = new StoreContext();
+
+        }
+
+        public DbAddressRepository(StoreContext fakeContext)
+        {
+            db = fakeContext;
+        }
+
         public void CreateItem(Address newAddress)
         {
             using (var db = new StoreContext())

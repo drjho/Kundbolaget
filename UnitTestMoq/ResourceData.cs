@@ -93,7 +93,7 @@ namespace UnitTestMoq
                 PlannedDeliveryDate = DateTime.Today.AddDays(7),
                 OrderStatus = OrderStatus.Plockar
             },
-        }
+        };
 
         public static List<Warehouse> Warehouses => new List<Warehouse>
         {
