@@ -69,6 +69,32 @@ namespace UnitTestMoq
             }
         };
 
+        public static List<Order> Orders => new List<Order>
+        {
+            new Order
+            {
+                Id = 1,
+                CustomerId = 1,
+                AddressId = 1,
+                Comment = "none",
+                OrderDate = DateTime.Now,
+                DesiredDeliveryDate = DateTime.Today,
+                PlannedDeliveryDate = DateTime.Today.AddDays(1),
+                OrderStatus = OrderStatus.Behandlar
+            },
+            new Order
+            {
+                Id = 2,
+                CustomerId = 2,
+                AddressId = 2,
+                Comment = "ring Johan",
+                OrderDate = DateTime.Now,
+                DesiredDeliveryDate = DateTime.Today.AddDays(7),
+                PlannedDeliveryDate = DateTime.Today.AddDays(7),
+                OrderStatus = OrderStatus.Plockar
+            },
+        }
+
         public static List<Warehouse> Warehouses => new List<Warehouse>
         {
             new Warehouse
@@ -119,7 +145,7 @@ namespace UnitTestMoq
                 ShelfNr = 1,
                 Side = Side.Left,
                 Spot = 1,
-                Vacant = false          
+                Vacant = false
             },
             new StoragePlace
             {
@@ -136,8 +162,25 @@ namespace UnitTestMoq
         {
             new CustomerAddress
             {
-                Id = 1
-            }
+                Id = 1,
+                AddressId = 1,
+                CustomerId = 1,
+                AddressType = AddressType.Leverans
+            },
+            new CustomerAddress
+            {
+                Id = 2,
+                AddressId = 2,
+                CustomerId = 2,
+                AddressType = AddressType.Faktura
+            },
+            new CustomerAddress
+            {
+                Id = 3,
+                AddressId = 2,
+                CustomerId = 2,
+                AddressType = AddressType.Leverans
+            },
         };
     }
 }

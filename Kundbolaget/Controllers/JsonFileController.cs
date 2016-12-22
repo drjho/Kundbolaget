@@ -17,10 +17,27 @@ namespace Kundbolaget.Controllers
     public class JsonFileController : Controller
     {
 
-        DbCustomerAddressRepository customerAddressRepo = new DbCustomerAddressRepository();
-        DbProductRepository productRepo = new DbProductRepository();
-        DbStoragePlaceRepository storageRepo = new DbStoragePlaceRepository();
-        DbOrderRepository orderRepo = new DbOrderRepository();
+        DbStoragePlaceRepository storageRepo;
+        DbOrderRepository orderRepo;
+        DbCustomerAddressRepository customerAddressRepo;
+        DbProductRepository productRepo;
+
+
+        public JsonFileController()
+        {
+            orderRepo = new DbOrderRepository();
+            storageRepo = new DbStoragePlaceRepository();
+            customerAddressRepo = new DbCustomerAddressRepository();
+            productRepo = new DbProductRepository();
+        }
+
+        public JsonFileController(DbStoragePlaceRepository dbStoragePlaceRepository, DbOrderRepository dbOrderRepository, DbCustomerAddressRepository dbCustomerAddressRepository, DbProductRepository dbProductRepository)
+        {
+            storageRepo = dbStoragePlaceRepository;
+            orderRepo = dbOrderRepository;
+            customerAddressRepo = dbCustomerAddressRepository;
+            productRepo = dbProductRepository;
+        }
 
         // GET: JsonFile
         public ActionResult Index()

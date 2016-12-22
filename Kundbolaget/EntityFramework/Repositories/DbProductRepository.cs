@@ -22,6 +22,7 @@ namespace Kundbolaget.EntityFramework.Repositories
         {
             db = fakeContext;
         }
+
         public Product[] GetItems()
         {
             return db.Products.ToArray();
