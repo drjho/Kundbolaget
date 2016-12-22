@@ -80,6 +80,10 @@ namespace Kundbolaget.Controllers
         public ActionResult Details(int id)
         {
             var model = warehouseRepo.GetItem(id);
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
             return View(model);
         }
 
@@ -94,6 +98,10 @@ namespace Kundbolaget.Controllers
         public ActionResult Delete(int id)
         {
             var model = warehouseRepo.GetItem(id);
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
             return View(model);
         }
 

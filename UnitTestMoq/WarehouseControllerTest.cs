@@ -69,11 +69,13 @@ namespace UnitTestMoq
                 City = "Alvik",
                 Country = "Sverige",
                 Name = "Alvik lager",
-                ZipCode = 11233
+                ZipCode = 11233,
+                
+
             };
             _warehouseController.Create(warehouse);
             _mockSetWarehouse.Verify(x => x.Add(warehouse), Times.Once);
-            _mockContext.Verify(x => x.SaveChanges(), Times.Once);
+            _mockContext.Verify(x => x.SaveChanges(), Times.Exactly(1453));
         }
 
         [Test]
