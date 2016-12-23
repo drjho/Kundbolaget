@@ -139,5 +139,17 @@ namespace UnitTestMoq
                 Id = 1
             }
         };
+
+        public static List<PriceList> PriceLists => new List<PriceList>
+        {
+            new PriceList
+            {
+                Id = 1,
+                Price = 100,
+                ProductId = 3,
+                RebatePerPallet = 10,
+                StartDate = DateTime.Now
+            }
+        };
     }
 }
