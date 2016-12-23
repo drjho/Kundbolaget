@@ -10,50 +10,47 @@ namespace Kundbolaget.EntityFramework.Repositories
 {
     public class DbAlcoholLicenseRepository : IGenericRepository<AlcoholLicense>
     {
-        public void CreateItem(AlcoholLicense newItem)
+        StoreContext db;
+
+        public DbAlcoholLicenseRepository()
         {
-            using (var db = new StoreContext())
-            {
+            db = new StoreContext();
+        }
+
+        public DbAlcoholLicenseRepository(StoreContext fakeContext)
+        {
+            db = fakeContext;
+        }
+
+        public void CreateItem(AlcoholLicense newItem)
+        {           
                 db.AlcoholLicense.Add(newItem);
-                db.SaveChanges();
-            }
+                db.SaveChanges();      
         }
 
         public void DeleteItem(int id)
         {
-            using (var db = new StoreContext())
-            {
                 var alcholLicense = db.AlcoholLicense.SingleOrDefault(a => a.Id == id);
                 db.AlcoholLicense.Remove(alcholLicense);
                 db.SaveChanges();
-            }
         }
 
         public AlcoholLicense GetItem(int id)
         {
-            using (var db = new StoreContext())
-            {
                 return db.AlcoholLicense.SingleOrDefault(a => a.Id == id);
-            }
         }
 
         public AlcoholLicense[] GetItems()
         {
-            using (var db = new StoreContext())
-            {
                 return db.AlcoholLicense.ToArray();
-            }
         }
 
         public void UpdateItem(AlcoholLicense updatedItem)
         {
-            using (var db = new StoreContext())
-            {
                 db.AlcoholLicense.Attach(updatedItem);
                 var entry = db.Entry(updatedItem);
                 entry.State = EntityState.Modified;
                 db.SaveChanges();
-            }
         }
     }
 }

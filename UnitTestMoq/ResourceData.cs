@@ -151,5 +151,14 @@ namespace UnitTestMoq
                 StartDate = DateTime.Now
             }
         };
+
+        public static List<AlcoholLicense> AlcoholLicenses => new List<AlcoholLicense>
+        {
+            new AlcoholLicense
+            {
+                Id = 1,
+                StartDate = DateTime.Today          
+            }
+        };
     }
 }

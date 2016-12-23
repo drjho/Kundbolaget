@@ -10,7 +10,7 @@ namespace Kundbolaget.EntityFramework.Repositories
 {
     public class DbPriceListRepository : IGenericRepository<PriceList>
     {
-        private StoreContext db;
+        StoreContext db;
 
         public DbPriceListRepository()
         {

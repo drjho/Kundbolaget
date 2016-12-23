@@ -11,7 +11,6 @@ namespace Kundbolaget.Controllers
     public class PriceListController : Controller
     {
         DbPriceListRepository repository;
-        private DbPriceListRepository dbPriceListRepository;
 
         public PriceListController()
         {

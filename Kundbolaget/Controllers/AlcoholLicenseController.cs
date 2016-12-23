@@ -20,6 +20,11 @@ namespace Kundbolaget.Controllers
             repository = new DbAlcoholLicenseRepository();
         }
 
+        public AlcoholLicenseController(DbAlcoholLicenseRepository dbAlcoholLicenseRepository)
+        {
+            repository = dbAlcoholLicenseRepository;
+        }
+
         // GET: AlcoholLicense
         public ActionResult Index()
         {
