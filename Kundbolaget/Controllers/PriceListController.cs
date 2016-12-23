@@ -16,6 +16,12 @@ namespace Kundbolaget.Controllers
         {
             repository = new DbPriceListRepository();
         }
+
+        public PriceListController(DbPriceListRepository dbPriceListRepository)
+        {
+            repository = dbPriceListRepository;
+        }
+
         // GET: PriceList
         public ActionResult Index()
         {
