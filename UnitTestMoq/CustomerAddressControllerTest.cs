@@ -90,8 +90,28 @@ namespace UnitTestMoq
         }
 
         [Test]
+        public void Create_Post_Redirect_To_Index()
+        {
+            // Arrange
+            var testObject = new CustomerAddress
+            {
+                Id = 3,
+                CustomerId = 1,
+                AddressId = 1,
+                AddressType = AddressType.Faktura
+            };
+            
+            // Act
+            var actualResult = _customerAddressController.Create(testObject) as RedirectToRouteResult;
+
+            // Assert
+            Assert.AreEqual("Index", actualResult.RouteValues["action"]);
+        }
+
+        [Test]
         public void Delete_Get_Object()
         {
+            // Arrange
             var expectedId = 1;
 
             // Act
@@ -101,6 +121,16 @@ namespace UnitTestMoq
 
             // Assert
             Assert.AreEqual(expectedId, actual.Id);
+        }
+
+        [Test]
+        public void Delete_Post_Redirect_To_Index()
+        {
+            // Act
+            var actualResult = _customerAddressController.Delete(1, ResourceData.CustomerAddresses[0]) as RedirectToRouteResult;
+            
+            // Assert
+            Assert.AreEqual("Index", actualResult.RouteValues["action"]);
         }
 
         [Test]
@@ -116,9 +146,89 @@ namespace UnitTestMoq
             // Assert
             _mockSetCustomerAddress.Verify(x => x.Remove(testObject), Times.Once);
             _mockContext.Verify(x => x.SaveChanges(), Times.Once);
+        }
 
+        [Test]
+        public void Edit_Get_Object()
+        {
+            // Act
+            var actionResult = _customerAddressController.Edit(1);
+            var viewResult = actionResult as ViewResult;
+            var actualResult = (CustomerAddress)viewResult.Model;
+
+            // Assert
+            Assert.AreEqual(1, actualResult.Id);
+            Assert.AreEqual(ResourceData.CustomerAddresses[0].AddressId, actualResult.AddressId);
+            Assert.AreEqual(ResourceData.CustomerAddresses[0].CustomerId, actualResult.CustomerId);
+            Assert.AreEqual(ResourceData.CustomerAddresses[0].AddressType, actualResult.AddressType);
+        }
+
+        [Test]
+        public void Edit_Update_Db_New_Info_In_Object()
+        {
+            // Arrange
+            var customAddresses = _mockSetCustomerAddress.Object.ToArray();
+            var testObject = customAddresses[0];
+            testObject.AddressId = 2;
+
+            // Act
+            _customerAddressController.Edit(testObject);
+
+            // Assert
+            Assert.AreEqual(2, customAddresses[0].AddressId);
+            _mockSetCustomerAddress.Verify(x => x.Attach(testObject), Times.Once);
+            _mockContext.Verify(x => x.SaveChanges(), Times.Once);
+        }
+
+        [Test]
+        public void Details_Get_Object()
+        {
+            // Act
+            var actionResult = _customerAddressController.Details(1);
+            var viewResult = actionResult as ViewResult;
+            var actual = (CustomerAddress)viewResult.Model;
+
+            // Assert
+            Assert.AreEqual(ResourceData.CustomerAddresses[0].AddressId, actual.AddressId);
+            Assert.AreEqual(1, actual.Id);
+            Assert.AreEqual(ResourceData.CustomerAddresses[0].CustomerId, actual.CustomerId);
+        }
+
+        [Test]
+        public void Index_Retrive_All_Data()
+        {
+            // Arrange 
+            var expectedCount = ResourceData.CustomerAddresses.Count;
             
+            // Act
+            var actionResult = _customerAddressController.Index();
+            var viewResult = actionResult as ViewResult;
+            var viewResultModel = (CustomerAddress[])viewResult.Model;
+            var actual = viewResultModel.ToList();
 
+            // Assert
+            Assert.AreEqual(expectedCount, actual.Count);
+        }
+
+        [Test]
+        public void View_Delete_Without_Existing_Entity_Return_404_Error()
+        {
+            var actual = _customerAddressController.Delete(2000);
+            Assert.AreEqual(typeof(HttpNotFoundResult), actual.GetType());
+        }
+
+        [Test]
+        public void View_Details_Without_Existing_Entity_Return_404_Error()
+        {
+            var actual = _customerAddressController.Details(2000);
+            Assert.AreEqual(typeof(HttpNotFoundResult), actual.GetType());
+        }
+
+        [Test]
+        public void View_Edit_Without_Existing_Entity_Return_404_Error()
+        {
+            var actual = _customerAddressController.Edit(2000);
+            Assert.AreEqual(typeof(HttpNotFoundResult), actual.GetType());
         }
     }
 }

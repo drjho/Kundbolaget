@@ -64,6 +64,10 @@ namespace Kundbolaget.Controllers
         public ActionResult Edit(int id)
         {
             var model = customerAddressRepo.GetItem(id);
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
 
             ViewBag.AddressId = new SelectList(addressRepo.GetItems(), "Id", "AddressString", model.AddressId);
             ViewBag.CustomerId = new SelectList(customerRepo.GetItems(), "Id", "Name", model.CustomerId);
@@ -81,16 +85,20 @@ namespace Kundbolaget.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult CustomerDetails(int id)
-        {
-            var model = customerAddressRepo.GetItems(id);
-            return View(model);
-        }
+        //public ActionResult CustomerDetails(int id)
+        //{
+        //    var model = customerAddressRepo.GetItems(id);
+        //    return View(model);
+        //}
 
         // GET: CustomerAddress/Details/{id}
         public ActionResult Details(int id)
         {
             var model = customerAddressRepo.GetItem(id);
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
             return View(model);
         }
 
@@ -98,6 +106,10 @@ namespace Kundbolaget.Controllers
         public ActionResult Delete(int id)
         {
             var model = customerAddressRepo.GetItem(id);
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
             return View(model);
         }
 
