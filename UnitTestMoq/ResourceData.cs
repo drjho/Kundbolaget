@@ -180,7 +180,7 @@ namespace UnitTestMoq
                 AddressId = 2,
                 CustomerId = 2,
                 AddressType = AddressType.Leverans
-            },
+            }
         };
     }
 }

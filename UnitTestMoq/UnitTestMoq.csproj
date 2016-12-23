@@ -95,7 +95,6 @@
     <Compile Include="Helper.cs" />
     <Compile Include="ProductControllerTest.cs" />
     <Compile Include="ResourceData.cs" />
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CustomerControllerTest.cs" />
     <Compile Include="JsonFileControllerTest.cs" />

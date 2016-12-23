@@ -8,6 +8,8 @@ using Kundbolaget.Models.EntityModels;
 using Kundbolaget.Controllers;
 using System.Linq;
 using Kundbolaget.EntityFramework.Repositories;
+using System.Web.Mvc;
+using Assert = NUnit.Framework.Assert;
 
 namespace UnitTestMoq
 {
@@ -60,8 +62,63 @@ namespace UnitTestMoq
 
             //Setup fakerepo via overloaded constructor
             _customerAddressController= new CustomerAddressController(dbCustomerAddressRepository, dbCustomerRepository, dbAddressRepository);
+
+            
         }
 
+        [Test]
+        public void Create()
+        {
+            // Arrange
+            var testObject = new CustomerAddress
+            {
+                Id = 3,
+                CustomerId = 1,
+                AddressId = 1,
+                AddressType = AddressType.Faktura
+            };
 
+            // Act
+            _customerAddressController.Create(testObject);
+
+            // Assert
+            _mockSetCustomerAddress.Verify(x => x.Add(testObject), Times.Once);
+            _mockContext.Verify(x => x.SaveChanges(), Times.Once);
+
+            //Funderingar:  borde man kolla om count är +1.
+            //              borde man testa med ett "dåligt" objekt?
+        }
+
+        [Test]
+        public void Delete_Get_Object()
+        {
+            var expectedId = 1;
+
+            // Act
+            var actionResult = _customerAddressController.Delete(expectedId);
+            var viewResult = actionResult as ViewResult;
+            var actual = (CustomerAddress)viewResult.Model;
+
+            // Assert
+            Assert.AreEqual(expectedId, actual.Id);
+        }
+
+        [Test]
+        public void Delete()
+        {
+            // Arrange
+            var testObject = ResourceData.CustomerAddresses.First();
+            var expectedCount = ResourceData.CustomerAddresses.Count - 1;
+
+            // Act
+            _customerAddressController.Delete(testObject.Id, testObject);
+
+            // Assert
+            _mockSetCustomerAddress.Verify(x => x.Remove(testObject), Times.Once);
+            _mockContext.Verify(x => x.SaveChanges(), Times.Once);
+
+            
+
+        }
     }
 }
