@@ -11,6 +11,7 @@ using Kundbolaget.EntityFramework.Repositories;
 using Kundbolaget.Models.EntityModels;
 using NUnit.Framework;
 using Moq;
+using Kundbolaget.Models.ViewModels;
 
 namespace UnitTestMoq
 {
@@ -75,12 +76,31 @@ namespace UnitTestMoq
             _jsonFileController = new JsonFileController(dbStoragePlaceRepository, dbOrderRepository, dbCustomerAddressRepository, dbProductRepository);
         }
 
-        //[Test]
-        //public void UploadJson()
-        //{
-        //    //TODO: Hur testar man att ladda upp en fil?
-        //}
-        
+        [Test]
+        public void View_UploadJson_File_Is_Null()
+        {
+            //Arrange
+            var testVM = new OrderUploadVM
+            {
+                File = null
+            };
 
+            // Act
+            var result = _jsonFileController.UploadJson(testVM) as ViewResult;
+
+            // Assert
+            Assert.AreEqual("", result.ViewName);
+        }
+
+        [Test]
+        public void View_UploadJson_File_Is_Valid()
+        {
+            // Make a json file from serialization?
+            // Make a OrderUploadVM with the file
+            // Assert the view.
+            // Assert OrderSet is Added.
+            // Assert OrderProducts is AddRenaged.
+            // Assert context is savesChanges.
+        }
     }
 }

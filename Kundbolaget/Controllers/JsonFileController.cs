@@ -56,7 +56,10 @@ namespace Kundbolaget.Controllers
             byte[] data;
 
             if (model.File == null)
+            {
+                ModelState.AddModelError("NullFile", "Inget filnamn angivet");
                 return View();
+            }
 
             using (MemoryStream ms = new MemoryStream())
             {
@@ -72,6 +75,12 @@ namespace Kundbolaget.Controllers
                 a => a.AddressType == AddressType.Leverans &&
                 a.Address.AddressOrderId == (string)jCustomerOrder["addressid"] &&
                 a.Customer.CustomerOrderId == (string)jCustomerOrder["customerid"]).SingleOrDefault();
+
+            if (customerAddress == null)
+            {
+                ModelState.AddModelError("CustomerAddress", "V.g. kontrollera angivet CustomerOrderId eller AddressOrderId");
+                return View();
+            }
 
             var customer = customerAddress.Customer;
 

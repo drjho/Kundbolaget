@@ -17,8 +17,9 @@
             <div class="col-md-offset-2 col-md-10">
                 <p>
                     @Html.TextBoxFor(model => model.File, new { type = "file" })
+                </p>
+                <p>
                     @Html.ValidationMessageFor(model => model.File)
-                    @ViewBag.ErrorMessage 
                 </p>
                 <p>
                     <input type="submit" value="Ladda upp filen" class="btn btn-default" />
