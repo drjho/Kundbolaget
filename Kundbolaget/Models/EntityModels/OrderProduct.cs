@@ -14,7 +14,7 @@ namespace Kundbolaget.Models.EntityModels
         public int? ProductId { get; set; }
 
         [Display(Name = "Produkt")]
-        public virtual Product Product { get; set; }
+        public virtual OrderProduct Product { get; set; }
 
         [Required]
         [Display(Name = "Beställt antal")]

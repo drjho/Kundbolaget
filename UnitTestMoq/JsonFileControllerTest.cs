@@ -25,7 +25,7 @@ namespace UnitTestMoq
         private Mock<DbSet<StoragePlace>> _mockSetStoragePlace;
         private Mock<DbSet<Order>> _mockSetOrder;
         private Mock<DbSet<CustomerAddress>> _mockSetCustomerAddress;
-        private Mock<DbSet<Product>> _mockSetProduct;
+        private Mock<DbSet<OrderProduct>> _mockSetOrderProduct;
 
         //Fake Controller
         private JsonFileController _jsonFileController;
@@ -40,31 +40,31 @@ namespace UnitTestMoq
             _mockSetStoragePlace = new Mock<DbSet<StoragePlace>>();
             _mockSetOrder = new Mock<DbSet<Order>>();
             _mockSetCustomerAddress = new Mock<DbSet<CustomerAddress>>();
-            _mockSetProduct = new Mock<DbSet<Product>>();
+            _mockSetOrderProduct = new Mock<DbSet<OrderProduct>>();
 
             //Add data
             var dataStoragePlace = ResourceData.StoragePlaces.AsQueryable();
             var dataOrder = ResourceData.Orders.AsQueryable();
             var dataCustomerAddress = ResourceData.CustomerAddresses.AsQueryable();
-            var dataProduct = ResourceData.Products.AsQueryable();
+            var dataProduct = ResourceData.OrderProducts.AsQueryable();
 
             //Setup behavior
             var setupDbSp = Helper.SetupDb(_mockSetStoragePlace, dataStoragePlace);
             var setupDbOr = Helper.SetupDb(_mockSetOrder, dataOrder);
             var setupDbCA = Helper.SetupDb(_mockSetCustomerAddress, dataCustomerAddress);
-            var setupDbPr = Helper.SetupDb(_mockSetProduct, dataProduct);
+            var setupDbOP = Helper.SetupDb(_mockSetOrderProduct, dataProduct);
 
             _mockContext.Setup(x => x.StoragePlaces).Returns(setupDbSp.Object);
             _mockContext.Setup(x => x.Orders).Returns(setupDbOr.Object);
             _mockContext.Setup(x => x.CustomerAddresses).Returns(setupDbCA.Object);
-            _mockContext.Setup(x => x.Products).Returns(setupDbPr.Object);
+            _mockContext.Setup(x => x.OrderProducts).Returns(setupDbOP.Object);
 
             //This will make the mock version of the db approve any string given to the include method.
             //Without this you will get null reference exception when calling include.
             _mockSetStoragePlace.Setup(x => x.Include(It.IsAny<string>())).Returns(_mockSetStoragePlace.Object);
             _mockSetOrder.Setup(x => x.Include(It.IsAny<string>())).Returns(_mockSetOrder.Object);
             _mockSetCustomerAddress.Setup(x => x.Include(It.IsAny<string>())).Returns(_mockSetCustomerAddress.Object);
-            _mockSetProduct.Setup(x => x.Include(It.IsAny<string>())).Returns(_mockSetProduct.Object);
+            _mockSetOrderProduct.Setup(x => x.Include(It.IsAny<string>())).Returns(_mockSetOrderProduct.Object);
 
             //Inject mock data via overload constructor
             var dbStoragePlaceRepository = new DbStoragePlaceRepository(_mockContext.Object);
@@ -95,12 +95,26 @@ namespace UnitTestMoq
         [Test]
         public void View_UploadJson_File_Is_Valid()
         {
-            // Make a json file from serialization?
-            // Make a OrderUploadVM with the file
-            // Assert the view.
-            // Assert OrderSet is Added.
-            // Assert OrderProducts is AddRenaged.
-            // Assert context is savesChanges.
+            // Arrange
+            string filePath = System.IO.Path.GetFullPath(@"Data\test_beta.json");
+            System.IO.FileStream fileStream = new System.IO.FileStream(filePath, System.IO.FileMode.Open);
+            Mock<System.Web.HttpPostedFileBase> mockFile = new Mock<System.Web.HttpPostedFileBase>();
+
+            mockFile.Setup(f => f.FileName).Returns("test_beta.json");
+
+            mockFile.Setup(f => f.InputStream).Returns(fileStream);
+
+            var mockOrderVM = new Mock<OrderUploadVM>();
+            mockOrderVM.Setup(x => x.File).Returns(mockFile.Object);
+
+            // Act
+            var redirectResult = _jsonFileController.UploadJson(mockOrderVM.Object) as RedirectResult;
+
+            // Assert
+            Assert.That(redirectResult.Url, Is.EqualTo("/Orders/Index"));
+            _mockSetOrder.Verify(x => x.Add(It.IsIn<Order>()), Times.Once);
+            _mockSetOrderProduct.Verify(x => x.Add(It.IsIn<OrderProduct>()), Times.AtLeastOnce);
+            _mockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
     }
 }

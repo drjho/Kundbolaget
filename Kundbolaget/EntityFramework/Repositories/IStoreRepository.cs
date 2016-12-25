@@ -9,10 +9,10 @@ namespace Kundbolaget.EntityFramework.Repositories
 {
     interface IStoreRepository
     {
-        Product[] GetProducts();
-        Product GetProduct(int id);
-        void CreateProduct(Product newProduct);
-        void UpdateProduct(Product updatedProduct);
+        OrderProduct[] GetProducts();
+        OrderProduct GetProduct(int id);
+        void CreateProduct(OrderProduct newProduct);
+        void UpdateProduct(OrderProduct updatedProduct);
         void DeleteProduct(int id);
     }
 }

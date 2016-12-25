@@ -182,5 +182,7 @@ namespace UnitTestMoq
                 AddressType = AddressType.Leverans
             }
         };
+
+        public static List<OrderProduct> OrderProducts = new List<OrderProduct>();
     }
 }
