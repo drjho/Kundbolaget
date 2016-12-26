@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Moq;
 using System.Data.Entity;
 using System.Web.Mvc;
@@ -36,6 +37,67 @@ namespace UnitTestMoq
             _alcoholLicenseController = new AlcoholLicenseController(dbAlcoholLicenseRepository);
         }
 
-        
+        [Test]
+        public void Create_AlcoholLicense()
+        {
+            var alcoholLicense = new AlcoholLicense
+            {
+                Id = 1,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.MaxValue,
+            };
+            _alcoholLicenseController.Create(alcoholLicense);
+            _mockSetAlcoholLicense.Verify(x => x.Add(alcoholLicense), Times.Once);
+            _mockContext.Verify(x => x.SaveChanges(), Times.Once);
+        }
+
+        [Test]
+        public void Delete_AlcoholLicense()
+        {
+            var actionResult = _alcoholLicenseController.Delete(1);
+            var viewResult = actionResult as ViewResult;
+            var alcoholLicense = (AlcoholLicense) viewResult.Model;
+            Assert.AreEqual(1, alcoholLicense.Id);
+        }
+        [Test]
+        public void Edit_AlcoholLicense()
+        {
+            var actionResult = _alcoholLicenseController.Edit(1);
+            var viewResult = actionResult as ViewResult;
+            var priceList = (PriceList)viewResult.Model;
+            Assert.AreEqual(1, priceList.Id);
+        }
+
+        [Test]
+        public void Details_AlcoholLicense()
+        {
+            var actionResult = _alcoholLicenseController.Details(1);
+            var viewResult = actionResult as ViewResult;
+            var priceList = (PriceList)viewResult.Model;
+            Assert.AreEqual(1, priceList.Id);
+        }
+        [Test]
+        public void Create_Post_Redirect_To_Index()
+        {
+            var result = _alcoholLicenseController.Create(new AlcoholLicense
+            {
+                Id = 3,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.MaxValue
+            }
+                ) as RedirectToRouteResult;
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+        }
+
+        [Test]
+        public void Index_Retrieve_All_Data()
+        {
+            var actionResult = _alcoholLicenseController.Index();
+            var viewResult = actionResult as ViewResult;
+            var viewResultModel = (AlcoholLicense[])viewResult.Model;
+            var AlcoholLicenseInfo = viewResultModel.ToList();
+
+            Assert.AreEqual(1, AlcoholLicenseInfo.Count);
+        }
     }
 }
