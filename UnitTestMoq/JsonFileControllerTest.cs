@@ -12,6 +12,7 @@ using Kundbolaget.Models.EntityModels;
 using NUnit.Framework;
 using Moq;
 using Kundbolaget.Models.ViewModels;
+using System.IO;
 
 namespace UnitTestMoq
 {
@@ -96,7 +97,8 @@ namespace UnitTestMoq
         public void View_UploadJson_File_Is_Valid()
         {
             // Arrange
-            string filePath = System.IO.Path.GetFullPath(@"Data\test_beta.json");
+            
+            string filePath = System.IO.Path.GetFullPath(@"C:\Users\m97_j\OneDrive\Dokument\Agil2\Demo\Kundbolaget\Kundbolaget\Data\test_beta.json");
             System.IO.FileStream fileStream = new System.IO.FileStream(filePath, System.IO.FileMode.Open);
             Mock<System.Web.HttpPostedFileBase> mockFile = new Mock<System.Web.HttpPostedFileBase>();
 
@@ -104,11 +106,13 @@ namespace UnitTestMoq
 
             mockFile.Setup(f => f.InputStream).Returns(fileStream);
 
-            var mockOrderVM = new Mock<OrderUploadVM>();
-            mockOrderVM.Setup(x => x.File).Returns(mockFile.Object);
-
+            var testVM = new OrderUploadVM
+            {
+                File = mockFile.Object
+            };
+        
             // Act
-            var redirectResult = _jsonFileController.UploadJson(mockOrderVM.Object) as RedirectResult;
+            var redirectResult = _jsonFileController.UploadJson(testVM) as RedirectResult;
 
             // Assert
             Assert.That(redirectResult.Url, Is.EqualTo("/Orders/Index"));

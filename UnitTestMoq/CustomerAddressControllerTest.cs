@@ -49,6 +49,7 @@ namespace UnitTestMoq
             _mockContext.Setup(x => x.Customers).Returns(setupDbCu.Object);
             _mockContext.Setup(x => x.Addresses).Returns(setupDbAd.Object);
 
+            
             //This will make the mock version of the db approve any string given to the include method.
             //Without this you will get null reference exception when calling include.
             _mockSetCustomerAddress.Setup(x => x.Include(It.IsAny<string>())).Returns(_mockSetCustomerAddress.Object);
@@ -137,14 +138,15 @@ namespace UnitTestMoq
         public void Delete()
         {
             // Arrange
+            _mockSetCustomerAddress.Setup(x => x.Remove(It.IsAny<CustomerAddress>()));
             var testObject = ResourceData.CustomerAddresses.First();
-            var expectedCount = ResourceData.CustomerAddresses.Count - 1;
 
             // Act
             _customerAddressController.Delete(testObject.Id, testObject);
 
             // Assert
-            _mockSetCustomerAddress.Verify(x => x.Remove(testObject), Times.Once);
+            //_mockSetCustomerAddress.Verify(x => x.Remove(testObject), Times.Once);
+            _mockSetCustomerAddress.Verify(x => x.Remove(It.IsAny<CustomerAddress>()), Times.Once);
             _mockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
 
