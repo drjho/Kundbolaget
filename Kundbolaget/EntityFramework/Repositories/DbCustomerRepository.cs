@@ -18,9 +18,9 @@ namespace Kundbolaget.EntityFramework.Repositories
             db = new StoreContext();
         }
 
-        public DbCustomerRepository(StoreContext fakeContext)
+        public DbCustomerRepository(StoreContext context)
         {
-            db = fakeContext;
+            db = context;
         }
 
         public Customer GetItem(int customerId)

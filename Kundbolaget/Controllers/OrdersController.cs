@@ -15,11 +15,13 @@ namespace Kundbolaget.Controllers
 {
     public class OrdersController : Controller
     {
-        private StoreContext db = new StoreContext();
+        //private StoreContext db = new StoreContext();
         private DbOrderRepository orderRepo;
-        private DbAddressRepository addressRepo;
         private DbStoragePlaceRepository storageRepo;
         private DbOrderProductRepository orderProductRepo;
+
+        private DbAddressRepository addressRepo;
+        private DbCustomerRepository customerRepo;
 
         public OrdersController()
         {
@@ -28,15 +30,18 @@ namespace Kundbolaget.Controllers
             addressRepo = new DbAddressRepository();
             storageRepo = new DbStoragePlaceRepository(db);
             orderProductRepo = new DbOrderProductRepository(db);
+            customerRepo = new DbCustomerRepository();
         }
 
-        public OrdersController(DbOrderRepository dbOrderRepo, DbAddressRepository dbAddressRepo, DbStoragePlaceRepository dbStorageRepo)
+        public OrdersController(DbOrderRepository dbOrderRepo, DbAddressRepository dbAddressRepo, 
+            DbStoragePlaceRepository dbStorageRepo, DbOrderProductRepository dbOrderProductRepo,
+            DbCustomerRepository dbCustomerRepo)
         {
-
-            // TODO: Add orderPRoductRepo
             orderRepo = dbOrderRepo;
             addressRepo = dbAddressRepo;
             storageRepo = dbStorageRepo;
+            orderProductRepo = dbOrderProductRepo;
+            customerRepo = dbCustomerRepo;
         }
 
         // GET: Orders
@@ -99,12 +104,6 @@ namespace Kundbolaget.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult PrepareOrder(OrderVM orderVM)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(orderVM);
-            //}
-
-            //var order = db.Orders.Single(o => o.Id == orderVM.Id);
             var order = orderRepo.GetItem(orderVM.Id);
             order.OrderDate = orderVM.OrderDate;
             order.CustomerId = orderVM.CustomerId;
@@ -119,19 +118,16 @@ namespace Kundbolaget.Controllers
             {
                 var item = order.OrderProducts[i];
                 item.AvailabeAmount = ReserveItem(item.ProductId, item.OrderedAmount);
-                //db.Entry(item).State = EntityState.Modified;
             }
-            //db.Entry(order).State = EntityState.Modified;
-            //db.SaveChanges();
             orderProductRepo.UpdateItems(order.OrderProducts);
             return RedirectToAction("Index");
         }
+
         public int ReserveItem(int? productId, int orderedAmount)
         {
             // This assume that there is only 1 warehouse!!!
 
             int remainAmount = orderedAmount;
-            //var storagePlaces = db.StoragePlaces.Where(sp => sp.ProductId == productId).ToArray();
 
             var storagePlaces = storageRepo.GetItems().Where(sp => sp.ProductId == productId).ToArray();
 
@@ -139,14 +135,10 @@ namespace Kundbolaget.Controllers
             {
                 int addAmount = Math.Min(storagePlaces[i].AvailableAmount, remainAmount);
                 storagePlaces[i].ReservedAmount += addAmount;
-                //db.StoragePlaces.Attach(storagePlaces[i]);
-                //var entry = db.Entry(storagePlaces[i]);
-                //entry.State = EntityState.Modified;
                 remainAmount -= addAmount;
                 if (remainAmount < 1)
                     break;
             }
-            //db.SaveChanges();
             storageRepo.UpdateItems(storagePlaces);
             return orderedAmount - remainAmount;
         }
@@ -156,8 +148,6 @@ namespace Kundbolaget.Controllers
             // This assume that there is only 1 warehouse!!!
 
             int remainAmount = reservedAmount;
-            
-            //var storagePlaces = db.StoragePlaces.Where(sp => sp.ProductId == productId).ToArray();
 
             var storagePlaces = storageRepo.GetItems().Where(sp => sp.ProductId == productId).ToArray();
 
@@ -166,13 +156,9 @@ namespace Kundbolaget.Controllers
                 int subAmount = Math.Min(storagePlaces[i].ReservedAmount, remainAmount);
                 remainAmount -= subAmount;
                 storagePlaces[i].ReservedAmount -= subAmount;
-                //db.StoragePlaces.Attach(storagePlaces[i]);
-                //var entry = db.Entry(storagePlaces[i]);
-                //entry.State = EntityState.Modified;
                 if (remainAmount < 1)
                     break;
             }
-            //db.SaveChanges();
             storageRepo.UpdateItems(storagePlaces);
         }
 
@@ -180,8 +166,8 @@ namespace Kundbolaget.Controllers
         // GET: Orders/Create
         public ActionResult Create()
         {
-            ViewBag.AddressId = new SelectList(db.Addresses, "Id", "AddressString");
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name");
+            ViewBag.AddressId = new SelectList(addressRepo.GetItems(), "Id", "AddressString");
+            ViewBag.CustomerId = new SelectList(customerRepo.GetItems(), "Id", "Name");
             return View();
         }
 
@@ -192,16 +178,16 @@ namespace Kundbolaget.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,OrderDate,CustomerId,PlannedDeliveryDate,AddressId,Comment")] Order order)
         {
+            if (order.CustomerId == null)
+                ModelState.AddModelError("CustomerId", "Kundid är inte satt");
+            if (order.AddressId == null)
+                ModelState.AddModelError("AddressId", "Adressid är inte satt");
             if (ModelState.IsValid)
             {
-                db.Orders.Add(order);
-                db.SaveChanges();
+                orderRepo.CreateItem(order);
                 return RedirectToAction("Index");
             }
-
-            ViewBag.AddressId = new SelectList(db.Addresses, "Id", "AddressString", order.AddressId);
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name", order.CustomerId);
-            return View(order);
+            return RedirectToAction("Create");
         }
 
         // GET: Orders/Edit/5
@@ -211,13 +197,14 @@ namespace Kundbolaget.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            var order = orderRepo.GetItem((int)id);
+
             if (order == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.AddressId = new SelectList(db.Addresses, "Id", "StreetName", order.AddressId);
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name", order.CustomerId);
+            ViewBag.AddressId = new SelectList(addressRepo.GetItems(), "Id", "StreetName", order.AddressId);
+            ViewBag.CustomerId = new SelectList(customerRepo.GetItems(), "Id", "Name", order.CustomerId);
             return View(order);
         }
 
@@ -230,12 +217,11 @@ namespace Kundbolaget.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(order).State = EntityState.Modified;
-                db.SaveChanges();
+                orderRepo.UpdateItem(order);
                 return RedirectToAction("Index");
             }
-            ViewBag.AddressId = new SelectList(db.Addresses, "Id", "StreetName", order.AddressId);
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name", order.CustomerId);
+            ViewBag.AddressId = new SelectList(addressRepo.GetItems(), "Id", "StreetName", order.AddressId);
+            ViewBag.CustomerId = new SelectList(customerRepo.GetItems(), "Id", "Name", order.CustomerId);
             return View(order);
         }
 
@@ -246,7 +232,7 @@ namespace Kundbolaget.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            var order = orderRepo.GetItem((int)id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -259,10 +245,6 @@ namespace Kundbolaget.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            
-            //Order order = db.Orders.Find(id);
-            //var products = db.OrderProducts.Where(p => p.OrderId == order.Id).ToList();
-
             var order = orderRepo.GetItem(id);
             var products = order.OrderProducts;
             foreach (var item in products)
@@ -270,36 +252,22 @@ namespace Kundbolaget.Controllers
                 ReleaseItem(item.ProductId, item.AvailabeAmount);
             }
             orderRepo.DeleteItem(order.Id);
-            //db.OrderProducts.RemoveRange(products);
-            //db.Orders.Remove(order);
-            //db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                orderRepo.Dispose();
+                orderProductRepo.Dispose();
+                storageRepo.Dispose();
+                customerRepo.Dispose();
+                addressRepo.Dispose();
+
             }
             base.Dispose(disposing);
         }
     }
 
-    public class RequireRequestValueAttribute : ActionMethodSelectorAttribute
-    {
-        public RequireRequestValueAttribute(string valueName)
-        {
-            ValueName = valueName;
-        }
-
-        public override bool IsValidForRequest(ControllerContext controllerContext, MethodInfo methodInfo)
-        {
-            return (controllerContext.HttpContext.Request[ValueName] != null);
-        }
-
-        public string ValueName { get; private set; }
-    }
 }

@@ -8,7 +8,7 @@ using System.Web;
 
 namespace Kundbolaget.EntityFramework.Repositories
 {
-    public class DbAddressRepository : IGenericRepository<Address>
+    public class DbAddressRepository : IGenericRepository<Address>, IDisposable
     {
         private StoreContext db;
 
@@ -52,6 +52,11 @@ namespace Kundbolaget.EntityFramework.Repositories
             var entry = db.Entry(updatedAddress);
             entry.State = EntityState.Modified;
             db.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            db.Dispose();
         }
     }
 }

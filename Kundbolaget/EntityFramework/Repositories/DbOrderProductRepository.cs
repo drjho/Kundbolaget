@@ -12,11 +12,6 @@ namespace Kundbolaget.EntityFramework.Repositories
     {
         private StoreContext db;
 
-        //public DbOrderProductRepository()
-        //{
-        //    db = new StoreContext();
-        //}
-
         public DbOrderProductRepository(StoreContext context)
         {
             db = context;

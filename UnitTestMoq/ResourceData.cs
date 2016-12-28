@@ -183,6 +183,16 @@ namespace UnitTestMoq
             }
         };
 
-        public static List<OrderProduct> OrderProducts = new List<OrderProduct>();
+        public static List<OrderProduct> OrderProducts = new List<OrderProduct>
+        {
+            new OrderProduct
+            {
+                Id = 1,
+                OrderedAmount = 100,
+                DeliveredAmount = 100,
+                OrderId = 1,
+                ProductId = 1
+            }
+        };
     }
 }

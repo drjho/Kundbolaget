@@ -35,9 +35,9 @@ namespace Kundbolaget.Models.EntityModels
         public DateTime PlannedDeliveryDate { get; set; }
 
         [Required(ErrorMessage = "Angett fel adressorder id")]
-        [Display(Name ="Kundadress id")]
+        [Display(Name ="Adress id")]
         public int? AddressId { get; set; }
-        [Display(Name = "Kundadress")]
+        [Display(Name = "Adress")]
         public virtual Address Address { get; set; }
 
         [Display(Name = "Kommentarer")]
