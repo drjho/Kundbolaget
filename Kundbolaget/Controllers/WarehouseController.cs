@@ -22,7 +22,7 @@ namespace Kundbolaget.Controllers
         {
             var db = new StoreContext();
             warehouseRepo = new DbWarehouseRepository();
-            productRepo = new DbProductRepository();
+            productRepo = new DbProductRepository(db);
             storageRepo = new DbStoragePlaceRepository(db);
         }
 

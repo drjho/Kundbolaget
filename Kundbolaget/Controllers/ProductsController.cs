@@ -1,4 +1,5 @@
-﻿using Kundbolaget.EntityFramework.Repositories;
+﻿using Kundbolaget.EntityFramework.Context;
+using Kundbolaget.EntityFramework.Repositories;
 using Kundbolaget.Models.EntityModels;
 using Kundbolaget.Models.ViewModels;
 using System;
@@ -12,21 +13,22 @@ namespace Kundbolaget.Controllers
     public class ProductsController : Controller
     {
         DbProductRepository productRepo;
-        DbStoragePlaceRepository repositoryStorage;
-        DbWarehouseRepository repositoryWarehouse;
-
-
+        DbStoragePlaceRepository storageRepo;
+        DbWarehouseRepository warehouseRepo;
 
         public ProductsController()
         {
-            productRepo = new DbProductRepository();
+            var db = new StoreContext();
+            productRepo = new DbProductRepository(db);
+            storageRepo = new DbStoragePlaceRepository(db);
+            warehouseRepo = new DbWarehouseRepository(db);
         }
 
         public ProductsController(DbStoragePlaceRepository dbStorage, DbProductRepository dbproduct, DbWarehouseRepository dbwarehouse)
         {
             productRepo = dbproduct;
-            repositoryStorage = dbStorage;
-            repositoryWarehouse = dbwarehouse;
+            storageRepo = dbStorage;
+            warehouseRepo = dbwarehouse;
         }
 
        

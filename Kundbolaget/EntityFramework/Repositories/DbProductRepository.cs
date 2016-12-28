@@ -11,16 +11,11 @@ namespace Kundbolaget.EntityFramework.Repositories
 {
     public class DbProductRepository : IGenericRepository<Product>, IDisposable
     {
-        StoreContext db; 
+        private StoreContext db; 
 
-        public DbProductRepository()
+        public DbProductRepository(StoreContext context)
         {
-            db = new StoreContext();
-        }
-
-        public DbProductRepository(StoreContext fakeContext)
-        {
-            db = fakeContext;
+            db = context;
         }
 
         public Product[] GetItems()

@@ -29,7 +29,7 @@ namespace Kundbolaget.Controllers
             orderRepo = new DbOrderRepository(db);
             storageRepo = new DbStoragePlaceRepository(db);
             customerAddressRepo = new DbCustomerAddressRepository();
-            productRepo = new DbProductRepository();
+            productRepo = new DbProductRepository(db);
         }
 
         public JsonFileController(DbStoragePlaceRepository dbStoragePlaceRepository, DbOrderRepository dbOrderRepository, DbCustomerAddressRepository dbCustomerAddressRepository, DbProductRepository dbProductRepository)
