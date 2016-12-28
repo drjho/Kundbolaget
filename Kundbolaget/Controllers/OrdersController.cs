@@ -246,6 +246,10 @@ namespace Kundbolaget.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             var order = orderRepo.GetItem(id);
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
             var products = order.OrderProducts;
             foreach (var item in products)
             {

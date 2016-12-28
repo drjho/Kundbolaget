@@ -191,7 +191,7 @@ namespace UnitTestMoq
         public void View_Delete_With_Null_As_Id()
         {
             var result = _orderController.Delete(null) as HttpStatusCodeResult;
-            
+
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, (System.Net.HttpStatusCode)result.StatusCode);
         }
 
@@ -284,8 +284,11 @@ namespace UnitTestMoq
         [Test]
         public void PrepareOrder_With_Null_As_Id()
         {
+            // Arrange
             int? i = null;
+            // Act
             var result = _orderController.PrepareOrder(i) as HttpStatusCodeResult;
+            // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, (System.Net.HttpStatusCode)result.StatusCode);
         }
 
@@ -300,6 +303,7 @@ namespace UnitTestMoq
         [Test]
         public void PrepareOrder_Return_ViewModel()
         {
+            // Act
             var actionResult = _orderController.PrepareOrder(1);
             var viewResult = actionResult as ViewResult;
             var actual = (OrderVM)viewResult.Model;
@@ -308,6 +312,98 @@ namespace UnitTestMoq
             Assert.AreEqual(ResourceData.Orders[0].AddressId, actual.AddressId);
             Assert.AreEqual(1, actual.Id);
             Assert.AreEqual(ResourceData.Orders[0].CustomerId, actual.CustomerId);
+        }
+
+        /// <summary>
+        /// This has to be tested seperately. (Ctrl-R, T)
+        /// </summary>
+        [Test]
+        public void PrepareOrder_OrderVM_Redirect_To_Index()
+        {
+            // Arrange
+            var model = new OrderVM
+            {
+                Id = 1,
+                OrderDate = DateTime.Today,
+                CustomerId = 1,
+                PlannedDeliveryDate = DateTime.Today,
+                AddressId = 1,
+                Comment = "",
+            };
+
+            // Act
+            var actualResult = _orderController.PrepareOrder(model) as RedirectToRouteResult;
+
+            // Assert
+            _mockSetOrder.Verify(x => x.Attach(It.IsAny<Order>()), Times.Once);
+            _mockSetStoragePlace.Verify(x => x.Attach(It.IsAny<StoragePlace>()), Times.AtLeastOnce);
+            _mockSetOrderProduct.Verify(x => x.Attach(It.IsAny<OrderProduct>()), Times.AtLeastOnce);
+            _mockContext.Verify(x => x.SaveChanges(), Times.AtLeastOnce);
+            Assert.AreEqual("Index", actualResult.RouteValues["action"]);
+
+        }
+
+        [Test]
+        public void DeleteConfirmed_Without_Existing_Entity_Return_404_Error()
+        {
+            var result = _orderController.DeleteConfirmed(2000);
+            Assert.AreEqual(typeof(HttpNotFoundResult), result.GetType());
+        }
+
+        /// <summary>
+        /// Check Remove order using order id and if StoragePlace is updated.
+        /// </summary>
+        [Test]
+        public void DeleteConfirmed()
+        {
+            // Act
+            var result = _orderController.DeleteConfirmed(1);
+
+            // Assert
+            _mockSetStoragePlace.Verify(x => x.Attach(It.IsAny<StoragePlace>()), Times.AtLeastOnce);
+            _mockSetOrder.Verify(x => x.Remove(It.IsAny<Order>()), Times.Once);
+            _mockContext.Verify(x => x.SaveChanges(), Times.AtLeastOnce);
+        }
+
+        /// <summary>
+        /// Check if the reserved amount is changed after calling ReleaseItem.
+        /// </summary>
+        [Test]
+        public void ReleaseItem()
+        {
+            // Arrange
+            var storages = _mockSetStoragePlace.Object.ToArray();
+            var storage = storages[0];
+            int pid = (int)storage.ProductId;
+            int total = storage.TotalAmount;
+            int reserved = storage.ReservedAmount;
+            int diff = 100;
+
+            // Act
+            _orderController.ReleaseItem(pid, diff);
+            var expected = reserved - diff;
+
+            // Assert
+            Assert.AreEqual(expected, storage.ReservedAmount);
+        }
+
+        [Test]
+        public void ReserveItem()
+        {
+            // Arrange
+            var storages = _mockSetStoragePlace.Object.ToArray();
+            var storage = storages[0];
+            int pid = (int)storage.ProductId;
+            int total = storage.TotalAmount;
+            int reserved = storage.ReservedAmount;
+            int diff = 100;
+
+            // Act
+            _orderController.ReserveItem(pid, diff);
+            var expected = reserved + diff;
+
+            // Assert
+            Assert.AreEqual(expected, storage.ReservedAmount);
         }
     }
 }

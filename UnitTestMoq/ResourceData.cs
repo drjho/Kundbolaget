@@ -80,7 +80,9 @@ namespace UnitTestMoq
                 OrderDate = DateTime.Now,
                 DesiredDeliveryDate = DateTime.Today,
                 PlannedDeliveryDate = DateTime.Today.AddDays(1),
-                OrderStatus = OrderStatus.Behandlar
+                OrderStatus = OrderStatus.Behandlar,
+                OrderProducts = new List<OrderProduct> { OrderProducts[0] }
+                
             },
             new Order
             {
@@ -91,7 +93,8 @@ namespace UnitTestMoq
                 OrderDate = DateTime.Now,
                 DesiredDeliveryDate = DateTime.Today.AddDays(7),
                 PlannedDeliveryDate = DateTime.Today.AddDays(7),
-                OrderStatus = OrderStatus.Plockar
+                OrderStatus = OrderStatus.Plockar,
+                OrderProducts = new List<OrderProduct> { OrderProducts[1] }
             },
         };
 
@@ -145,7 +148,9 @@ namespace UnitTestMoq
                 ShelfNr = 1,
                 Side = Side.Left,
                 Spot = 1,
-                Vacant = false
+                Vacant = false,
+                TotalAmount = 1000,
+                ReservedAmount = 500
             },
             new StoragePlace
             {
@@ -155,7 +160,9 @@ namespace UnitTestMoq
                 ShelfNr = 1,
                 Side = Side.Right,
                 Spot = 1,
-                Vacant = true
+                Vacant = true,
+                TotalAmount = 1000,
+                ReservedAmount = 500
             }
         };
         public static List<CustomerAddress> CustomerAddresses => new List<CustomerAddress>
@@ -189,9 +196,17 @@ namespace UnitTestMoq
             {
                 Id = 1,
                 OrderedAmount = 100,
-                DeliveredAmount = 100,
+                AvailabeAmount = 100,
                 OrderId = 1,
                 ProductId = 1
+            },
+            new OrderProduct
+            {
+                Id = 2,
+                OrderedAmount = 200,
+                AvailabeAmount = 100,
+                OrderId = 2,
+                ProductId = 2
             }
         };
     }
