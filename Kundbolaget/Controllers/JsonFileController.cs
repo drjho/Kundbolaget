@@ -71,6 +71,8 @@ namespace Kundbolaget.Controllers
 
             JObject jCustomerOrder = JObject.Parse(json);
 
+            var items = customerAddressRepo.GetItems();
+
             var customerAddress = customerAddressRepo.GetItems().Where(
                 a => a.AddressType == AddressType.Leverans &&
                 a.Address.AddressOrderId == (string)jCustomerOrder["addressid"] &&

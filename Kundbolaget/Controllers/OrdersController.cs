@@ -35,6 +35,7 @@ namespace Kundbolaget.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            // TODO: uppdatera tillgängligt antal när man klicka på details!
             var order = orderRepo.GetItem((int)id);
             if (order == null)
             {
