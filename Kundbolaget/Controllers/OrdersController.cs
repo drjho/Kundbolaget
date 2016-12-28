@@ -16,9 +16,25 @@ namespace Kundbolaget.Controllers
     public class OrdersController : Controller
     {
         private StoreContext db = new StoreContext();
-        DbOrderRepository orderRepo = new DbOrderRepository();
-        DbAddressRepository addressRepo = new DbAddressRepository();
-        DbStoragePlaceRepository storageRepo = new DbStoragePlaceRepository();
+        private DbOrderRepository orderRepo;
+        private DbAddressRepository addressRepo;
+        private DbStoragePlaceRepository storageRepo;
+        
+
+        public OrdersController()
+        {
+            StoreContext db = new StoreContext();
+            orderRepo = new DbOrderRepository();
+            addressRepo = new DbAddressRepository();
+            storageRepo = new DbStoragePlaceRepository();
+        }
+
+        public OrdersController(DbOrderRepository dbOrderRepo, DbAddressRepository dbAddressRepo, DbStoragePlaceRepository dbStorageRepo)
+        {
+            orderRepo = dbOrderRepo;
+            addressRepo = dbAddressRepo;
+            storageRepo = dbStorageRepo;
+        }
 
         // GET: Orders
         public ActionResult Index()
@@ -80,21 +96,30 @@ namespace Kundbolaget.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult PrepareOrder(OrderVM orderVM)
         {
-            var order = db.Orders.Single(o => o.Id == orderVM.Id);
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(orderVM);
+            //}
+
+            //var order = db.Orders.Single(o => o.Id == orderVM.Id);
+            var order = orderRepo.GetItem(orderVM.Id);
             order.OrderDate = orderVM.OrderDate;
             order.CustomerId = orderVM.CustomerId;
             order.PlannedDeliveryDate = orderVM.PlannedDeliveryDate;
             order.AddressId = orderVM.AddressId;
             order.Comment = orderVM.Comment;
+            order.OrderStatus = OrderStatus.Plockar;
+
+            orderRepo.UpdateItem(order);
+
             for (int i = 0; i < order.OrderProducts.Count; i++)
             {
                 var item = order.OrderProducts[i];
                 item.AvailabeAmount = ReserveItem(item.ProductId, item.OrderedAmount);
-                db.Entry(item).State = EntityState.Modified;
+                //db.Entry(item).State = EntityState.Modified;
             }
-            order.OrderStatus = OrderStatus.Plockar;
-            db.Entry(order).State = EntityState.Modified;
-            db.SaveChanges();
+            //db.Entry(order).State = EntityState.Modified;
+            //db.SaveChanges();
             return RedirectToAction("Index");
         }
 
