@@ -3,12 +3,12 @@
   "addressid": "00000004",
   "products": [
     {
-      "pno": "000001",
+      "pno": "000003",
       "amount": 100,
       "comment": "minst 50"
     },
     {
-      "pno": "000002",
+      "pno": "000004",
       "amount": 200,
       "comment": "minst 150"
     }

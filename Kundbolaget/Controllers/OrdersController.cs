@@ -19,18 +19,21 @@ namespace Kundbolaget.Controllers
         private DbOrderRepository orderRepo;
         private DbAddressRepository addressRepo;
         private DbStoragePlaceRepository storageRepo;
-        
+        private DbOrderProductRepository orderProductRepo;
 
         public OrdersController()
         {
             StoreContext db = new StoreContext();
-            orderRepo = new DbOrderRepository();
+            orderRepo = new DbOrderRepository(db);
             addressRepo = new DbAddressRepository();
-            storageRepo = new DbStoragePlaceRepository();
+            storageRepo = new DbStoragePlaceRepository(db);
+            orderProductRepo = new DbOrderProductRepository(db);
         }
 
         public OrdersController(DbOrderRepository dbOrderRepo, DbAddressRepository dbAddressRepo, DbStoragePlaceRepository dbStorageRepo)
         {
+
+            // TODO: Add orderPRoductRepo
             orderRepo = dbOrderRepo;
             addressRepo = dbAddressRepo;
             storageRepo = dbStorageRepo;
@@ -120,6 +123,7 @@ namespace Kundbolaget.Controllers
             }
             //db.Entry(order).State = EntityState.Modified;
             //db.SaveChanges();
+            orderProductRepo.UpdateItems(order.OrderProducts);
             return RedirectToAction("Index");
         }
         public int ReserveItem(int? productId, int orderedAmount)
@@ -255,16 +259,20 @@ namespace Kundbolaget.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            
+            //Order order = db.Orders.Find(id);
+            //var products = db.OrderProducts.Where(p => p.OrderId == order.Id).ToList();
 
-            Order order = db.Orders.Find(id);
-            var products = db.OrderProducts.Where(p => p.OrderId == order.Id).ToList();
+            var order = orderRepo.GetItem(id);
+            var products = order.OrderProducts;
             foreach (var item in products)
             {
                 ReleaseItem(item.ProductId, item.AvailabeAmount);
             }
-            db.OrderProducts.RemoveRange(products);
-            db.Orders.Remove(order);
-            db.SaveChanges();
+            orderRepo.DeleteItem(order.Id);
+            //db.OrderProducts.RemoveRange(products);
+            //db.Orders.Remove(order);
+            //db.SaveChanges();
             return RedirectToAction("Index");
         }
 

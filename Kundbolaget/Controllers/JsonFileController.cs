@@ -25,8 +25,9 @@ namespace Kundbolaget.Controllers
 
         public JsonFileController()
         {
-            orderRepo = new DbOrderRepository();
-            storageRepo = new DbStoragePlaceRepository();
+            var db = new StoreContext();
+            orderRepo = new DbOrderRepository(db);
+            storageRepo = new DbStoragePlaceRepository(db);
             customerAddressRepo = new DbCustomerAddressRepository();
             productRepo = new DbProductRepository();
         }

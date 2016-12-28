@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Kundbolaget.EntityFramework.Repositories;
 using Kundbolaget.Models.EntityModels;
 using Kundbolaget.Models.ViewModels;
+using Kundbolaget.EntityFramework.Context;
 
 namespace Kundbolaget.Controllers
 {
@@ -19,9 +20,10 @@ namespace Kundbolaget.Controllers
 
         public WarehouseController()
         {
+            var db = new StoreContext();
             warehouseRepo = new DbWarehouseRepository();
             productRepo = new DbProductRepository();
-            storageRepo = new DbStoragePlaceRepository();
+            storageRepo = new DbStoragePlaceRepository(db);
         }
 
         public WarehouseController(DbWarehouseRepository fakeDbWarehouseRepository, DbStoragePlaceRepository fakeDbStoragePlaceRepository)
