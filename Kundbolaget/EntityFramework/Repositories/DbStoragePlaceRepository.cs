@@ -50,6 +50,16 @@ namespace Kundbolaget.EntityFramework.Repositories
             return db.StoragePlaces.Include(s => s.Warehouse).ToArray();
         }
 
+        public void UpdateItems(IEnumerable<StoragePlace> updatedItems)
+        {
+            for (int i = 0; i < updatedItems.Count(); i++)
+            {
+                db.StoragePlaces.Attach(updatedItems.ElementAt(i));
+                db.Entry(updatedItems.ElementAt(i)).State = EntityState.Modified;
+            }
+            db.SaveChanges();
+        }
+
         public void UpdateItem(StoragePlace updatedItem)
         {
             db.StoragePlaces.Attach(updatedItem);

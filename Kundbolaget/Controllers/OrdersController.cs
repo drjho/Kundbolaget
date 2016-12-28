@@ -122,45 +122,56 @@ namespace Kundbolaget.Controllers
             //db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-        public void ReleaseItem(int? productId, int reservedAmount)
-        {
-            int remainAmount = reservedAmount;
-            // This assume that there is only 1 warehouse!!!
-            var storagePlaces = db.StoragePlaces.Where(sp => sp.ProductId == productId).ToArray();
-            for (int i = 0; i < storagePlaces.Length; i++)
-            {
-                int subAmount = Math.Min(storagePlaces[i].ReservedAmount, remainAmount);
-                remainAmount -= subAmount;
-                storagePlaces[i].ReservedAmount -= subAmount;
-                db.StoragePlaces.Attach(storagePlaces[i]);
-                var entry = db.Entry(storagePlaces[i]);
-                entry.State = EntityState.Modified;
-                if (remainAmount < 1)
-                    break;
-            }
-            //db.SaveChanges();
-        }
-
         public int ReserveItem(int? productId, int orderedAmount)
         {
-            int remainAmount = orderedAmount;
             // This assume that there is only 1 warehouse!!!
-            var storagePlaces = db.StoragePlaces.Where(sp => sp.ProductId == productId).ToArray();
+
+            int remainAmount = orderedAmount;
+            //var storagePlaces = db.StoragePlaces.Where(sp => sp.ProductId == productId).ToArray();
+
+            var storagePlaces = storageRepo.GetItems().Where(sp => sp.ProductId == productId).ToArray();
+
             for (int i = 0; i < storagePlaces.Length; i++)
             {
                 int addAmount = Math.Min(storagePlaces[i].AvailableAmount, remainAmount);
                 storagePlaces[i].ReservedAmount += addAmount;
-                db.StoragePlaces.Attach(storagePlaces[i]);
-                var entry = db.Entry(storagePlaces[i]);
-                entry.State = EntityState.Modified;
+                //db.StoragePlaces.Attach(storagePlaces[i]);
+                //var entry = db.Entry(storagePlaces[i]);
+                //entry.State = EntityState.Modified;
                 remainAmount -= addAmount;
                 if (remainAmount < 1)
                     break;
             }
             //db.SaveChanges();
+            storageRepo.UpdateItems(storagePlaces);
             return orderedAmount - remainAmount;
         }
+
+        public void ReleaseItem(int? productId, int reservedAmount)
+        {
+            // This assume that there is only 1 warehouse!!!
+
+            int remainAmount = reservedAmount;
+            
+            //var storagePlaces = db.StoragePlaces.Where(sp => sp.ProductId == productId).ToArray();
+
+            var storagePlaces = storageRepo.GetItems().Where(sp => sp.ProductId == productId).ToArray();
+
+            for (int i = 0; i < storagePlaces.Length; i++)
+            {
+                int subAmount = Math.Min(storagePlaces[i].ReservedAmount, remainAmount);
+                remainAmount -= subAmount;
+                storagePlaces[i].ReservedAmount -= subAmount;
+                //db.StoragePlaces.Attach(storagePlaces[i]);
+                //var entry = db.Entry(storagePlaces[i]);
+                //entry.State = EntityState.Modified;
+                if (remainAmount < 1)
+                    break;
+            }
+            //db.SaveChanges();
+            storageRepo.UpdateItems(storagePlaces);
+        }
+
 
         // GET: Orders/Create
         public ActionResult Create()
