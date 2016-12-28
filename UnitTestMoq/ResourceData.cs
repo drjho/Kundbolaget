@@ -160,5 +160,14 @@ namespace UnitTestMoq
                 StartDate = DateTime.Today          
             }
         };
+
+        public static List<CustomerGroup> CustomerGroups => new List<CustomerGroup>
+        {
+            new CustomerGroup
+            {
+                Id = 1,
+                Name = "Ica"
+            }
+        };
     }
 }
