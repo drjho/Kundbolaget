@@ -24,6 +24,10 @@
                 <p>
                     <input type="submit" value="Ladda upp filen" class="btn btn-default" />
                 </p>
+                <p>
+                    @Html.ValidationMessage("SimilarOrder", new { @class = "text-danger" })
+                    @Html.ValidationMessage("CustomerAddress", new { @class = "text-danger" })
+                </p>
             </div>
 
         </div>

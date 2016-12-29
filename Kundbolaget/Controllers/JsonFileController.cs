@@ -19,6 +19,7 @@ namespace Kundbolaget.Controllers
 
         DbStoragePlaceRepository storageRepo;
         DbOrderRepository orderRepo;
+        DbOrderProductRepository orderProductRepo;
         DbCustomerAddressRepository customerAddressRepo;
         DbProductRepository productRepo;
 
@@ -27,15 +28,18 @@ namespace Kundbolaget.Controllers
         {
             var db = new StoreContext();
             orderRepo = new DbOrderRepository(db);
+            orderProductRepo = new DbOrderProductRepository(db);
             storageRepo = new DbStoragePlaceRepository(db);
             customerAddressRepo = new DbCustomerAddressRepository();
             productRepo = new DbProductRepository(db);
         }
 
-        public JsonFileController(DbStoragePlaceRepository dbStoragePlaceRepository, DbOrderRepository dbOrderRepository, DbCustomerAddressRepository dbCustomerAddressRepository, DbProductRepository dbProductRepository)
+        public JsonFileController(DbStoragePlaceRepository dbStoragePlaceRepository, DbOrderRepository dbOrderRepository, DbOrderProductRepository dbOrderProductRepository,
+            DbCustomerAddressRepository dbCustomerAddressRepository, DbProductRepository dbProductRepository)
         {
             storageRepo = dbStoragePlaceRepository;
             orderRepo = dbOrderRepository;
+            orderProductRepo = dbOrderProductRepository;
             customerAddressRepo = dbCustomerAddressRepository;
             productRepo = dbProductRepository;
         }
@@ -116,15 +120,25 @@ namespace Kundbolaget.Controllers
                     ProductId = productRepo.GetItem((string)jProduct["pno"]).Id,
                     OrderedAmount = (int)jProduct["amount"]
                 };
-
-
-                //orderProduct.DeliveredAmount = storageRepo.ReserveItem(orderProduct.Product?.Id, orderProduct.OrderedAmount);
                 order.OrderProducts.Add(orderProduct);
-
             }
 
+            var existingOrders = orderRepo.GetItems().Where(o => o.AddressId == order.AddressId && o.CustomerId == order.CustomerId);
+            foreach (var item in existingOrders)
+            {
+                if (item.DesiredDeliveryDate.Equals(order.DesiredDeliveryDate) && item.Comment.Equals(order.Comment))
+                {
+                    ModelState.AddModelError("SimilarOrder", "Kanske upprepad order");
+                    return View();
+                }
+            }
 
-            orderRepo.HandleOrder(order);
+            orderRepo.CreateItem(order);
+            //foreach (var item in order.OrderProducts)
+            //{
+            //    orderProductRepo.CreateItem(item);
+            //}
+            //orderRepo.HandleOrder(order);
             return RedirectToAction("Index", "Orders");
         }
     }

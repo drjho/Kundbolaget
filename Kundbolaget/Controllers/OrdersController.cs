@@ -116,10 +116,6 @@ namespace Kundbolaget.Controllers
             order.PlannedDeliveryDate = orderVM.PlannedDeliveryDate;
             order.AddressId = orderVM.AddressId;
             order.Comment = orderVM.Comment;
-            order.OrderStatus = OrderStatus.Plockar;
-
-            orderRepo.UpdateItem(order);
-
             //for (int i = 0; i < order.OrderProducts.Count; i++)
             //var orderProduct = order.OrderProducts[i];
             foreach (var orderProduct in order.OrderProducts)
@@ -129,13 +125,13 @@ namespace Kundbolaget.Controllers
 
                 // Vad gör man om det blir en tomlista?
 
-                // Funkar detta?                
-                if (orderProduct.AvailabeAmount == 0)
-                {
-                    ModelState.AddModelError("AvailabeAmount", "Det finns inga varor i lager");
-                    // Varför har orderVM inget orderproducts helt plötsligt?!
-                    return View(orderVM);
-                }
+                // Funkar inte? Hur visar vi att availableAmount är 0?                
+                //if (orderProduct.AvailabeAmount == 0)
+                //{
+                //    ModelState.AddModelError("AvailabeAmount", "Det finns inga varor i lager");
+                //    // Varför har orderVM inget orderproducts helt plötsligt?!
+                //    return View(orderVM);
+                //}
 
                 foreach (var pickOrder in orderProduct.PickList)
                 {
@@ -143,6 +139,9 @@ namespace Kundbolaget.Controllers
                     pickingOrderRepo.CreateItem(pickOrder);
                 }
             }
+
+            order.OrderStatus = OrderStatus.Plockar;
+            orderRepo.UpdateItem(order);
             orderProductRepo.UpdateItems(order.OrderProducts);
             return RedirectToAction("Index");
         }
@@ -306,9 +305,10 @@ namespace Kundbolaget.Controllers
                 var item = products[i];
                 //ReleaseItem(item.ProductId, item.AvailabeAmount);
                 ReleaseItem(item.PickList);
-                orderProductRepo.DeleteItem(item.Id);
+                //orderProductRepo.DeleteItem(item.Id);
 
             }
+            orderProductRepo.DeleteItems(products);
             orderRepo.DeleteItem(order.Id);
             return RedirectToAction("Index");
         }

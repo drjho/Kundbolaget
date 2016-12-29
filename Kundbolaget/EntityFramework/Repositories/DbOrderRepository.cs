@@ -25,7 +25,7 @@ namespace Kundbolaget.EntityFramework.Repositories
 
         public void DeleteItem(int id)
         {
-            var o = db.Orders.SingleOrDefault(order => order.Id == id);
+            var o = db.Orders.Include(x => x.OrderProducts).SingleOrDefault(order => order.Id == id);
             db.Orders.Remove(o);
             db.SaveChanges();
         }

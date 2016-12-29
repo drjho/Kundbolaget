@@ -23,10 +23,16 @@ namespace Kundbolaget.EntityFramework.Repositories
             db.SaveChanges();
         }
 
+        public void DeleteItems(List<OrderProduct> items)
+        {
+            db.OrderProducts.RemoveRange(items);
+            db.SaveChanges();
+        }
+
         public void DeleteItem(int id)
         {
-            var o = db.OrderProducts.SingleOrDefault(OrderProduct => OrderProduct.Id == id);
-            db.OrderProducts.Remove(o);
+            var op = db.OrderProducts.SingleOrDefault(o => o.Id == id);
+            db.OrderProducts.Remove(op);
             db.SaveChanges();
         }
 
