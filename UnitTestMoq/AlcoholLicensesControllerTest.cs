@@ -64,7 +64,7 @@ namespace UnitTestMoq
         {
             var actionResult = _alcoholLicenseController.Edit(1);
             var viewResult = actionResult as ViewResult;
-            var priceList = (PriceList)viewResult.Model;
+            var priceList = (AlcoholLicense)viewResult.Model;
             Assert.AreEqual(1, priceList.Id);
         }
 
@@ -73,7 +73,7 @@ namespace UnitTestMoq
         {
             var actionResult = _alcoholLicenseController.Details(1);
             var viewResult = actionResult as ViewResult;
-            var priceList = (PriceList)viewResult.Model;
+            var priceList = (AlcoholLicense)viewResult.Model;
             Assert.AreEqual(1, priceList.Id);
         }
         [Test]
