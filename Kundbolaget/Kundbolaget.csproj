@@ -227,6 +227,10 @@
     <Compile Include="Migrations\201612291146569_addedPickingOrder.Designer.cs">
       <DependentUpon>201612291146569_addedPickingOrder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612291508186_addedShortDecriptionInProduct.cs" />
+    <Compile Include="Migrations\201612291508186_addedShortDecriptionInProduct.Designer.cs">
+      <DependentUpon>201612291508186_addedShortDecriptionInProduct.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\AlcoholLicense.cs" />
@@ -353,6 +357,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612291146569_addedPickingOrder.resx">
       <DependentUpon>201612291146569_addedPickingOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612291508186_addedShortDecriptionInProduct.resx">
+      <DependentUpon>201612291508186_addedShortDecriptionInProduct.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

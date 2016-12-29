@@ -82,7 +82,7 @@ namespace UnitTestMoq
                 PlannedDeliveryDate = DateTime.Today.AddDays(1),
                 OrderStatus = OrderStatus.Behandlar,
                 OrderProducts = new List<OrderProduct> { OrderProducts[0] }
-                
+
             },
             new Order
             {
@@ -190,6 +190,25 @@ namespace UnitTestMoq
             }
         };
 
+        public static List<PickingOrder> PickingOrders => new List<PickingOrder>
+        {
+            new PickingOrder
+            {
+                Id = 1,
+                OrderProductId = 1,
+                StoragePlaceId = 1,
+                ReservedAmount = 100
+            },
+            new PickingOrder
+            {
+                Id = 2,
+                OrderProductId = 2,
+                StoragePlaceId = 2,
+                ReservedAmount = 100
+            }
+        };
+
+
         public static List<OrderProduct> OrderProducts = new List<OrderProduct>
         {
             new OrderProduct
@@ -198,7 +217,8 @@ namespace UnitTestMoq
                 OrderedAmount = 100,
                 AvailabeAmount = 100,
                 OrderId = 1,
-                ProductId = 1
+                ProductId = 1,
+                PickList = new List<PickingOrder> { PickingOrders[0] }
             },
             new OrderProduct
             {
@@ -206,7 +226,8 @@ namespace UnitTestMoq
                 OrderedAmount = 200,
                 AvailabeAmount = 100,
                 OrderId = 2,
-                ProductId = 2
+                ProductId = 2,
+                PickList = new List<PickingOrder> { PickingOrders[1] }
             }
         };
 
@@ -227,7 +248,7 @@ namespace UnitTestMoq
             new AlcoholLicense
             {
                 Id = 1,
-                StartDate = DateTime.Today          
+                StartDate = DateTime.Today
             }
         };
 
@@ -239,5 +260,7 @@ namespace UnitTestMoq
                 Name = "Ica"
             }
         };
+
+
     }
 }

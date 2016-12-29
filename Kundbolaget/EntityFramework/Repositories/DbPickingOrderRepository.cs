@@ -25,8 +25,10 @@ namespace Kundbolaget.EntityFramework.Repositories
 
         public void DeleteItem(int id)
         {
-            var o = db.PickingOrders.SingleOrDefault(OrderProduct => OrderProduct.Id == id);
-            db.PickingOrders.Remove(o);
+            var item = db.PickingOrders.SingleOrDefault(p => p.Id == id);
+            if (item == null)
+                return;
+            db.PickingOrders.Remove(item);
             db.SaveChanges();
         }
 

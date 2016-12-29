@@ -38,13 +38,15 @@ namespace Kundbolaget.Controllers
 
         public OrdersController(DbOrderRepository dbOrderRepo, DbAddressRepository dbAddressRepo,
             DbStoragePlaceRepository dbStorageRepo, DbOrderProductRepository dbOrderProductRepo,
-            DbCustomerRepository dbCustomerRepo)
+            DbCustomerRepository dbCustomerRepo, DbPickingOrderRepository dbPickingOrderRepo)
         {
             // TODO: update input for test.
             orderRepo = dbOrderRepo;
-            addressRepo = dbAddressRepo;
             storageRepo = dbStorageRepo;
             orderProductRepo = dbOrderProductRepo;
+            pickingOrderRepo = dbPickingOrderRepo;
+
+            addressRepo = dbAddressRepo;
             customerRepo = dbCustomerRepo;
         }
 
@@ -123,11 +125,17 @@ namespace Kundbolaget.Controllers
             foreach (var orderProduct in order.OrderProducts)
             {
                 orderProduct.PickList = ReserveItem(orderProduct.ProductId, orderProduct.OrderedAmount);
-                orderProduct.AvailabeAmount = orderProduct.PickList.Sum(x => x.PickingAmount);
+                orderProduct.AvailabeAmount = orderProduct.PickList.Sum(x => x.ReservedAmount);
 
-                //Funkar detta?                
+                // Vad gör man om det blir en tomlista?
+
+                // Funkar detta?                
                 if (orderProduct.AvailabeAmount == 0)
+                {
+                    ModelState.AddModelError("AvailabeAmount", "Det finns inga varor i lager");
+                    // Varför har orderVM inget orderproducts helt plötsligt?!
                     return View(orderVM);
+                }
 
                 foreach (var pickOrder in orderProduct.PickList)
                 {
@@ -141,6 +149,7 @@ namespace Kundbolaget.Controllers
 
         /// <summary>
         /// Indata: Produktid och beställt antal.
+        /// Om det inte finns i lager blir det en tom lista.
         /// </summary>
         /// <param name="productId"></param>
         /// <param name="orderedAmount"></param>
@@ -162,7 +171,7 @@ namespace Kundbolaget.Controllers
                 int pickAmount = Math.Min(sp.AvailableAmount, remainAmount);
                 if (pickAmount > 0)
                 {
-                    pickList.Add(new PickingOrder { StoragePlaceId = sp.Id, PickingAmount = pickAmount });
+                    pickList.Add(new PickingOrder { StoragePlaceId = sp.Id, ReservedAmount = pickAmount });
                     sp.ReservedAmount += pickAmount;
                     remainAmount -= pickAmount;
                 }
@@ -173,24 +182,35 @@ namespace Kundbolaget.Controllers
             return pickList;
         }
 
-        public void ReleaseItem(int? productId, int reservedAmount)
+        private void ReleaseItem(List<PickingOrder> pickList)
         {
-            // This assume that there is only 1 warehouse!!!
-
-            int remainAmount = reservedAmount;
-
-            var storagePlaces = storageRepo.GetItems().Where(sp => sp.ProductId == productId).ToArray();
-
-            for (int i = 0; i < storagePlaces.Length; i++)
+            foreach (var pickOrder in pickList)
             {
-                int subAmount = Math.Min(storagePlaces[i].ReservedAmount, remainAmount);
-                remainAmount -= subAmount;
-                storagePlaces[i].ReservedAmount -= subAmount;
-                if (remainAmount < 1)
-                    break;
+                var sp = storageRepo.GetItem((int)pickOrder.StoragePlaceId);
+                sp.ReservedAmount -= pickOrder.ReservedAmount;
+                storageRepo.UpdateItem(sp);
+                pickingOrderRepo.DeleteItem(sp.Id);
             }
-            storageRepo.UpdateItems(storagePlaces);
         }
+
+        //public void ReleaseItem(int? productId, int reservedAmount)
+        //{
+        //    // This assume that there is only 1 warehouse!!!
+
+        //    int remainAmount = reservedAmount;
+
+        //    var storagePlaces = storageRepo.GetItems().Where(sp => sp.ProductId == productId).ToArray();
+
+        //    for (int i = 0; i < storagePlaces.Length; i++)
+        //    {
+        //        int subAmount = Math.Min(storagePlaces[i].ReservedAmount, remainAmount);
+        //        remainAmount -= subAmount;
+        //        storagePlaces[i].ReservedAmount -= subAmount;
+        //        if (remainAmount < 1)
+        //            break;
+        //    }
+        //    storageRepo.UpdateItems(storagePlaces);
+        //}
 
 
         // GET: Orders/Create
@@ -284,13 +304,16 @@ namespace Kundbolaget.Controllers
             for (int i = 0; i < products.Count; i++)
             {
                 var item = products[i];
-                ReleaseItem(item.ProductId, item.AvailabeAmount);
+                //ReleaseItem(item.ProductId, item.AvailabeAmount);
+                ReleaseItem(item.PickList);
                 orderProductRepo.DeleteItem(item.Id);
 
             }
             orderRepo.DeleteItem(order.Id);
             return RedirectToAction("Index");
         }
+
+
 
         protected override void Dispose(bool disposing)
         {

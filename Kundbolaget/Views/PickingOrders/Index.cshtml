@@ -12,13 +12,13 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.OrderProduct.Comment)
+            @Html.DisplayNameFor(model => model.OrderProduct.Product)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.StoragePlaceId)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PickingAmount)
+            @Html.DisplayNameFor(model => model.ReservedAmount)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PickedAmount)
@@ -32,13 +32,13 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.OrderProduct.Comment)
+            @Html.DisplayFor(modelItem => item.OrderProduct.Product.ShortDescription)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.StoragePlaceId)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.PickingAmount)
+            @Html.DisplayFor(modelItem => item.ReservedAmount)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PickedAmount)

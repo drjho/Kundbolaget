@@ -22,7 +22,7 @@ namespace Kundbolaget.Models.EntityModels
 
         [Required]
         [Display(Name = "Reserverat antal")]
-        public int PickingAmount { get; set; }
+        public int ReservedAmount { get; set; }
 
         [Required]
         [Display(Name = "Plockat antal")]
