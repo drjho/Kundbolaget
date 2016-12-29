@@ -59,7 +59,6 @@ namespace Kundbolaget.EntityFramework.Repositories
         public void AddToProductGroup(CustomerGroup model)
         {
             var group = db.CustomerGroups.SingleOrDefault(g => g.Id == model.Id);
-            
         }
 
     }
