@@ -47,12 +47,15 @@ namespace Kundbolaget.EntityFramework.Repositories
 
         public void UpdateItems(IEnumerable<PickingOrder> updatedItems)
         {
-            for (int i = 0; i < updatedItems.Count(); i++)
+            if (updatedItems.Count() > 0)
             {
-                db.PickingOrders.Attach(updatedItems.ElementAt(i));
-                db.Entry(updatedItems.ElementAt(i)).State = EntityState.Modified;
+                for (int i = 0; i < updatedItems.Count(); i++)
+                {
+                    db.PickingOrders.Attach(updatedItems.ElementAt(i));
+                    db.Entry(updatedItems.ElementAt(i)).State = EntityState.Modified;
+                }
+                db.SaveChanges();
             }
-            db.SaveChanges();
         }
 
         public void UpdateItem(PickingOrder updatedItem)

@@ -19,6 +19,7 @@ namespace Kundbolaget.Controllers
         private DbOrderRepository orderRepo;
         private DbStoragePlaceRepository storageRepo;
         private DbOrderProductRepository orderProductRepo;
+        private DbPickingOrderRepository pickingOrderRepo;
 
         private DbAddressRepository addressRepo;
         private DbCustomerRepository customerRepo;
@@ -27,9 +28,11 @@ namespace Kundbolaget.Controllers
         {
             StoreContext db = new StoreContext();
             orderRepo = new DbOrderRepository(db);
-            addressRepo = new DbAddressRepository();
             storageRepo = new DbStoragePlaceRepository(db);
             orderProductRepo = new DbOrderProductRepository(db);
+            pickingOrderRepo = new DbPickingOrderRepository(db);
+
+            addressRepo = new DbAddressRepository();
             customerRepo = new DbCustomerRepository();
         }
 
@@ -37,6 +40,7 @@ namespace Kundbolaget.Controllers
             DbStoragePlaceRepository dbStorageRepo, DbOrderProductRepository dbOrderProductRepo,
             DbCustomerRepository dbCustomerRepo)
         {
+            // TODO: update input for test.
             orderRepo = dbOrderRepo;
             addressRepo = dbAddressRepo;
             storageRepo = dbStorageRepo;
@@ -114,12 +118,22 @@ namespace Kundbolaget.Controllers
 
             orderRepo.UpdateItem(order);
 
-            for (int i = 0; i < order.OrderProducts.Count; i++)
+            //for (int i = 0; i < order.OrderProducts.Count; i++)
+            //var orderProduct = order.OrderProducts[i];
+            foreach (var orderProduct in order.OrderProducts)
             {
-                var item = order.OrderProducts[i];
-                item.PickList = ReserveItem(item.ProductId, item.OrderedAmount);
-                item.AvailabeAmount = item.PickList.Sum(x => x.PickingAmount);
-                // TODO: kolla om AvailableAmount är för litet eller noll, notera det?
+                orderProduct.PickList = ReserveItem(orderProduct.ProductId, orderProduct.OrderedAmount);
+                orderProduct.AvailabeAmount = orderProduct.PickList.Sum(x => x.PickingAmount);
+
+                //Funkar detta?                
+                if (orderProduct.AvailabeAmount == 0)
+                    return View(orderVM);
+
+                foreach (var pickOrder in orderProduct.PickList)
+                {
+                    pickOrder.OrderProductId = orderProduct.Id;
+                    pickingOrderRepo.CreateItem(pickOrder);
+                }
             }
             orderProductRepo.UpdateItems(order.OrderProducts);
             return RedirectToAction("Index");
@@ -143,13 +157,13 @@ namespace Kundbolaget.Controllers
 
             var pickList = new List<PickingOrder>();
 
-            for (int i = 0; i < storagePlaces.Length; i++)
+            foreach (var sp in storagePlaces)
             {
-                int pickAmount = Math.Min(storagePlaces[i].AvailableAmount, remainAmount);
+                int pickAmount = Math.Min(sp.AvailableAmount, remainAmount);
                 if (pickAmount > 0)
                 {
-                    pickList.Add(new PickingOrder { StoragePlaceId = i, PickingAmount = pickAmount });
-                    storagePlaces[i].ReservedAmount += pickAmount;
+                    pickList.Add(new PickingOrder { StoragePlaceId = sp.Id, PickingAmount = pickAmount });
+                    sp.ReservedAmount += pickAmount;
                     remainAmount -= pickAmount;
                 }
                 if (remainAmount < 1)
@@ -267,9 +281,12 @@ namespace Kundbolaget.Controllers
                 return HttpNotFound();
             }
             var products = order.OrderProducts;
-            foreach (var item in products)
+            for (int i = 0; i < products.Count; i++)
             {
+                var item = products[i];
                 ReleaseItem(item.ProductId, item.AvailabeAmount);
+                orderProductRepo.DeleteItem(item.Id);
+
             }
             orderRepo.DeleteItem(order.Id);
             return RedirectToAction("Index");
