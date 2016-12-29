@@ -69,6 +69,35 @@ namespace UnitTestMoq
             }
         };
 
+        public static List<Order> Orders => new List<Order>
+        {
+            new Order
+            {
+                Id = 1,
+                CustomerId = 1,
+                AddressId = 1,
+                Comment = "none",
+                OrderDate = DateTime.Now,
+                DesiredDeliveryDate = DateTime.Today,
+                PlannedDeliveryDate = DateTime.Today.AddDays(1),
+                OrderStatus = OrderStatus.Behandlar,
+                OrderProducts = new List<OrderProduct> { OrderProducts[0] }
+                
+            },
+            new Order
+            {
+                Id = 2,
+                CustomerId = 2,
+                AddressId = 2,
+                Comment = "ring Johan",
+                OrderDate = DateTime.Now,
+                DesiredDeliveryDate = DateTime.Today.AddDays(7),
+                PlannedDeliveryDate = DateTime.Today.AddDays(7),
+                OrderStatus = OrderStatus.Plockar,
+                OrderProducts = new List<OrderProduct> { OrderProducts[1] }
+            },
+        };
+
         public static List<Warehouse> Warehouses => new List<Warehouse>
         {
             new Warehouse
@@ -119,7 +148,9 @@ namespace UnitTestMoq
                 ShelfNr = 1,
                 Side = Side.Left,
                 Spot = 1,
-                Vacant = false          
+                Vacant = false,
+                TotalAmount = 1000,
+                ReservedAmount = 500
             },
             new StoragePlace
             {
@@ -129,14 +160,53 @@ namespace UnitTestMoq
                 ShelfNr = 1,
                 Side = Side.Right,
                 Spot = 1,
-                Vacant = true
+                Vacant = true,
+                TotalAmount = 1000,
+                ReservedAmount = 500
             }
         };
         public static List<CustomerAddress> CustomerAddresses => new List<CustomerAddress>
         {
             new CustomerAddress
             {
-                Id = 1
+                Id = 1,
+                AddressId = 1,
+                CustomerId = 1,
+                AddressType = AddressType.Leverans
+            },
+            new CustomerAddress
+            {
+                Id = 2,
+                AddressId = 2,
+                CustomerId = 2,
+                AddressType = AddressType.Faktura
+            },
+            new CustomerAddress
+            {
+                Id = 3,
+                AddressId = 2,
+                CustomerId = 2,
+                AddressType = AddressType.Leverans
+            }
+        };
+
+        public static List<OrderProduct> OrderProducts = new List<OrderProduct>
+        {
+            new OrderProduct
+            {
+                Id = 1,
+                OrderedAmount = 100,
+                AvailabeAmount = 100,
+                OrderId = 1,
+                ProductId = 1
+            },
+            new OrderProduct
+            {
+                Id = 2,
+                OrderedAmount = 200,
+                AvailabeAmount = 100,
+                OrderId = 2,
+                ProductId = 2
             }
         };
 

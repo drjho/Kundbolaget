@@ -17,10 +17,28 @@ namespace Kundbolaget.Controllers
     public class JsonFileController : Controller
     {
 
-        DbCustomerAddressRepository customerAddressRepo = new DbCustomerAddressRepository();
-        DbProductRepository productRepo = new DbProductRepository();
-        DbStoragePlaceRepository storageRepo = new DbStoragePlaceRepository();
-        DbOrderRepository orderRepo = new DbOrderRepository();
+        DbStoragePlaceRepository storageRepo;
+        DbOrderRepository orderRepo;
+        DbCustomerAddressRepository customerAddressRepo;
+        DbProductRepository productRepo;
+
+
+        public JsonFileController()
+        {
+            var db = new StoreContext();
+            orderRepo = new DbOrderRepository(db);
+            storageRepo = new DbStoragePlaceRepository(db);
+            customerAddressRepo = new DbCustomerAddressRepository();
+            productRepo = new DbProductRepository(db);
+        }
+
+        public JsonFileController(DbStoragePlaceRepository dbStoragePlaceRepository, DbOrderRepository dbOrderRepository, DbCustomerAddressRepository dbCustomerAddressRepository, DbProductRepository dbProductRepository)
+        {
+            storageRepo = dbStoragePlaceRepository;
+            orderRepo = dbOrderRepository;
+            customerAddressRepo = dbCustomerAddressRepository;
+            productRepo = dbProductRepository;
+        }
 
         // GET: JsonFile
         public ActionResult Index()
@@ -39,7 +57,10 @@ namespace Kundbolaget.Controllers
             byte[] data;
 
             if (model.File == null)
+            {
+                ModelState.AddModelError("NullFile", "Inget filnamn angivet");
                 return View();
+            }
 
             using (MemoryStream ms = new MemoryStream())
             {
@@ -51,10 +72,18 @@ namespace Kundbolaget.Controllers
 
             JObject jCustomerOrder = JObject.Parse(json);
 
+            var items = customerAddressRepo.GetItems();
+
             var customerAddress = customerAddressRepo.GetItems().Where(
                 a => a.AddressType == AddressType.Leverans &&
                 a.Address.AddressOrderId == (string)jCustomerOrder["addressid"] &&
                 a.Customer.CustomerOrderId == (string)jCustomerOrder["customerid"]).SingleOrDefault();
+
+            if (customerAddress == null)
+            {
+                ModelState.AddModelError("CustomerAddress", "V.g. kontrollera angivet CustomerOrderId eller AddressOrderId");
+                return View();
+            }
 
             var customer = customerAddress.Customer;
 

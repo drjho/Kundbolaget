@@ -12,14 +12,9 @@ namespace Kundbolaget.EntityFramework.Repositories
     {
         StoreContext db;
 
-        public DbStoragePlaceRepository()
+        public DbStoragePlaceRepository(StoreContext context)
         {
-            db = new StoreContext();
-        }
-
-        public DbStoragePlaceRepository(StoreContext fakeContext)
-        {
-            db = fakeContext;
+            db = context;
         }
 
         public void CreateItem(StoragePlace newItem)
@@ -48,6 +43,16 @@ namespace Kundbolaget.EntityFramework.Repositories
         public StoragePlace[] GetItems()
         {
             return db.StoragePlaces.Include(s => s.Warehouse).ToArray();
+        }
+
+        public void UpdateItems(IEnumerable<StoragePlace> updatedItems)
+        {
+            for (int i = 0; i < updatedItems.Count(); i++)
+            {
+                db.StoragePlaces.Attach(updatedItems.ElementAt(i));
+                db.Entry(updatedItems.ElementAt(i)).State = EntityState.Modified;
+            }
+            db.SaveChanges();
         }
 
         public void UpdateItem(StoragePlace updatedItem)

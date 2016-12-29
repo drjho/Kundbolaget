@@ -10,7 +10,12 @@ namespace Kundbolaget.EntityFramework.Repositories
 {
     public class DbOrderRepository : IGenericRepository<Order>, IDisposable
     {
-        private StoreContext db = new StoreContext();
+        private StoreContext db;
+
+        public DbOrderRepository(StoreContext context)
+        {
+            db = context;
+        }
 
         public void CreateItem(Order newItem)
         {

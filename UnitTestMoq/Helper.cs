@@ -15,7 +15,7 @@ namespace UnitTestMoq
             mock.As<IQueryable<T>>().Setup(m => m.Provider).Returns(data.Provider);
             mock.As<IQueryable<T>>().Setup(m => m.Expression).Returns(data.Expression);
             mock.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(data.ElementType);
-            mock.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator);
+            mock.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
             return mock;
         }
     }

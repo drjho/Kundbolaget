@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Kundbolaget.EntityFramework.Repositories;
 using Kundbolaget.Models.EntityModels;
 using Kundbolaget.Models.ViewModels;
+using Kundbolaget.EntityFramework.Context;
 
 namespace Kundbolaget.Controllers
 {
@@ -19,9 +20,16 @@ namespace Kundbolaget.Controllers
 
         public WarehouseController()
         {
+            var db = new StoreContext();
             warehouseRepo = new DbWarehouseRepository();
-            productRepo = new DbProductRepository();
-            storageRepo = new DbStoragePlaceRepository();
+            productRepo = new DbProductRepository(db);
+            storageRepo = new DbStoragePlaceRepository(db);
+        }
+
+        public WarehouseController(DbWarehouseRepository fakeDbWarehouseRepository, DbStoragePlaceRepository fakeDbStoragePlaceRepository)
+        {
+            warehouseRepo = fakeDbWarehouseRepository;
+            storageRepo = fakeDbStoragePlaceRepository;
         }
 
         // GET: Warehouse
@@ -74,6 +82,10 @@ namespace Kundbolaget.Controllers
         public ActionResult Details(int id)
         {
             var model = warehouseRepo.GetItem(id);
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
             return View(model);
         }
 
@@ -88,6 +100,10 @@ namespace Kundbolaget.Controllers
         public ActionResult Delete(int id)
         {
             var model = warehouseRepo.GetItem(id);
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
             return View(model);
         }
 

@@ -47,7 +47,8 @@ namespace Kundbolaget.EntityFramework.Repositories
 
         public CustomerAddress[] GetItems()
         {
-            return db.CustomerAddresses.Include(a => a.Address).Include(a => a.Customer).ToArray();
+            //return db.CustomerAddresses.Include(a => a.Address).Include(a => a.Customer).ToArray();
+            return db.CustomerAddresses.ToArray();
         }
 
         public void UpdateItem(CustomerAddress updatedCustomerAddress)
