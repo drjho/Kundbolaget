@@ -33,7 +33,7 @@ namespace Kundbolaget.Controllers
             customerRepo = new DbCustomerRepository();
         }
 
-        public OrdersController(DbOrderRepository dbOrderRepo, DbAddressRepository dbAddressRepo, 
+        public OrdersController(DbOrderRepository dbOrderRepo, DbAddressRepository dbAddressRepo,
             DbStoragePlaceRepository dbStorageRepo, DbOrderProductRepository dbOrderProductRepo,
             DbCustomerRepository dbCustomerRepo)
         {
@@ -117,13 +117,23 @@ namespace Kundbolaget.Controllers
             for (int i = 0; i < order.OrderProducts.Count; i++)
             {
                 var item = order.OrderProducts[i];
-                item.AvailabeAmount = ReserveItem(item.ProductId, item.OrderedAmount);
+                item.PickList = ReserveItem(item.ProductId, item.OrderedAmount);
+                item.AvailabeAmount = item.PickList.Sum(x => x.PickingAmount);
+                // TODO: kolla om AvailableAmount är för litet eller noll, notera det?
             }
             orderProductRepo.UpdateItems(order.OrderProducts);
             return RedirectToAction("Index");
         }
 
-        public int ReserveItem(int? productId, int orderedAmount)
+        /// <summary>
+        /// Indata: Produktid och beställt antal.
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="orderedAmount"></param>
+        /// <returns>
+        /// Utdata: En lista av plockordrar.
+        /// </returns>
+        public List<PickingOrder> ReserveItem(int? productId, int orderedAmount)
         {
             // This assume that there is only 1 warehouse!!!
 
@@ -131,16 +141,22 @@ namespace Kundbolaget.Controllers
 
             var storagePlaces = storageRepo.GetItems().Where(sp => sp.ProductId == productId).ToArray();
 
+            var pickList = new List<PickingOrder>();
+
             for (int i = 0; i < storagePlaces.Length; i++)
             {
-                int addAmount = Math.Min(storagePlaces[i].AvailableAmount, remainAmount);
-                storagePlaces[i].ReservedAmount += addAmount;
-                remainAmount -= addAmount;
+                int pickAmount = Math.Min(storagePlaces[i].AvailableAmount, remainAmount);
+                if (pickAmount > 0)
+                {
+                    pickList.Add(new PickingOrder { StoragePlaceId = i, PickingAmount = pickAmount });
+                    storagePlaces[i].ReservedAmount += pickAmount;
+                    remainAmount -= pickAmount;
+                }
                 if (remainAmount < 1)
                     break;
             }
             storageRepo.UpdateItems(storagePlaces);
-            return orderedAmount - remainAmount;
+            return pickList;
         }
 
         public void ReleaseItem(int? productId, int reservedAmount)

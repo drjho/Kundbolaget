@@ -27,5 +27,6 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Kommentar")]
         public string Comment { get; set; }
 
+
     }
 }

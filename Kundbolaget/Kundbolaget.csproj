@@ -217,11 +217,16 @@
     <Compile Include="Migrations\201612201959130_revisedForPrepareOrder.Designer.cs">
       <DependentUpon>201612201959130_revisedForPrepareOrder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612291146569_addedPickingOrder.cs" />
+    <Compile Include="Migrations\201612291146569_addedPickingOrder.Designer.cs">
+      <DependentUpon>201612291146569_addedPickingOrder.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\AlcoholLicense.cs" />
     <Compile Include="Models\EntityModels\Customer.cs" />
     <Compile Include="Models\EntityModels\Order.cs" />
+    <Compile Include="Models\EntityModels\PickingOrder.cs" />
     <Compile Include="Models\EntityModels\OrderProduct.cs" />
     <Compile Include="Models\EntityModels\CustomerAddress.cs" />
     <Compile Include="Models\EntityModels\CustomerGroup.cs" />
@@ -334,6 +339,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612201959130_revisedForPrepareOrder.resx">
       <DependentUpon>201612201959130_revisedForPrepareOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612291146569_addedPickingOrder.resx">
+      <DependentUpon>201612291146569_addedPickingOrder.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -38,5 +38,8 @@ namespace Kundbolaget.Models.EntityModels
         public int? OrderId { get; set; }
         [Display(Name = "Order")]
         public virtual Order Order { get; set; }
+
+        [Display(Name = "Plockordrar")]
+        public virtual List<PickingOrder> PickList { get; set; }
     }
 }
