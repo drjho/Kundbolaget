@@ -12,8 +12,8 @@ namespace Kundbolaget.Controllers
     public class AddressController : Controller
     {
 
-        DbAddressRepository repository;
-        private DbStoreRepository repositoryAddress;
+        private DbAddressRepository repository;
+
         public AddressController()
         {
             repository = new DbAddressRepository();
