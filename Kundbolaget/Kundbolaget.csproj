@@ -190,6 +190,7 @@
     <Compile Include="EntityFramework\Repositories\DbCustomerGroupRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbAlcoholLicenseRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbCustomerRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\DbPickingOrderRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbOrderProductRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbOrderRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbProductRepository.cs" />
