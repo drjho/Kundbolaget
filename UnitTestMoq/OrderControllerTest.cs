@@ -366,8 +366,8 @@ namespace UnitTestMoq
 
             // Assert
             _mockSetStoragePlace.Verify(x => x.Attach(It.IsAny<StoragePlace>()), Times.AtLeastOnce);
-            _mockSetPickingOrder.Verify(x => x.Remove(It.IsAny<PickingOrder>()), Times.AtLeastOnce);
-            _mockSetOrderProduct.Verify(x => x.Remove(It.IsAny<OrderProduct>()), Times.AtLeastOnce);
+            _mockSetPickingOrder.Verify(x => x.RemoveRange(It.IsAny<IEnumerable<PickingOrder>>()), Times.AtLeastOnce);
+            _mockSetOrderProduct.Verify(x => x.RemoveRange(It.IsAny<IEnumerable<OrderProduct>>()), Times.AtLeastOnce);
             _mockSetOrder.Verify(x => x.Remove(It.IsAny<Order>()), Times.Once);
             _mockContext.Verify(x => x.SaveChanges(), Times.AtLeastOnce);
         }

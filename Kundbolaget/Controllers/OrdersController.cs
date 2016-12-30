@@ -193,34 +193,8 @@ namespace Kundbolaget.Controllers
             pickingOrderRepo.DeleteItems(pickList);
             storageRepo.UpdateItems(storages);
 
-            //foreach (var pickOrder in pickList)
-            //{
-            //    var sp = storageRepo.GetItem((int)pickOrder.StoragePlaceId);
-            //    sp.ReservedAmount -= pickOrder.ReservedAmount;
-            //    storageRepo.UpdateItem(sp);
-            //    pickingOrderRepo.DeleteItem(sp.Id);
-            //}
+
         }
-
-        //public void ReleaseItem(int? productId, int reservedAmount)
-        //{
-        //    // This assume that there is only 1 warehouse!!!
-
-        //    int remainAmount = reservedAmount;
-
-        //    var storagePlaces = storageRepo.GetItems().Where(sp => sp.ProductId == productId).ToArray();
-
-        //    for (int i = 0; i < storagePlaces.Length; i++)
-        //    {
-        //        int subAmount = Math.Min(storagePlaces[i].ReservedAmount, remainAmount);
-        //        remainAmount -= subAmount;
-        //        storagePlaces[i].ReservedAmount -= subAmount;
-        //        if (remainAmount < 1)
-        //            break;
-        //    }
-        //    storageRepo.UpdateItems(storagePlaces);
-        //}
-
 
         // GET: Orders/Create
         public ActionResult Create()
