@@ -287,6 +287,72 @@ namespace UnitTestMoq
         }
 
         [Test]
+        public void ShowPickingOrder_With_Null_As_Id()
+        {
+            // Arrange
+            int? i = null;
+            // Act
+            var result = _orderController.ShowPickingOrder(i) as HttpStatusCodeResult;
+            // Assert
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, (System.Net.HttpStatusCode)result.StatusCode);
+        }
+
+
+        [Test]
+        public void ShowPickingOrder_Without_Existing_Entity_Return_404_Error()
+        {
+            var result = _orderController.ShowPickingOrder(2000);
+            Assert.AreEqual(typeof(HttpNotFoundResult), result.GetType());
+        }
+
+        [Test]
+        public void ShowPickingOrder_Success()
+        {
+            // Act
+            var actionResult = _orderController.ShowPickingOrder(1);
+            var viewResult = actionResult as ViewResult;
+            var actual = (List<PickingOrder>)viewResult.Model;
+
+            // Assert
+            Assert.AreEqual(1, actual.Count);
+            Assert.AreEqual(ResourceData.PickingOrders[0].OrderProductId, actual[0].OrderProductId);
+        }
+
+        [Test]
+        public void CreateDeliveryNote_With_Null_As_Id()
+        {
+            // Arrange
+            int? i = null;
+            // Act
+            var result = _orderController.CreateDeliveryNote(i) as HttpStatusCodeResult;
+            // Assert
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, (System.Net.HttpStatusCode)result.StatusCode);
+        }
+
+
+        [Test]
+        public void CreateDeliveryNote_Without_Existing_Entity_Return_404_Error()
+        {
+            var result = _orderController.CreateDeliveryNote(2000);
+            Assert.AreEqual(typeof(HttpNotFoundResult), result.GetType());
+        }
+
+        [Test]
+        public void CreateDeliveryNote_Success()
+        {
+            // Act
+            var actualResult = _orderController.CreateDeliveryNote(1) as RedirectToRouteResult;
+
+            // Assert
+            _mockSetOrder.Verify(x => x.Attach(It.IsAny<Order>()), Times.Once);
+            _mockSetStoragePlace.Verify(x => x.Attach(It.IsAny<StoragePlace>()), Times.AtLeastOnce);
+            _mockSetOrderProduct.Verify(x => x.Attach(It.IsAny<OrderProduct>()), Times.AtLeastOnce);
+            _mockContext.Verify(x => x.SaveChanges(), Times.AtLeastOnce);
+            Assert.AreEqual("Index", actualResult.RouteValues["action"]);
+
+        }
+
+        [Test]
         public void PrepareOrder_With_Null_As_Id()
         {
             // Arrange
@@ -384,15 +450,15 @@ namespace UnitTestMoq
             int pid = (int)storage.ProductId;
             int total = storage.TotalAmount;
             int reserved = storage.ReservedAmount;
-            int diff = 100;
+            var pickList = _mockSetPickingOrder.Object.Where(x => x.Id == 1).ToList();
+            int diff = pickList[0].ReservedAmount;
 
-            //// Act
-            //_orderController.ReleaseItem(pid, diff);
-            //_orderController.ReserveItem
-            //var expected = reserved - diff;
+            // Act
+            _orderController.ReleaseItem(pickList);
+            var expected = reserved - diff;
 
-            //// Assert
-            //Assert.AreEqual(expected, storage.ReservedAmount);
+            // Assert
+            Assert.AreEqual(expected, storage.ReservedAmount);
         }
 
         [Test]

@@ -95,6 +95,47 @@ namespace Kundbolaget.Controllers
             return View(model);
         }
 
+        public ActionResult CreateDeliveryNote(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var order = orderRepo.GetItem((int)id);
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            var pickList = new List<PickingOrder>();
+            
+            foreach (var item in order.OrderProducts)
+            {
+                pickList.AddRange(item.PickList);
+                // Assumes that the delivery amount = available amount.
+                item.DeliveredAmount = item.AvailabeAmount;
+            }
+            UpdateStoragePlaceAmount(pickList);
+
+            orderProductRepo.UpdateItems(order.OrderProducts);
+
+            order.OrderStatus = OrderStatus.Fraktar;
+            orderRepo.UpdateItem(order);
+            return RedirectToAction("Index");
+        }
+
+        public void UpdateStoragePlaceAmount(List<PickingOrder> pickList)
+        {
+            var updatedStorages = new List<StoragePlace>();
+            foreach (var item in pickList)
+            {
+                var storage = storageRepo.GetItem((int)item.StoragePlaceId);
+                storage.ReservedAmount -= item.ReservedAmount;
+                storage.TotalAmount -= item.ReservedAmount;
+                updatedStorages.Add(storage);
+            }
+            storageRepo.UpdateItems(updatedStorages);
+        }
+
         public ActionResult PrepareOrder(int? id)
         {
             if (id == null)
@@ -199,7 +240,7 @@ namespace Kundbolaget.Controllers
             return pickList;
         }
 
-        private void ReleaseItem(List<PickingOrder> pickList)
+        public void ReleaseItem(List<PickingOrder> pickList)
         {
             var storages = new List<StoragePlace>();
             for (int i = 0; i < pickList.Count; i++)
@@ -209,12 +250,9 @@ namespace Kundbolaget.Controllers
                 // Avoid having negative reserved amount (should not happen but just in case)
                 s.ReservedAmount -= Math.Min(s.ReservedAmount, p.ReservedAmount);
                 storages.Add(s);
-                //pickingOrderRepo.DeleteItem(pickList[i].Id);
             }
             pickingOrderRepo.DeleteItems(pickList);
             storageRepo.UpdateItems(storages);
-
-
         }
 
         // GET: Orders/Create
