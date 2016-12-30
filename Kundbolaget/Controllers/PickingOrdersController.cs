@@ -27,6 +27,13 @@ namespace Kundbolaget.Controllers
             storageRepo = new DbStoragePlaceRepository(db);
         }
 
+        public PickingOrdersController(DbPickingOrderRepository dbPickingOrderRepo, DbOrderRepository dbOrderRepo, DbStoragePlaceRepository dbstoragePlaceRepo)
+        {
+            pickingOrderRepo = dbPickingOrderRepo;
+            orderRepo = dbOrderRepo;
+            storageRepo = dbstoragePlaceRepo;
+        }
+
         // GET: PickingOrders
         public ActionResult Index()
         {
@@ -64,6 +71,8 @@ namespace Kundbolaget.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,StoragePlaceId,PickingAmount,PickedAmount,Comment,OrderProductId")] PickingOrder pickingOrder)
         {
+            if (pickingOrder.OrderProductId == null)
+                ModelState.AddModelError("OrderProductId", "OrderProductId är inte satt");
             if (ModelState.IsValid)
             {
                 pickingOrderRepo.CreateItem(pickingOrder);
@@ -129,6 +138,11 @@ namespace Kundbolaget.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            var order = orderRepo.GetItem(id);
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
             pickingOrderRepo.DeleteItem(id);
             return RedirectToAction("Index");
         }

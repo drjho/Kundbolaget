@@ -32,7 +32,7 @@ namespace UnitTestMoq
         private Mock<DbSet<PickingOrder>> _mockSetPickingOrder;
 
         //Fake Controller
-        private OrdersController _orderController;
+        private PickingOrdersController _controller;
 
 
         [SetUp]
@@ -96,8 +96,7 @@ namespace UnitTestMoq
             var dbPickingOrderRepository = new DbPickingOrderRepository(_mockContext.Object);
 
             //Setup fakerepo via overloaded constructor
-            _orderController = new OrdersController(dbOrderRepository, dbAddressRepository,
-                dbStoragePlaceRepository, dbOrderProductRepository, dbCustomerRepository, dbPickingOrderRepository);
+            _controller = new PickingOrdersController(dbPickingOrderRepository, dbOrderRepository, dbStoragePlaceRepository);
         }
 
 
@@ -105,76 +104,60 @@ namespace UnitTestMoq
         public void Create()
         {
             // Arrange
-            var order = new Order
+            var order = new PickingOrder
             {
-                OrderDate = DateTime.Today,
-                CustomerId = 1,
-                DesiredDeliveryDate = DateTime.Today,
-                AddressId = 1,
-                OrderProducts = new List<OrderProduct>
-                {
-                    new OrderProduct
-                    {
-                        Id = 1,
-                        OrderedAmount = 100,
-                        DeliveredAmount = 100,
-                        OrderId = 1,
-                        ProductId = 1
-                    }
-                }
+                Id = 3,
+                OrderProductId = 1,
+                StoragePlaceId = 1,
+                ReservedAmount = 100
             };
 
             // Act
-            _orderController.Create(order);
+            _controller.Create(order);
 
             // Assert
-            _mockSetOrder.Verify(x => x.Add(order), Times.Once);
+            _mockSetPickingOrder.Verify(x => x.Add(order), Times.Once);
             _mockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
 
         [Test]
-        public void Create_Post_Redirect_To_Index()
+        public void Create_Post_Success_Return_View()
         {
             // Arrange
-            var order = new Order
+            var order = new PickingOrder
             {
-                OrderDate = DateTime.Today,
-                CustomerId = 1,
-                DesiredDeliveryDate = DateTime.Today,
-                AddressId = 1,
-                OrderProducts = new List<OrderProduct>
-                {
-                    new OrderProduct
-                    {
-                        Id = 1,
-                        OrderedAmount = 100,
-                        DeliveredAmount = 100,
-                        OrderId = 1,
-                        ProductId = 1
-                    }
-                }
+                Id = 3,
+                OrderProductId = 1,
+                StoragePlaceId = 1,
+                ReservedAmount = 100
             };
 
+
             // Act
-            var actualResult = _orderController.Create(order) as RedirectToRouteResult;
+            var actualResult = _controller.Create(order) as ViewResult;
+            var actual = (PickingOrder)actualResult.Model;
 
             // Assert
-            Assert.AreEqual("Index", actualResult.RouteValues["action"]);
+            Assert.AreEqual(order.Id, actual.Id);
         }
 
         [Test]
         public void Create_Post_Not_Valid_Redirect_To_Create()
         {
             // Arrange
-            var order = new Order
+            var order = new PickingOrder
             {
+                Id = 5,
+                
+                StoragePlaceId = 1,
+                ReservedAmount = 100
             };
 
             // Act
-            var actualResult = _orderController.Create(order) as RedirectToRouteResult;
+            var actualResult = _controller.Create(order) as RedirectToRouteResult;
 
             // Assert
-            Assert.AreEqual("Create", actualResult.RouteValues["action"]);
+            Assert.AreEqual("Index", actualResult.RouteValues["action"]);
         }
 
         [Test]
@@ -184,9 +167,9 @@ namespace UnitTestMoq
             var expectedId = 1;
 
             // Act
-            var actionResult = _orderController.Delete(expectedId);
+            var actionResult = _controller.Delete(expectedId);
             var viewResult = actionResult as ViewResult;
-            var actual = (Order)viewResult.Model;
+            var actual = (PickingOrder)viewResult.Model;
 
             // Assert
             Assert.AreEqual(expectedId, actual.Id);
@@ -195,7 +178,7 @@ namespace UnitTestMoq
         [Test]
         public void View_Delete_With_Null_As_Id()
         {
-            var result = _orderController.Delete(null) as HttpStatusCodeResult;
+            var result = _controller.Delete(null) as HttpStatusCodeResult;
 
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, (System.Net.HttpStatusCode)result.StatusCode);
         }
@@ -204,7 +187,7 @@ namespace UnitTestMoq
         [Test]
         public void View_Delete_Without_Existing_Entity_Return_404_Error()
         {
-            var result = _orderController.Delete(2000);
+            var result = _controller.Delete(2000);
             Assert.AreEqual(typeof(HttpNotFoundResult), result.GetType());
         }
 
@@ -212,7 +195,7 @@ namespace UnitTestMoq
         public void View_Edit_With_Null_As_Id()
         {
             int? i = null;
-            var result = _orderController.Edit(i) as HttpStatusCodeResult;
+            var result = _controller.Edit(i) as HttpStatusCodeResult;
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, (System.Net.HttpStatusCode)result.StatusCode);
         }
 
@@ -220,7 +203,7 @@ namespace UnitTestMoq
         [Test]
         public void View_Edit_Without_Existing_Entity_Return_404_Error()
         {
-            var result = _orderController.Edit(2000);
+            var result = _controller.Edit(2000);
             Assert.AreEqual(typeof(HttpNotFoundResult), result.GetType());
         }
 
@@ -229,30 +212,30 @@ namespace UnitTestMoq
         public void Edit_Get_Object()
         {
             // Act
-            var actionResult = _orderController.Edit(1);
+            var actionResult = _controller.Edit(1);
             var viewResult = actionResult as ViewResult;
-            var actualResult = (Order)viewResult.Model;
+            var actualResult = (PickingOrder)viewResult.Model;
 
             // Assert
             Assert.AreEqual(1, actualResult.Id);
-            Assert.AreEqual(ResourceData.Orders[0].AddressId, actualResult.AddressId);
-            Assert.AreEqual(ResourceData.Orders[0].CustomerId, actualResult.CustomerId);
+            Assert.AreEqual(ResourceData.PickingOrders[0].StoragePlaceId, actualResult.StoragePlaceId);
+            Assert.AreEqual(ResourceData.PickingOrders[0].OrderProductId, actualResult.OrderProductId);
         }
 
         [Test]
         public void Edit_Update_Db_New_Info_In_Object()
         {
             // Arrange
-            var orders = _mockSetOrder.Object.ToArray();
+            var orders = _mockSetPickingOrder.Object.ToArray();
             var testObject = orders[0];
-            testObject.AddressId = 2;
+            testObject.StoragePlaceId = 2;
 
             // Act
-            _orderController.Edit(testObject);
+            _controller.Edit(testObject);
 
             // Assert
-            Assert.AreEqual(2, orders[0].AddressId);
-            _mockSetOrder.Verify(x => x.Attach(testObject), Times.Once);
+            Assert.AreEqual(2, orders[0].StoragePlaceId);
+            _mockSetPickingOrder.Verify(x => x.Attach(testObject), Times.Once);
             _mockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
 
@@ -260,98 +243,36 @@ namespace UnitTestMoq
         public void Details_Get_Object()
         {
             // Act
-            var actionResult = _orderController.Details(1);
+            var actionResult = _controller.Details(1);
             var viewResult = actionResult as ViewResult;
-            var actual = (Order)viewResult.Model;
+            var actual = (PickingOrder)viewResult.Model;
 
             // Assert
-            Assert.AreEqual(ResourceData.Orders[0].AddressId, actual.AddressId);
+            Assert.AreEqual(ResourceData.PickingOrders[0].StoragePlaceId, actual.StoragePlaceId);
             Assert.AreEqual(1, actual.Id);
-            Assert.AreEqual(ResourceData.Orders[0].CustomerId, actual.CustomerId);
+            Assert.AreEqual(ResourceData.PickingOrders[0].OrderProductId, actual.OrderProductId);
         }
 
         [Test]
         public void Index_Retrive_All_Data()
         {
             // Arrange 
-            var expectedCount = ResourceData.Orders.Count;
+            var expectedCount = ResourceData.PickingOrders.Count;
 
             // Act
-            var actionResult = _orderController.Index();
+            var actionResult = _controller.Index();
             var viewResult = actionResult as ViewResult;
-            var viewResultModel = (Order[])viewResult.Model;
-            var actual = viewResultModel.ToList();
+            var viewResultModel = viewResult.Model;
+            var actual = viewResultModel as List<PickingOrder>;
 
             // Assert
             Assert.AreEqual(expectedCount, actual.Count);
         }
 
         [Test]
-        public void PrepareOrder_With_Null_As_Id()
-        {
-            // Arrange
-            int? i = null;
-            // Act
-            var result = _orderController.PrepareOrder(i) as HttpStatusCodeResult;
-            // Assert
-            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, (System.Net.HttpStatusCode)result.StatusCode);
-        }
-
-
-        [Test]
-        public void PrepareOrder_Without_Existing_Entity_Return_404_Error()
-        {
-            var result = _orderController.PrepareOrder(2000);
-            Assert.AreEqual(typeof(HttpNotFoundResult), result.GetType());
-        }
-
-        [Test]
-        public void PrepareOrder_Return_ViewModel()
-        {
-            // Act
-            var actionResult = _orderController.PrepareOrder(1);
-            var viewResult = actionResult as ViewResult;
-            var actual = (OrderVM)viewResult.Model;
-
-            // Assert
-            Assert.AreEqual(ResourceData.Orders[0].AddressId, actual.AddressId);
-            Assert.AreEqual(1, actual.Id);
-            Assert.AreEqual(ResourceData.Orders[0].CustomerId, actual.CustomerId);
-        }
-
-        /// <summary>
-        /// This has to be tested seperately. (Ctrl-R, T)
-        /// </summary>
-        [Test]
-        public void PrepareOrder_OrderVM_Redirect_To_Index()
-        {
-            // Arrange
-            var model = new OrderVM
-            {
-                Id = 1,
-                OrderDate = DateTime.Today,
-                CustomerId = 1,
-                PlannedDeliveryDate = DateTime.Today,
-                AddressId = 1,
-                Comment = "",
-            };
-
-            // Act
-            var actualResult = _orderController.PrepareOrder(model) as RedirectToRouteResult;
-
-            // Assert
-            _mockSetOrder.Verify(x => x.Attach(It.IsAny<Order>()), Times.Once);
-            _mockSetStoragePlace.Verify(x => x.Attach(It.IsAny<StoragePlace>()), Times.AtLeastOnce);
-            _mockSetOrderProduct.Verify(x => x.Attach(It.IsAny<OrderProduct>()), Times.AtLeastOnce);
-            _mockContext.Verify(x => x.SaveChanges(), Times.AtLeastOnce);
-            Assert.AreEqual("Index", actualResult.RouteValues["action"]);
-
-        }
-
-        [Test]
         public void DeleteConfirmed_Without_Existing_Entity_Return_404_Error()
         {
-            var result = _orderController.DeleteConfirmed(2000);
+            var result = _controller.DeleteConfirmed(2000);
             Assert.AreEqual(typeof(HttpNotFoundResult), result.GetType());
         }
 
@@ -362,56 +283,12 @@ namespace UnitTestMoq
         public void DeleteConfirmed()
         {
             // Act
-            var result = _orderController.DeleteConfirmed(1);
+            var result = _controller.DeleteConfirmed(1);
 
             // Assert
-            _mockSetStoragePlace.Verify(x => x.Attach(It.IsAny<StoragePlace>()), Times.AtLeastOnce);
-            _mockSetPickingOrder.Verify(x => x.RemoveRange(It.IsAny<IEnumerable<PickingOrder>>()), Times.AtLeastOnce);
-            _mockSetOrderProduct.Verify(x => x.RemoveRange(It.IsAny<IEnumerable<OrderProduct>>()), Times.AtLeastOnce);
-            _mockSetOrder.Verify(x => x.Remove(It.IsAny<Order>()), Times.Once);
+            _mockSetPickingOrder.Verify(x => x.Remove(It.IsAny<PickingOrder>()), Times.Once);
             _mockContext.Verify(x => x.SaveChanges(), Times.AtLeastOnce);
         }
-
-        /// <summary>
-        /// Check if the reserved amount is changed after calling ReleaseItem.
-        /// </summary>
-        [Test]
-        public void ReleaseItem()
-        {
-            // Arrange
-            var storages = _mockSetStoragePlace.Object.ToArray();
-            var storage = storages[0];
-            int pid = (int)storage.ProductId;
-            int total = storage.TotalAmount;
-            int reserved = storage.ReservedAmount;
-            int diff = 100;
-
-            //// Act
-            //_orderController.ReleaseItem(pid, diff);
-            //_orderController.ReserveItem
-            //var expected = reserved - diff;
-
-            //// Assert
-            //Assert.AreEqual(expected, storage.ReservedAmount);
-        }
-
-        [Test]
-        public void ReserveItem()
-        {
-            // Arrange
-            var storages = _mockSetStoragePlace.Object.ToArray();
-            var storage = storages[0];
-            int pid = (int)storage.ProductId;
-            int total = storage.TotalAmount;
-            int reserved = storage.ReservedAmount;
-            int diff = 100;
-
-            // Act
-            _orderController.ReserveItem(pid, diff);
-            var expected = reserved + diff;
-
-            // Assert
-            Assert.AreEqual(expected, storage.ReservedAmount);
-        }
+        
     }
 }
