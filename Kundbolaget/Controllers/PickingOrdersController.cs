@@ -15,7 +15,7 @@ namespace Kundbolaget.Controllers
     public class PickingOrdersController : Controller
     {
         private DbPickingOrderRepository pickingOrderRepo;
-        private DbOrderRepository orderRepo;
+        private DbOrderProductRepository orderProductRepo;
         private DbStoragePlaceRepository storageRepo;
 
 
@@ -23,14 +23,17 @@ namespace Kundbolaget.Controllers
         {
             StoreContext db = new StoreContext();
             pickingOrderRepo = new DbPickingOrderRepository(db);
-            orderRepo = new DbOrderRepository(db);
+            orderProductRepo = new DbOrderProductRepository(db);
             storageRepo = new DbStoragePlaceRepository(db);
         }
 
-        public PickingOrdersController(DbPickingOrderRepository dbPickingOrderRepo, DbOrderRepository dbOrderRepo, DbStoragePlaceRepository dbstoragePlaceRepo)
+        public PickingOrdersController(
+            DbPickingOrderRepository dbPickingOrderRepo, 
+            DbOrderProductRepository dbOrderProductRepo, 
+            DbStoragePlaceRepository dbstoragePlaceRepo)
         {
             pickingOrderRepo = dbPickingOrderRepo;
-            orderRepo = dbOrderRepo;
+            orderProductRepo = dbOrderProductRepo;
             storageRepo = dbstoragePlaceRepo;
         }
 
@@ -59,7 +62,7 @@ namespace Kundbolaget.Controllers
         // GET: PickingOrders/Create
         public ActionResult Create()
         {
-            ViewBag.OrderProductId = new SelectList(orderRepo.GetItems(), "Id", "Comment");
+            ViewBag.OrderProductId = new SelectList(orderProductRepo.GetItems(), "Id", "Comment");
             ViewBag.StoragePlaceId = new SelectList(storageRepo.GetItems(), "Id", "Id");
             return View();
         }
@@ -79,7 +82,7 @@ namespace Kundbolaget.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.OrderProductId = new SelectList(orderRepo.GetItems(), "Id", "Comment", pickingOrder.OrderProductId);
+            ViewBag.OrderProductId = new SelectList(orderProductRepo.GetItems(), "Id", "Comment", pickingOrder.OrderProductId);
             ViewBag.StoragePlaceId = new SelectList(storageRepo.GetItems(), "Id", "Id", pickingOrder.StoragePlaceId);
             return View(pickingOrder);
         }
@@ -96,7 +99,7 @@ namespace Kundbolaget.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.OrderProductId = new SelectList(orderRepo.GetItems(), "Id", "Comment", pickingOrder.OrderProductId);
+            ViewBag.OrderProductId = new SelectList(orderProductRepo.GetItems(), "Id", "Comment", pickingOrder.OrderProductId);
             ViewBag.StoragePlaceId = new SelectList(storageRepo.GetItems(), "Id", "Id", pickingOrder.StoragePlaceId);
             return View(pickingOrder);
         }
@@ -113,7 +116,7 @@ namespace Kundbolaget.Controllers
                 pickingOrderRepo.UpdateItem(pickingOrder);
                 return RedirectToAction("Index");
             }
-            ViewBag.OrderProductId = new SelectList(orderRepo.GetItems(), "Id", "Comment", pickingOrder.OrderProductId);
+            ViewBag.OrderProductId = new SelectList(orderProductRepo.GetItems(), "Id", "Comment", pickingOrder.OrderProductId);
             ViewBag.StoragePlaceId = new SelectList(storageRepo.GetItems(), "Id", "Id", pickingOrder.StoragePlaceId);
             return View(pickingOrder);
         }
@@ -138,7 +141,7 @@ namespace Kundbolaget.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var order = orderRepo.GetItem(id);
+            var order = orderProductRepo.GetItem(id);
             if (order == null)
             {
                 return HttpNotFound();

@@ -96,7 +96,7 @@ namespace UnitTestMoq
             var dbPickingOrderRepository = new DbPickingOrderRepository(_mockContext.Object);
 
             //Setup fakerepo via overloaded constructor
-            _controller = new PickingOrdersController(dbPickingOrderRepository, dbOrderRepository, dbStoragePlaceRepository);
+            _controller = new PickingOrdersController(dbPickingOrderRepository, dbOrderProductRepository, dbStoragePlaceRepository);
         }
 
 
@@ -121,7 +121,7 @@ namespace UnitTestMoq
         }
 
         [Test]
-        public void Create_Post_Success_Return_View()
+        public void Create_Post_Success_Redirect_To_Index()
         {
             // Arrange
             var order = new PickingOrder
@@ -132,17 +132,16 @@ namespace UnitTestMoq
                 ReservedAmount = 100
             };
 
-
             // Act
-            var actualResult = _controller.Create(order) as ViewResult;
-            var actual = (PickingOrder)actualResult.Model;
+            var actualResult = _controller.Create(order) as RedirectToRouteResult;
 
             // Assert
-            Assert.AreEqual(order.Id, actual.Id);
+            Assert.AreEqual("Index", actualResult.RouteValues["action"]);
+
         }
 
         [Test]
-        public void Create_Post_Not_Valid_Redirect_To_Create()
+        public void Create_Post_Not_Valid_Return_View_Model()
         {
             // Arrange
             var order = new PickingOrder
@@ -154,10 +153,11 @@ namespace UnitTestMoq
             };
 
             // Act
-            var actualResult = _controller.Create(order) as RedirectToRouteResult;
+            var actualResult = _controller.Create(order) as ViewResult;
+            var actual = (PickingOrder)actualResult.Model;
 
             // Assert
-            Assert.AreEqual("Index", actualResult.RouteValues["action"]);
+            Assert.AreEqual(order.Id, actual.Id);
         }
 
         [Test]
