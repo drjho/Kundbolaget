@@ -10,6 +10,7 @@ using Kundbolaget.EntityFramework.Context;
 using Kundbolaget.Models.EntityModels;
 using Kundbolaget.EntityFramework.Repositories;
 using System.Reflection;
+using Kundbolaget.Models.ViewModels;
 
 namespace Kundbolaget.Controllers
 {
@@ -72,6 +73,26 @@ namespace Kundbolaget.Controllers
                 return HttpNotFound();
             }
             return View(order);
+        }
+
+        public ActionResult ShowPickingOrder(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            // TODO: uppdatera tillgängligt antal när man klicka på details!
+            var order = orderRepo.GetItem((int)id);
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            var model = new List<PickingOrder>();
+            foreach (var item in order.OrderProducts)
+            {
+                model.AddRange(item.PickList);
+            }
+            return View(model);
         }
 
         public ActionResult PrepareOrder(int? id)

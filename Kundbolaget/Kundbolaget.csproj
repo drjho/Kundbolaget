@@ -329,6 +329,7 @@
     <Content Include="Views\PickingOrders\Details.cshtml" />
     <Content Include="Views\PickingOrders\Edit.cshtml" />
     <Content Include="Views\PickingOrders\Index.cshtml" />
+    <Content Include="Views\Orders\ShowPickingOrder.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

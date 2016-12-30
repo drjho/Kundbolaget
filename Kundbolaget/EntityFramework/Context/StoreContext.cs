@@ -27,5 +27,9 @@ namespace Kundbolaget.EntityFramework.Context
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderProduct> OrderProducts { get; set; }
         public virtual DbSet<PickingOrder> PickingOrders { get; set; }
+
+        public System.Data.Entity.DbSet<Kundbolaget.Models.ViewModels.PickingOrderVM> PickingOrderVMs { get; set; }
+
+        public System.Data.Entity.DbSet<Kundbolaget.Models.ViewModels.OrderPickListVM> OrderPickListVMs { get; set; }
     }
 }

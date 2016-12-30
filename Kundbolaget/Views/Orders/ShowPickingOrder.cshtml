@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Kundbolaget.Models.EntityModels.PickingOrder>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "ShowPickingOrder";
 }
 
-<h2>Index</h2>
+<h2>Plockorder för order: @Model.First().OrderProduct.OrderId</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @*@Html.ActionLink("Create New", "Create")*@
 </p>
 <table class="table">
     <tr>
@@ -15,14 +15,14 @@
             @Html.DisplayNameFor(model => model.OrderProduct.Product)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StoragePlaceId)
+            @Html.DisplayNameFor(model => model.StoragePlace)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ReservedAmount)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PickedAmount)
-        </thä
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Comment)
         </th>
@@ -35,7 +35,7 @@
             @Html.DisplayFor(modelItem => item.OrderProduct.Product.ShortDescription)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.StoragePlaceId)
+            @Html.DisplayFor(modelItem => item.StoragePlace.Id)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ReservedAmount)
@@ -47,9 +47,9 @@
             @Html.DisplayFor(modelItem => item.Comment)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }) |*@
+            @*@Html.ActionLink("Details", "Details", new { id=item.Id }) |*@
+            @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
         </td>
     </tr>
 }
