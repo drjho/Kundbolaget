@@ -68,6 +68,10 @@
                 {
                     @Html.ActionLink("PlockOrder", "ShowPickingOrder", new { id = item.Id }) @Html.Raw(" | ")
                 }
+                @if (item.OrderStatus == Kundbolaget.Models.EntityModels.OrderStatus.Fraktar)
+                {
+                    @Html.ActionLink("Följsedel", "ShowDeliveryNote", new { id = item.Id }) @Html.Raw(" | ")
+                }
                 @Html.ActionLink("Detaljer", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Ta bort", "Delete", new { id = item.Id })
             </td>

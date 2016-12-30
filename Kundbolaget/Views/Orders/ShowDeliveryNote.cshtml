@@ -1,13 +1,13 @@
 ﻿@model Kundbolaget.Models.EntityModels.Order
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "ShowDeliveryNote";
 }
 
-<h2>Detaljinfo</h2>
+<h2>Följsedel</h2>
 
 <div>
-    <h4>Order</h4>
+    <h4>Order: @Model.Id</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -35,6 +35,14 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.DesiredDeliveryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DesiredDeliveryDate)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.PlannedDeliveryDate)
         </dt>
 
@@ -49,11 +57,19 @@
         <dd>
             @Html.DisplayFor(model => model.Comment)
         </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderStatus)
+        </dd>
         <dd>
             <table class="table">
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.OrderProducts)
+                        @Html.DisplayNameFor(model => model.OrderProducts.First().Product.ProductOrderId)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.OrderProducts.First().Product)
@@ -62,13 +78,7 @@
                         @Html.DisplayNameFor(model => model.OrderProducts.First().OrderedAmount)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.OrderProducts.First().AvailabeAmount)
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.OrderProducts.First().DeliveredAmount)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.OrderProducts.First().AcceptedAmount)
                     </th>
                     <th></th>
                 </tr>
@@ -76,39 +86,26 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Id)
+                            @Html.DisplayFor(modelItem => item.Product.ProductOrderId)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Product.Name)
+                            @Html.DisplayFor(modelItem => item.Product.ShortDescription)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.OrderedAmount)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.AvailabeAmount)
-                        </td>
-                        <td>
                             @Html.DisplayFor(modelItem => item.DeliveredAmount)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.AcceptedAmount)
+                            @Html.ActionLink("Uppdatera", "Edit", "OrderProducts", new { id = item.Id }, null)
                         </td>
-                        <td></td>
                     </tr>
                 }
             </table>
         </dd>
     </dl>
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |
-            @Html.ActionLink("Tillbaka till listan", "Index")
-        </div>
-    }
 </div>
 <p>
-    @*@Html.ActionLink("Behandlar för plock", "PrepareForPacking", new { id = Model.Id })*@
+    @Html.ActionLink("Back to List", "Index")
 </p>

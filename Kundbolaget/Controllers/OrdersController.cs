@@ -95,6 +95,7 @@ namespace Kundbolaget.Controllers
             return View(model);
         }
 
+        [HttpPost]
         public ActionResult CreateDeliveryNote(int? id)
         {
             if (id == null)
@@ -134,6 +135,20 @@ namespace Kundbolaget.Controllers
                 updatedStorages.Add(storage);
             }
             storageRepo.UpdateItems(updatedStorages);
+        }
+
+        public ActionResult ShowDeliveryNote(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var order = orderRepo.GetItem((int)id);
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            return View(order);
         }
 
         public ActionResult PrepareOrder(int? id)
