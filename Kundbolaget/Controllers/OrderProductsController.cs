@@ -70,7 +70,7 @@ namespace Kundbolaget.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProductId,OrderedAmount,DeliveredAmount,AcceptedAmount,Comment,OrderId")] OrderProduct newOrderProduct)
+        public ActionResult Create([Bind(Include = "Id,ProductId,OrderedAmount,AvailabeAmount,DeliveredAmount,AcceptedAmount,Comment,OrderId")] OrderProduct newOrderProduct)
         {
             if (newOrderProduct.ProductId == null)
                 ModelState.AddModelError("ProductId", "Produktid ej satt");
@@ -109,7 +109,7 @@ namespace Kundbolaget.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ProductId,OrderedAmount,DeliveredAmount,AcceptedAmount,Comment,OrderId")] OrderProduct updatedOrderProduct)
+        public ActionResult Edit([Bind(Include = "Id,ProductId,OrderedAmount,AvailabeAmount,DeliveredAmount,AcceptedAmount,Comment,OrderId")] OrderProduct updatedOrderProduct)
         {
             if (ModelState.IsValid)
             {
