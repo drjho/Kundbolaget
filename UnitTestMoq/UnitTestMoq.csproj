@@ -120,6 +120,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Helper.cs" />
+    <Compile Include="PickingOrderControllerTest.cs" />
     <Compile Include="OrderProductsControllerTest.cs" />
     <Compile Include="OrderControllerTest.cs" />
     <Compile Include="AddressControllerTest.cs" />
