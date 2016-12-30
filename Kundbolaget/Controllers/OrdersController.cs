@@ -183,13 +183,20 @@ namespace Kundbolaget.Controllers
 
         private void ReleaseItem(List<PickingOrder> pickList)
         {
-            foreach (var pickOrder in pickList)
+            for (int i = 0; i < pickList.Count; i++)
             {
-                var sp = storageRepo.GetItem((int)pickOrder.StoragePlaceId);
-                sp.ReservedAmount -= pickOrder.ReservedAmount;
+                var sp = storageRepo.GetItem((int)pickList[i].StoragePlaceId);
+                sp.ReservedAmount -= pickList[i].ReservedAmount;
                 storageRepo.UpdateItem(sp);
                 pickingOrderRepo.DeleteItem(sp.Id);
             }
+            //foreach (var pickOrder in pickList)
+            //{
+            //    var sp = storageRepo.GetItem((int)pickOrder.StoragePlaceId);
+            //    sp.ReservedAmount -= pickOrder.ReservedAmount;
+            //    storageRepo.UpdateItem(sp);
+            //    pickingOrderRepo.DeleteItem(sp.Id);
+            //}
         }
 
         //public void ReleaseItem(int? productId, int reservedAmount)
