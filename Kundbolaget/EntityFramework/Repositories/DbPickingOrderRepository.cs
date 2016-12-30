@@ -17,6 +17,12 @@ namespace Kundbolaget.EntityFramework.Repositories
             db = context;
         }
 
+        public void CreateItems(List<PickingOrder> newItems)
+        {
+            db.PickingOrders.AddRange(newItems);
+            db.SaveChanges();
+        }
+
         public void CreateItem(PickingOrder newItem)
         {
             db.PickingOrders.Add(newItem);
@@ -29,6 +35,12 @@ namespace Kundbolaget.EntityFramework.Repositories
             if (item == null)
                 return;
             db.PickingOrders.Remove(item);
+            db.SaveChanges();
+        }
+
+        public void DeleteItems(List<PickingOrder> items)
+        {
+            db.PickingOrders.RemoveRange(items);
             db.SaveChanges();
         }
 

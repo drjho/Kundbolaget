@@ -121,6 +121,7 @@ namespace Kundbolaget.Controllers
             foreach (var orderProduct in order.OrderProducts)
             {
                 orderProduct.PickList = ReserveItem(orderProduct.ProductId, orderProduct.OrderedAmount);
+                orderProduct.PickList.ForEach(x => x.OrderProductId = orderProduct.Id);
                 orderProduct.AvailabeAmount = orderProduct.PickList.Sum(x => x.ReservedAmount);
 
                 // Vad gör man om det blir en tomlista?
@@ -133,11 +134,7 @@ namespace Kundbolaget.Controllers
                 //    return View(orderVM);
                 //}
 
-                foreach (var pickOrder in orderProduct.PickList)
-                {
-                    pickOrder.OrderProductId = orderProduct.Id;
-                    pickingOrderRepo.CreateItem(pickOrder);
-                }
+                pickingOrderRepo.CreateItems(orderProduct.PickList);
             }
 
             order.OrderStatus = OrderStatus.Plockar;
@@ -183,13 +180,19 @@ namespace Kundbolaget.Controllers
 
         private void ReleaseItem(List<PickingOrder> pickList)
         {
+            var storages = new List<StoragePlace>();
             for (int i = 0; i < pickList.Count; i++)
             {
-                var sp = storageRepo.GetItem((int)pickList[i].StoragePlaceId);
-                sp.ReservedAmount -= pickList[i].ReservedAmount;
-                storageRepo.UpdateItem(sp);
-                pickingOrderRepo.DeleteItem(sp.Id);
+                var p = pickList[i];
+                var s = storageRepo.GetItem((int)p.StoragePlaceId);
+                // Avoid having negative reserved amount (should not happen but just in case)
+                s.ReservedAmount -= Math.Min(s.ReservedAmount, p.ReservedAmount);
+                storages.Add(s);
+                //pickingOrderRepo.DeleteItem(pickList[i].Id);
             }
+            pickingOrderRepo.DeleteItems(pickList);
+            storageRepo.UpdateItems(storages);
+
             //foreach (var pickOrder in pickList)
             //{
             //    var sp = storageRepo.GetItem((int)pickOrder.StoragePlaceId);
