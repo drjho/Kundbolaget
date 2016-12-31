@@ -11,10 +11,12 @@ namespace Kundbolaget.Controllers
     public class CustomerController : Controller
     {
         IGenericRepository<Customer> repository;
+        DbCustomerAddressRepository customerAdresses;
 
         public CustomerController()
         {
             repository = new DbCustomerRepository();
+            customerAdresses = new DbCustomerAddressRepository();
         }
 
         // GET: Customer
@@ -60,7 +62,11 @@ namespace Kundbolaget.Controllers
         // GET: Customers/Details/{id}
         public ActionResult Details(int id)
         {
+            // TODO: Address list as partial view
             var model = repository.GetItem(id);
+            var addresses = customerAdresses.GetItems(id);
+            ViewBag.Addresses = addresses;
+            ViewBag.Descriptions = new string[] { "AdressId för kundorder", (addresses.Length > 1) ? "Adresser" : "Adress", "Adresstyp" };
             return View(model);
         }
 

@@ -1,0 +1,102 @@
+﻿@model Kundbolaget.Models.EntityModels.Order
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerAddress.Customer.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerAddress.Customer.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerAddress.Address.AddressString)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DesiredDeliveryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DesiredDeliveryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PlannedDeliveryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PlannedDeliveryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comments)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comments)
+        </dd>
+    </dl>
+</div>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderProducts.First().Product.ProductOrderId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderProducts.First().Product.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderProducts.First().OrderedAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderProducts.First().Comment)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.OrderProducts)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Product.ProductOrderId)
+                @*@item.Product.ProductOrderId*@
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Product.Name)
+                @*@item.Product.Name*@
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.OrderedAmount)
+                @*@item.OrderedAmount*@
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Comment)
+            </td>
+        </tr>
+    }
+</table>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
+    @Html.ActionLink("Back to List", "Index")
+</p>

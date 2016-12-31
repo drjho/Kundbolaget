@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Kundbolaget.Models.EntityModels.PriceList>
+
+@{
+    ViewBag.Title = "Prislista";
+}
+
+<h2>Prislista</h2>
+
+<p>
+    @Html.ActionLink("Skapa ny", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Product.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RebatePerPallet)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Product.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RebatePerPallet)
+        </td>
+        <td>
+            @Html.ActionLink("Ändra", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Info prislista", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Ta bort", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

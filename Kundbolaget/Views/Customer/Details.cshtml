@@ -1,13 +1,13 @@
 ﻿@model Kundbolaget.Models.EntityModels.Customer
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Kund Info";
 }
 
-<h2>Details</h2>
+<h2>Information</h2>
 
 <div>
-    <h4>Customer</h4>
+    <h4>Kund</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -19,31 +19,78 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Addresses)
+            @Html.DisplayNameFor(model => model.CorporateStucture)
         </dt>
 
-        @* Loop through and render each category name *@
         <dd>
-            @foreach (var address in Model.Addresses)
-            {
-                <dl class="dl-horizontal">
-                    <dt>
-                        @address.StreetName @address.Number
-                    </dt>
-                    <dt>
-                        @address.PostalCode @address.Area
-                    </dt>
-                    <dt>
-                        Type: @address.Type
-                    </dt>
-                </dl>
-            }
+            @Html.DisplayFor(model => model.CorporateStucture)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditLimit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreditLimit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DaysToDelievery)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DaysToDelievery)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerAuditCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerAuditCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrganisationNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrganisationNumber)
+        </dd>
 
     </dl>
 </div>
+<table class="table">
+    <tr>
+        <th>
+            @ViewBag.Descriptions[0]
+        </th>
+        <th>
+            @ViewBag.Descriptions[1]
+        </th>
+        <th>
+            @ViewBag.Descriptions[2]
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in ViewBag.Addresses)
+    {
+        <tr>
+            <td>
+                @item.Address.AddressOrderId
+            </td>
+            <td>
+                @item.Address.AddressString
+            </td>
+            <td>
+                @item.AddressType
+            </td>
+
+        </tr>
+    }
+</table>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Tillbaka till listan", "Index")
 </p>

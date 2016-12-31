@@ -96,7 +96,7 @@ namespace Kundbolaget.Controllers
             }).ToList();
 
             CreateProductVM model = new CreateProductVM { Id = prod.Id, Name = prod.Name,
-                Price = prod.Price, WarehouseList = listItems };
+                 WarehouseList = listItems };
 
             return View(model);
         }
