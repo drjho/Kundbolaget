@@ -188,6 +188,26 @@ namespace Kundbolaget.Controllers
             return View(order);
         }
 
+        /// <summary>
+        /// Ändrar statusen av en order till fakturerar. 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult ReadyForInvoice(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var order = orderRepo.GetItem((int)id);
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            order.OrderStatus = OrderStatus.Fakturerar;
+            orderRepo.UpdateItem(order);
+            return RedirectToAction("Index");
+        }
 
         /// <summary>
         /// När en order är fakturerad, ändras statusen till Arkiverad
@@ -388,7 +408,7 @@ namespace Kundbolaget.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.AddressId = new SelectList(addressRepo.GetItems(), "Id", "StreetName", order.AddressId);
+            ViewBag.AddressId = new SelectList(addressRepo.GetItems(), "Id", "AddressString", order.AddressId);
             ViewBag.CustomerId = new SelectList(customerRepo.GetItems(), "Id", "Name", order.CustomerId);
             return View(order);
         }

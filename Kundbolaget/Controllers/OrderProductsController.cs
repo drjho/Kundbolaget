@@ -114,8 +114,24 @@ namespace Kundbolaget.Controllers
             if (ModelState.IsValid)
             {
                 orderProductRepo.UpdateItem(updatedOrderProduct);
-                return RedirectToAction("FinalizeDelivery", "Orders", new { id = updatedOrderProduct.OrderId });
-                //return RedirectToAction("Index");
+                var order = orderRepo.GetItem((int)updatedOrderProduct.OrderId);
+                switch (order.OrderStatus)
+                {
+                    case OrderStatus.Behandlar:
+                        return RedirectToAction("PrepareOrder", "Orders", new { id = updatedOrderProduct.OrderId });
+                    case OrderStatus.Plockar:
+                        return View();
+                    case OrderStatus.Fraktar:
+                        return View();
+                    case OrderStatus.Levererad:
+                        return RedirectToAction("FinalizeDelivery", "Orders", new { id = updatedOrderProduct.OrderId });
+                    case OrderStatus.Fakturerar:
+                        return View();
+                    case OrderStatus.Arkiverad:
+                        return View();
+                    default:
+                        return View();
+                }
             }
             ViewBag.OrderId = new SelectList(orderRepo.GetItems(), "Id", "Id", updatedOrderProduct.OrderId);
             ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name", updatedOrderProduct.ProductId);
