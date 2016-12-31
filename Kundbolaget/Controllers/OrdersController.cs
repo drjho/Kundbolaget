@@ -168,7 +168,7 @@ namespace Kundbolaget.Controllers
 
 
         /// <summary>
-        /// Denna anropas när en order är levererad och statusen ändras som betyder klar för fakturering
+        /// Denna anropas när en order är levererad och man kan ändra antal levererade varor.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

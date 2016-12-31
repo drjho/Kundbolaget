@@ -62,7 +62,7 @@ namespace Kundbolaget.Controllers
         // GET: PickingOrders/Create
         public ActionResult Create()
         {
-            ViewBag.OrderProductId = new SelectList(orderProductRepo.GetItems(), "Id", "Comment");
+            ViewBag.OrderProductId = new SelectList(orderProductRepo.GetItems(), "Id", "Id");
             ViewBag.StoragePlaceId = new SelectList(storageRepo.GetItems(), "Id", "Id");
             return View();
         }
@@ -82,7 +82,7 @@ namespace Kundbolaget.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.OrderProductId = new SelectList(orderProductRepo.GetItems(), "Id", "Comment", pickingOrder.OrderProductId);
+            ViewBag.OrderProductId = new SelectList(orderProductRepo.GetItems(), "Id", "Id", pickingOrder.OrderProductId);
             ViewBag.StoragePlaceId = new SelectList(storageRepo.GetItems(), "Id", "Id", pickingOrder.StoragePlaceId);
             return View(pickingOrder);
         }
@@ -99,7 +99,7 @@ namespace Kundbolaget.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.OrderProductId = new SelectList(orderProductRepo.GetItems(), "Id", "Comment", pickingOrder.OrderProductId);
+            ViewBag.OrderProductId = new SelectList(orderProductRepo.GetItems(), "Id", "Id", pickingOrder.OrderProductId);
             ViewBag.StoragePlaceId = new SelectList(storageRepo.GetItems(), "Id", "Id", pickingOrder.StoragePlaceId);
             return View(pickingOrder);
         }
@@ -118,7 +118,7 @@ namespace Kundbolaget.Controllers
                 var orderId = orderProductRepo.GetItem((int)pickingOrder.OrderProductId).OrderId;
                 return RedirectToAction("ShowPickingOrder", "Orders", new { id = orderId } );
             }
-            ViewBag.OrderProductId = new SelectList(orderProductRepo.GetItems(), "Id", "Comment", pickingOrder.OrderProductId);
+            ViewBag.OrderProductId = new SelectList(orderProductRepo.GetItems(), "Id", "Id", pickingOrder.OrderProductId);
             ViewBag.StoragePlaceId = new SelectList(storageRepo.GetItems(), "Id", "Id", pickingOrder.StoragePlaceId);
             return View(pickingOrder);
         }

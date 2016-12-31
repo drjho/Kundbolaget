@@ -10,7 +10,7 @@ namespace Kundbolaget.Models.EntityModels
 {
     public enum OrderStatus
     {
-        Behandlar, Plockar, Fraktar, Levererad, Arkiverad
+        Behandlar, Plockar, Fraktar, Levererad, Fakturerar, Arkiverad
     }
     public class Order
     {

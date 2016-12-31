@@ -4,15 +4,15 @@
   "products": [
     {
       "pno": "000001",
-      "amount": 100,
-      "comment": "minst 50"
+      "amount": 10,
+      "comment": ""
     },
     {
       "pno": "000002",
-      "amount": 200,
-      "comment": "minst 150"
+      "amount": 10,
+      "comment": ""
     }
   ],
-  "date": "12/31/2016",
+  "date": "01/01/2017",
   "comment": "ring vid leverans"
 }
