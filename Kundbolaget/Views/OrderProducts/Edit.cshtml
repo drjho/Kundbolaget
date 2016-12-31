@@ -76,6 +76,6 @@
 
 <div>
     @Html.ActionLink("Tillbaka till ordrarna", "Index", "Orders") |
-    @Html.ActionLink("Tillbaka till fraktsedel", "ShowDeliveryNote", "Orders", new { id = Model.Order.Id }, null) |
+    @Html.ActionLink("Tillbaka till leveransavslut", "FinalizeDelivery", "Orders", new { id = Model.Order.Id }, null) |
     @Html.ActionLink("Tillbaka till produktordrarna", "Index")
 </div>

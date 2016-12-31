@@ -1,10 +1,10 @@
 ﻿@model Kundbolaget.Models.EntityModels.Order
 
 @{
-    ViewBag.Title = "ShowDeliveryNote";
+    ViewBag.Title = "FinalizeDelivery";
 }
 
-<h2>Följsedel</h2>
+<h2>Uppdatera antal accepterade kolli</h2>
 
 <div>
     <h4>Order: @Model.Id</h4>
@@ -80,6 +80,9 @@
                     <th>
                         @Html.DisplayNameFor(model => model.OrderProducts.First().DeliveredAmount)
                     </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderProducts.First().AcceptedAmount)
+                    </th>
                     <th></th>
                 </tr>
                 @foreach (var item in Model.OrderProducts)
@@ -98,7 +101,10 @@
                             @Html.DisplayFor(modelItem => item.DeliveredAmount)
                         </td>
                         <td>
-                       @*     @Html.ActionLink("Uppdatera", "Edit", "OrderProducts", new { id = item.Id }, null)*@
+                            @Html.DisplayFor(modelItem => item.AcceptedAmount)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Uppdatera", "Edit", "OrderProducts", new { id = item.Id }, null)
                         </td>
                     </tr>
                 }
@@ -107,6 +113,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Leverans avslutad", "FinalizeDelivery", new { id = Model.Id }) | 
+    @Html.ActionLink("Arkivera ordern", "ArchiveOrder", new { id = Model.Id }) |
     @Html.ActionLink("Tillbaka till ordrarna", "Index")
 </p>

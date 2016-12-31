@@ -151,6 +151,38 @@ namespace Kundbolaget.Controllers
             return View(order);
         }
 
+        public ActionResult FinalizeDelivery(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var order = orderRepo.GetItem((int)id);
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            order.OrderStatus = OrderStatus.Levererad;
+            orderRepo.UpdateItem(order);
+            return View(order);
+        }
+
+        public ActionResult ArchiveOrder(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var order = orderRepo.GetItem((int)id);
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            order.OrderStatus = OrderStatus.Arkiverad;
+            orderRepo.UpdateItem(order);
+            return RedirectToAction("Index");
+        }
+
         public ActionResult PrepareOrder(int? id)
         {
             if (id == null)
