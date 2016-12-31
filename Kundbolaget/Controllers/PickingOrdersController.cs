@@ -72,7 +72,7 @@ namespace Kundbolaget.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,StoragePlaceId,PickingAmount,PickedAmount,Comment,OrderProductId")] PickingOrder pickingOrder)
+        public ActionResult Create([Bind(Include = "Id,StoragePlaceId,ReservedAmount,PickedAmount,Comment,OrderProductId")] PickingOrder pickingOrder)
         {
             if (pickingOrder.OrderProductId == null)
                 ModelState.AddModelError("OrderProductId", "OrderProductId är inte satt");
@@ -109,12 +109,14 @@ namespace Kundbolaget.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,StoragePlaceId,PickingAmount,PickedAmount,Comment,OrderProductId")] PickingOrder pickingOrder)
+        public ActionResult Edit([Bind(Include = "Id,StoragePlaceId,ReservedAmount,PickedAmount,Comment,OrderProductId")] PickingOrder pickingOrder)
         {
             if (ModelState.IsValid)
             {
                 pickingOrderRepo.UpdateItem(pickingOrder);
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
+                var orderId = orderProductRepo.GetItem((int)pickingOrder.OrderProductId).OrderId;
+                return RedirectToAction("ShowPickingOrder", "Orders", new { id = orderId } );
             }
             ViewBag.OrderProductId = new SelectList(orderProductRepo.GetItems(), "Id", "Comment", pickingOrder.OrderProductId);
             ViewBag.StoragePlaceId = new SelectList(storageRepo.GetItems(), "Id", "Id", pickingOrder.StoragePlaceId);

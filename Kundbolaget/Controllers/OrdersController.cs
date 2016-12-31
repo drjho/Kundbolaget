@@ -108,7 +108,7 @@ namespace Kundbolaget.Controllers
                 return HttpNotFound();
             }
             var pickList = new List<PickingOrder>();
-            
+
             foreach (var item in order.OrderProducts)
             {
                 pickList.AddRange(item.PickList);
@@ -124,6 +124,11 @@ namespace Kundbolaget.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Anropas när man har plockat varorna från lagret och totala antalet minskas med 
+        /// antalet plockade.
+        /// </summary>
+        /// <param name="pickList"></param>
         public void UpdateStoragePlaceAmount(List<PickingOrder> pickList)
         {
             var updatedStorages = new List<StoragePlace>();
@@ -137,6 +142,11 @@ namespace Kundbolaget.Controllers
             storageRepo.UpdateItems(updatedStorages);
         }
 
+        /// <summary>
+        /// Anropas när man vill visa följsedel av en order
+        /// </summary>
+        /// <param name="id">Id av en order</param>
+        /// <returns></returns>
         public ActionResult ShowDeliveryNote(int? id)
         {
             if (id == null)
@@ -151,6 +161,12 @@ namespace Kundbolaget.Controllers
             return View(order);
         }
 
+
+        /// <summary>
+        /// Denna anropas när en order är levererad och statusen ändras som betyder klar för fakturering
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult FinalizeDelivery(int? id)
         {
             if (id == null)
@@ -167,6 +183,12 @@ namespace Kundbolaget.Controllers
             return View(order);
         }
 
+
+        /// <summary>
+        /// När en order är fakturerad, ändras statusen till Arkiverad
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult ArchiveOrder(int? id)
         {
             if (id == null)
@@ -183,6 +205,11 @@ namespace Kundbolaget.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Förbereder order med produkterna i en viewmodel innan man går vidare att skapa en plocksedel.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult PrepareOrder(int? id)
         {
             if (id == null)
@@ -215,6 +242,16 @@ namespace Kundbolaget.Controllers
             return View(orderVM);
         }
 
+        /// <summary>
+        /// Användaren har kollat att ordern stämmer. Då blir varorna reserverade i lagret.
+        /// Antalet reserverade kolli registreras i 'OrderProduct'.
+        /// En plock sedel skapas och orderns status ändras till 'Plockar'. 
+        /// </summary>
+        /// <remarks>
+        /// Denna version gör inget speciellt om varorna inte finns i lagret. 
+        /// </remarks>
+        /// <param name="orderVM"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult PrepareOrder(OrderVM orderVM)
@@ -287,6 +324,11 @@ namespace Kundbolaget.Controllers
             return pickList;
         }
 
+        /// <summary>
+        /// Anropas när man tar bort en order så först ska reserverade varorna i lagret släppas,
+        /// sedan ta man bort plocksedlarna från systemet.
+        /// </summary>
+        /// <param name="pickList"></param>
         public void ReleaseItem(List<PickingOrder> pickList)
         {
             var storages = new List<StoragePlace>();
@@ -298,7 +340,6 @@ namespace Kundbolaget.Controllers
                 s.ReservedAmount -= Math.Min(s.ReservedAmount, p.ReservedAmount);
                 storages.Add(s);
             }
-            pickingOrderRepo.DeleteItems(pickList);
             storageRepo.UpdateItems(storages);
         }
 
@@ -379,6 +420,14 @@ namespace Kundbolaget.Controllers
             return View(order);
         }
 
+        /// <summary>
+        /// Anropas när en order ska tas bort från systemet. Om statusen är innan frakt så 
+        /// släpps de reserverade varorna i lagret.
+        /// Tillhörande 'OrderPrducts' och 'PickingOrder' tas bort från databasen.
+        /// Till slut tas ordern bort från databasen
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // POST: Orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -390,20 +439,19 @@ namespace Kundbolaget.Controllers
                 return HttpNotFound();
             }
             var products = order.OrderProducts;
+            var pickList = new List<PickingOrder>();
             for (int i = 0; i < products.Count; i++)
             {
                 var item = products[i];
-                //ReleaseItem(item.ProductId, item.AvailabeAmount);
-                ReleaseItem(item.PickList);
-                //orderProductRepo.DeleteItem(item.Id);
-
+                pickList.AddRange(item.PickList);
+                if (order.OrderStatus < OrderStatus.Fraktar)
+                    ReleaseItem(item.PickList);
             }
+            pickingOrderRepo.DeleteItems(pickList);
             orderProductRepo.DeleteItems(products);
             orderRepo.DeleteItem(order.Id);
             return RedirectToAction("Index");
         }
-
-
 
         protected override void Dispose(bool disposing)
         {
