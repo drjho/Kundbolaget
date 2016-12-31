@@ -297,7 +297,6 @@ namespace UnitTestMoq
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, (System.Net.HttpStatusCode)result.StatusCode);
         }
 
-
         [Test]
         public void ShowPickingOrder_Without_Existing_Entity_Return_404_Error()
         {
@@ -347,6 +346,103 @@ namespace UnitTestMoq
             _mockSetOrder.Verify(x => x.Attach(It.IsAny<Order>()), Times.Once);
             _mockSetStoragePlace.Verify(x => x.Attach(It.IsAny<StoragePlace>()), Times.AtLeastOnce);
             _mockSetOrderProduct.Verify(x => x.Attach(It.IsAny<OrderProduct>()), Times.AtLeastOnce);
+            _mockContext.Verify(x => x.SaveChanges(), Times.AtLeastOnce);
+            Assert.AreEqual("Index", actualResult.RouteValues["action"]);
+
+        }
+
+        [Test]
+        public void ShowDeliveryNote_With_Null_As_Id()
+        {
+            // Arrange
+            int? i = null;
+            // Act
+            var result = _orderController.ShowDeliveryNote(i) as HttpStatusCodeResult;
+            // Assert
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, (System.Net.HttpStatusCode)result.StatusCode);
+        }
+
+
+        [Test]
+        public void ShowDeliveryNote_Without_Existing_Entity_Return_404_Error()
+        {
+            var result = _orderController.ShowDeliveryNote(2000);
+            Assert.AreEqual(typeof(HttpNotFoundResult), result.GetType());
+        }
+
+        [Test]
+        public void ShowDeliveryNote_Success()
+        {
+            // Act
+            var actionResult = _orderController.ShowDeliveryNote(1);
+            var viewResult = actionResult as ViewResult;
+            var actual = (Order)viewResult.Model;
+
+            // Assert
+            Assert.AreEqual(ResourceData.Orders[0].Id, actual.Id);
+        }
+
+        [Test]
+        public void FinalizeDelivery_With_Null_As_Id()
+        {
+            // Arrange
+            int? i = null;
+            // Act
+            var result = _orderController.FinalizeDelivery(i) as HttpStatusCodeResult;
+            // Assert
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, (System.Net.HttpStatusCode)result.StatusCode);
+        }
+
+
+        [Test]
+        public void FinalizeDelivery_Without_Existing_Entity_Return_404_Error()
+        {
+            var result = _orderController.FinalizeDelivery(2000);
+            Assert.AreEqual(typeof(HttpNotFoundResult), result.GetType());
+        }
+
+        [Test]
+        public void FinalizeDelivery_Success()
+        {
+            // Act
+            var actionResult = _orderController.FinalizeDelivery(1);
+            var viewResult = actionResult as ViewResult;
+            var actual = (Order)viewResult.Model;
+
+            // Assert
+            Assert.AreEqual(ResourceData.Orders[0].Id, actual.Id);
+            Assert.AreEqual(OrderStatus.Levererad, actual.OrderStatus);
+            _mockSetOrder.Verify(x => x.Attach(It.IsAny<Order>()), Times.Once);
+            _mockContext.Verify(x => x.SaveChanges(), Times.AtLeastOnce);
+        }
+
+        [Test]
+        public void ArchiveOrder_With_Null_As_Id()
+        {
+            // Arrange
+            int? i = null;
+            // Act
+            var result = _orderController.ArchiveOrder(i) as HttpStatusCodeResult;
+            // Assert
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, (System.Net.HttpStatusCode)result.StatusCode);
+        }
+
+
+        [Test]
+        public void ArchiveOrder_Without_Existing_Entity_Return_404_Error()
+        {
+            var result = _orderController.ArchiveOrder(2000);
+            Assert.AreEqual(typeof(HttpNotFoundResult), result.GetType());
+        }
+
+        [Test]
+        public void ArchiveOrder_Success()
+        {
+            // Act
+            var actualResult = _orderController.ArchiveOrder(1) as RedirectToRouteResult;
+
+            // Assert
+            _mockSetOrder.Verify(x => x.Attach(It.IsAny<Order>()), Times.Once);
             _mockContext.Verify(x => x.SaveChanges(), Times.AtLeastOnce);
             Assert.AreEqual("Index", actualResult.RouteValues["action"]);
 
