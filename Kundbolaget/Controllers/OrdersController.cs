@@ -95,7 +95,7 @@ namespace Kundbolaget.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        //[HttpPost]
         public ActionResult CreateDeliveryNote(int? id)
         {
             if (id == null)
@@ -112,9 +112,9 @@ namespace Kundbolaget.Controllers
             foreach (var item in order.OrderProducts)
             {
                 pickList.AddRange(item.PickList);
-                // Assumes that the delivery amount = available amount.
-                item.DeliveredAmount = item.AvailabeAmount;
+                item.DeliveredAmount = item.PickList.Sum(x => x.PickedAmount);
             }
+
             UpdateStoragePlaceAmount(pickList);
 
             orderProductRepo.UpdateItems(order.OrderProducts);
@@ -128,6 +128,11 @@ namespace Kundbolaget.Controllers
         /// Anropas när man har plockat varorna från lagret och totala antalet minskas med 
         /// antalet plockade.
         /// </summary>
+        /// <remarks>
+        /// Vi antar att man plockar det reserverade antalet, går det inte så beror det på att 
+        /// det har försvunnit eller det har gått sönder. Därför uppdateras storagePlace med 
+        /// bara det reserverade antalet.
+        /// </remarks>
         /// <param name="pickList"></param>
         public void UpdateStoragePlaceAmount(List<PickingOrder> pickList)
         {

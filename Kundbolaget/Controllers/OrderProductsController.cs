@@ -113,10 +113,9 @@ namespace Kundbolaget.Controllers
         {
             if (ModelState.IsValid)
             {
-                //db.Entry(updatedOrderProduct).State = EntityState.Modified;
-                //db.SaveChanges();
                 orderProductRepo.UpdateItem(updatedOrderProduct);
-                return RedirectToAction("Index");
+                return RedirectToAction("FinalizeDelivery", "Orders", new { id = updatedOrderProduct.OrderId });
+                //return RedirectToAction("Index");
             }
             ViewBag.OrderId = new SelectList(orderRepo.GetItems(), "Id", "Id", updatedOrderProduct.OrderId);
             ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name", updatedOrderProduct.ProductId);
