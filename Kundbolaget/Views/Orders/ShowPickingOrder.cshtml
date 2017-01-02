@@ -4,58 +4,66 @@
     ViewBag.Title = "Kundbolaget-Plocksedel";
 }
 
-<h2>Plockorder för order: @Model.First().OrderProduct.OrderId</h2>
+<h2>Plockorder för order: @ViewBag.OrderId</h2>
 
 <p>
     @*@Html.ActionLink("Create New", "Create")*@
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.OrderProduct.Product)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StoragePlace)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReservedAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PickedAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Comment)
-        </th>
-        <th></th>
-    </tr>
+@if (Model.Count() > 0)
+{
 
-    @foreach (var item in Model)
-    {
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderProduct.Product.ShortDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StoragePlace.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReservedAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PickedAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comment)
-            </td>
-            <td>
-                @Html.ActionLink("Uppdatera", "Edit", "PickingOrders", new { id=item.Id }, null)
-              
-
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderProduct.Product)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoragePlace)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReservedAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickedAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th></th>
         </tr>
-    }
-</table>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderProduct.Product.ShortDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StoragePlace.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReservedAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PickedAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    @Html.ActionLink("Uppdatera", "Edit", "PickingOrders", new { id = item.Id }, null)
+
+
+                </td>
+            </tr>
+        }
+    </table>
+
+    <p>
+        @Html.ActionLink("Varorna plockade", "CreateDeliveryNote", new { id = (int)@Model.First().OrderProduct.OrderId })
+    </p>
+}
 <p>
-    @Html.ActionLink("Varorna plockade", "CreateDeliveryNote", new { id = (int) @Model.First().OrderProduct.OrderId }) |
     @Html.ActionLink("Tillbaka", "Index")
 </p>

@@ -87,10 +87,18 @@ namespace Kundbolaget.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.OrderId = order.Id;
+
             var model = new List<PickingOrder>();
             foreach (var item in order.OrderProducts)
             {
                 model.AddRange(item.PickList);
+            }
+            if (model.Count < 1)
+            {
+                // TODO: Meddela användare att det inte finns några plockordrar när man behandlade ordern.
+                ModelState.AddModelError("", "Order har ingen plockordrar.");
             }
             return View(model);
         }
