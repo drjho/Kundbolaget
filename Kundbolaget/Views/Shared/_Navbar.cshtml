@@ -10,33 +10,44 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                @*<li>
-                    @Html.ActionLink("Hem", "Index", "Home")
-                </li>*@
                 <li>
                     @Html.ActionLink("Produkter", "Index", "Products")
                 </li>
                 <li>
                     @Html.ActionLink("Lager", "Index", "Warehouse")
                 </li>
-                <li>
-                    @Html.ActionLink("Kunder", "Index", "Customer")
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Kundhantering<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            @Html.ActionLink("Kunder", "Index", "Customer")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Adresser", "Index", "Address")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Kundgrupp", "Index", "CustomerGroup")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Kundadresser", "Index", "CustomerAddress")
+                        </li>
+                    </ul>
                 </li>
-                <li>
-                    @Html.ActionLink("Adresser", "Index", "Address")
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Orderhantering<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            @Html.ActionLink("Ordrar", "Index", "Orders")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Plockordrar", "Index", "PickingOrders")
+                        </li>
+                        @*<li>
+                            @Html.ActionLink("Följesedlar", "Index", "Orders")
+                        </li>*@
+                    </ul>
                 </li>
-                <li>
-                    @Html.ActionLink("Kundgrupp", "Index", "CustomerGroup")
-                </li>
-                <li>
-                    @Html.ActionLink("Kundadresser", "Index", "CustomerAddress")
-                </li>
-                <li>
-                    @Html.ActionLink("Ordrar", "Index", "Orders")
-                </li>
-                <li>
-                    @Html.ActionLink("Ladda upp orderfil", "Index", "JsonFile")
-                </li>
+                <li><a href="@Url.Action("Index", "JsonFile")"><span class="glyphicon glyphicon-file"></span>Ladda upp fil</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><span class="glyphicon glyphicon-user"></span> Skapa konto</a></li>
