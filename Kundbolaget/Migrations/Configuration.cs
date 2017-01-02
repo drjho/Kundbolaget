@@ -36,21 +36,6 @@ namespace Kundbolaget.Migrations
 
             };
 
-            var warehouses = new Warehouse[]
-            {
-                new Warehouse { Id = 1, Name = "Centrallagret", City = "Stockholm", Country = "Sweden", ZipCode = 11111 }
-            };
-
-            var storagePlaces = Enumerable.Range(0, 1452).Select(x => new StoragePlace { Id = x, WarehouseId = 1 }).ToArray();
-
-            //var customerGroup = new CustomerGroup
-            //{
-            //    Id = 1,
-            //    ListOfCustomers = customers.ToList(),
-            //    Name = "Matbutiker"
-            //};
-
-
             var products = new Product[]
             {
                 new Product { Id = 1, Name = "Pripps blå", Alcohol = 3.5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Öl, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 33},
@@ -58,6 +43,62 @@ namespace Kundbolaget.Migrations
                 new Product { Id = 3, Name = "Strongbow", Alcohol = 4.5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Cider, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 50},
                 new Product { Id = 4, Name = "Bishops finger", Alcohol = 5.5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Öl, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 50}
             };
+
+            var warehouses = new Warehouse[]
+            {
+                new Warehouse { Id = 1, Name = "Centrallagret", City = "Stockholm", Country = "Sweden", ZipCode = 11111 }
+            };
+
+            var storagePlaces = Enumerable.Range(0, 1452).Select(x => new StoragePlace { Id = x, WarehouseId = 1 }).ToArray();
+
+            storagePlaces[10].ArrivalDate = DateTime.Today;
+            storagePlaces[10].ProductId = products[0].Id;
+            storagePlaces[10].TotalAmount = 20;
+            storagePlaces[10].Vacant = false;
+            storagePlaces[1].ArrivalDate = DateTime.Today;
+            storagePlaces[1].ProductId = products[0].Id;
+            storagePlaces[1].TotalAmount = 30;
+            storagePlaces[1].Vacant = false;
+            storagePlaces[2].ArrivalDate = DateTime.Today;
+            storagePlaces[2].ProductId = products[0].Id;
+            storagePlaces[2].TotalAmount = 30;
+            storagePlaces[2].Vacant = false;
+            storagePlaces[3].ArrivalDate = DateTime.Today;
+            storagePlaces[3].ProductId = products[0].Id;
+            storagePlaces[3].TotalAmount = 20;
+            storagePlaces[3].Vacant = false;
+            storagePlaces[4].ArrivalDate = DateTime.Today;
+            storagePlaces[4].ProductId = products[0].Id;
+            storagePlaces[4].TotalAmount = 20;
+            storagePlaces[4].Vacant = false;
+            storagePlaces[5].ArrivalDate = DateTime.Today;
+            storagePlaces[5].ProductId = products[1].Id;
+            storagePlaces[5].TotalAmount = 100;
+            storagePlaces[5].Vacant = false;
+            storagePlaces[6].ArrivalDate = DateTime.Today;
+            storagePlaces[6].ProductId = products[1].Id;
+            storagePlaces[6].TotalAmount = 100;
+            storagePlaces[6].Vacant = false;
+            storagePlaces[7].ArrivalDate = DateTime.Today;
+            storagePlaces[7].ProductId = products[1].Id;
+            storagePlaces[7].TotalAmount = 100;
+            storagePlaces[7].Vacant = false;
+            storagePlaces[8].ArrivalDate = DateTime.Today;
+            storagePlaces[8].ProductId = products[2].Id;
+            storagePlaces[8].TotalAmount = 300;
+            storagePlaces[8].Vacant = false;
+            storagePlaces[9].ArrivalDate = DateTime.Today;
+            storagePlaces[9].ProductId = products[3].Id;
+            storagePlaces[9].TotalAmount = 300;
+            storagePlaces[9].Vacant = false;
+
+
+            //var customerGroup = new CustomerGroup
+            //{
+            //    Id = 1,
+            //    ListOfCustomers = customers.ToList(),
+            //    Name = "Matbutiker"
+            //};
 
             var ca = new CustomerAddress[]
             {
