@@ -3,16 +3,16 @@ namespace Kundbolaget.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ordercommentsadded : DbMigration
+    public partial class orderDesiredDate : DbMigration
     {
         public override void Up()
         {
-            AddColumn("dbo.Orders", "Comments", c => c.String(nullable: false));
+            AddColumn("dbo.Orders", "DesiredDeliveryDate", c => c.DateTime(nullable: false));
         }
         
         public override void Down()
         {
-            DropColumn("dbo.Orders", "Comments");
+            DropColumn("dbo.Orders", "DesiredDeliveryDate");
         }
     }
 }

@@ -10,19 +10,25 @@ namespace Kundbolaget.Controllers
 {
     public class CustomerController : Controller
     {
-        IGenericRepository<Customer> repository;
-        DbCustomerAddressRepository customerAdresses;
+        DbCustomerRepository customerRepo;
+        DbCustomerAddressRepository customerAdressRepo;
 
         public CustomerController()
         {
-            repository = new DbCustomerRepository();
-            customerAdresses = new DbCustomerAddressRepository();
+            customerRepo = new DbCustomerRepository();
+            customerAdressRepo = new DbCustomerAddressRepository();
+        }
+
+        public CustomerController(DbCustomerRepository dbCustomer, DbCustomerAddressRepository dbCustomerAddress)
+        {
+            customerRepo = dbCustomer;
+            customerAdressRepo = dbCustomerAddress;
         }
 
         // GET: Customer
         public ActionResult Index()
         {
-            var model = repository.GetItems();
+            var model = customerRepo.GetItems();
             return View(model);
         }
 
@@ -38,14 +44,14 @@ namespace Kundbolaget.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            repository.CreateItem(model);
+            customerRepo.CreateItem(model);
             return RedirectToAction("Index");
         }
 
         // GET: Customers/Edit/{id}
         public ActionResult Edit(int id)
         {
-            var model = repository.GetItem(id);
+            var model = customerRepo.GetItem(id);
             return View(model);
         }
 
@@ -55,7 +61,7 @@ namespace Kundbolaget.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            repository.UpdateItem(model);
+            customerRepo.UpdateItem(model);
             return RedirectToAction("Index");
         }
 
@@ -63,8 +69,8 @@ namespace Kundbolaget.Controllers
         public ActionResult Details(int id)
         {
             // TODO: Address list as partial view
-            var model = repository.GetItem(id);
-            var addresses = customerAdresses.GetItems(id);
+            var model = customerRepo.GetItem(id);
+            var addresses = customerAdressRepo.GetItems(id);
             ViewBag.Addresses = addresses;
             ViewBag.Descriptions = new string[] { "AdressId för kundorder", (addresses.Length > 1) ? "Adresser" : "Adress", "Adresstyp" };
             return View(model);
@@ -73,7 +79,7 @@ namespace Kundbolaget.Controllers
         // GET: Customer/Delete/{id}
         public ActionResult Delete(int id)
         {
-            var model = repository.GetItem(id);
+            var model = customerRepo.GetItem(id);
             return View(model);
         }
 
@@ -86,8 +92,15 @@ namespace Kundbolaget.Controllers
                 ModelState.AddModelError("Name", "Bad request");
                 return View(model);
             }
-            repository.DeleteItem(id);
+            customerRepo.DeleteItem(id);
             return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            customerAdressRepo.Dispose();
+            customerRepo.Dispose();
+            base.Dispose(disposing);
         }
     }
 }

@@ -7,18 +7,18 @@ namespace Kundbolaget.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class organisationnumberAsString : IMigrationMetadata
+    public sealed partial class orderDesiredDate : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(organisationnumberAsString));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(orderDesiredDate));
         
         string IMigrationMetadata.Id
         {
-            get { return "201612160242346_organisationnumberAsString"; }
+            get { return "201612200026029_orderDesiredDate"; }
         }
         
         string IMigrationMetadata.Source
         {
-            get { return null; }
+            get { return Resources.GetString("Source"); }
         }
         
         string IMigrationMetadata.Target

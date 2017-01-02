@@ -1,4 +1,5 @@
-﻿using Kundbolaget.EntityFramework.Repositories;
+﻿using Kundbolaget.EntityFramework.Context;
+using Kundbolaget.EntityFramework.Repositories;
 using Kundbolaget.Models.EntityModels;
 using Kundbolaget.Models.ViewModels;
 using System;
@@ -11,17 +12,31 @@ namespace Kundbolaget.Controllers
 {
     public class ProductsController : Controller
     {
-        DbStoreRepository repository;
+        DbProductRepository productRepo;
+        DbStoragePlaceRepository storageRepo;
+        DbWarehouseRepository warehouseRepo;
 
         public ProductsController()
         {
-            repository = new DbStoreRepository();
+            var db = new StoreContext();
+            productRepo = new DbProductRepository(db);
+            storageRepo = new DbStoragePlaceRepository(db);
+            warehouseRepo = new DbWarehouseRepository(db);
         }
+
+        public ProductsController(DbStoragePlaceRepository dbStorage, DbProductRepository dbproduct, DbWarehouseRepository dbwarehouse)
+        {
+            productRepo = dbproduct;
+            storageRepo = dbStorage;
+            warehouseRepo = dbwarehouse;
+        }
+
+       
 
         // GET: Products
         public ActionResult Index()
         {
-            var model = repository.GetProducts();
+            var model = productRepo.GetItems();
             return View(model);
         }
 
@@ -37,14 +52,14 @@ namespace Kundbolaget.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            repository.CreateProduct(model);
+            productRepo.CreateItem(model);
             return RedirectToAction("Index");
         }
 
         // GET: Products/Edit/{id}
         public ActionResult Edit(int id)
         {
-            var model = repository.GetProduct(id);
+            var model = productRepo.GetItem(id);
             return View(model);
         }
 
@@ -54,21 +69,21 @@ namespace Kundbolaget.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            repository.UpdateProduct(model);
+            productRepo.UpdateItem(model);
             return RedirectToAction("Index");
         }
 
         // GET: Products/Details/{id}
         public ActionResult Details(int id)
         {
-            var model = repository.GetProduct(id);
+            var model = productRepo.GetItem(id);
             return View(model);
         }
 
         // GET: Products/Delete/{id}
         public ActionResult Delete(int id)
         {
-            var model = repository.GetProduct(id);
+            var model = productRepo.GetItem(id);
             return View(model);
         }
 
@@ -81,15 +96,15 @@ namespace Kundbolaget.Controllers
                 ModelState.AddModelError("Name", "Bad request");
                 return View(model);
             }
-            repository.DeleteProduct(id);
+            productRepo.DeleteItem(id);
             return RedirectToAction("Index");
         }
 
         public ActionResult AddToWarehouse(int id)
         {
-            var prod = repository.GetProduct(id);
+            var prod = productRepo.GetItem(id);
 
-            List<SelectListItem> listItems = repository.GetWarehouses().Select(c => new SelectListItem
+            List<SelectListItem> listItems = productRepo.GetWarehouses().Select(c => new SelectListItem
             {
                 Value = c.Id.ToString(),
                 Text = c.Name
@@ -108,7 +123,7 @@ namespace Kundbolaget.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            repository.AddToStorage(model);
+            productRepo.AddToStorage(model);
 
             return RedirectToAction("Index");
         }

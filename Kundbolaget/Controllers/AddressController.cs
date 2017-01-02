@@ -12,11 +12,16 @@ namespace Kundbolaget.Controllers
     public class AddressController : Controller
     {
 
-        DbAddressRepository repository;
+        private DbAddressRepository repository;
 
         public AddressController()
         {
             repository = new DbAddressRepository();
+        }
+
+        public AddressController(DbAddressRepository dbAddr)
+        {
+            repository = dbAddr;
         }
 
         // GET: Address

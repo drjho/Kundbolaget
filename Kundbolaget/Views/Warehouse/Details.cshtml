@@ -41,24 +41,58 @@
         <dd>
             @Html.DisplayFor(model => model.ZipCode)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.StoragePlace)
-        </dt>
         <dd>
-            @foreach (var s in Model.StoragePlace)
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StoragePlaces)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StoragePlaces.First().Product)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StoragePlaces.First().TotalAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StoragePlaces.First().ReservedAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StoragePlaces.First().AvailableAmount)
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.StoragePlaces)
             {
-                if (!s.Vacant)
+                    <tr>
+                        @if (!item.Vacant)
                 {
-                    <p>
-                        @s.StoragePlaceId |
-                        @s.Product.Name
-                    </p>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Product.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TotalAmount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ReservedAmount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AvailableAmount)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Uppdatera saldot", "UpdateStoragePlace", "Warehouse", new { id = item.Id }, null) |
+                                @Html.ActionLink("Ta bort produkten", "UnregisterProduct", "Warehouse", new { id = item.Id }, null)
+                            </td>
+                        }
+                    </tr>
                 }
-            }
+            </table>
         </dd>
     </dl>
 </div>
 <p>
     @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Tillbaka till listan", "Index")
+    @Html.ActionLink("Tillbaka till listan", "Details", new { id = Model.Id })
 </p>

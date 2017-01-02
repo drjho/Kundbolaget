@@ -17,6 +17,32 @@ namespace Kundbolaget.Controllers
     public class JsonFileController : Controller
     {
 
+        DbStoragePlaceRepository storageRepo;
+        DbOrderRepository orderRepo;
+        DbOrderProductRepository orderProductRepo;
+        DbCustomerAddressRepository customerAddressRepo;
+        DbProductRepository productRepo;
+
+
+        public JsonFileController()
+        {
+            var db = new StoreContext();
+            orderRepo = new DbOrderRepository(db);
+            orderProductRepo = new DbOrderProductRepository(db);
+            storageRepo = new DbStoragePlaceRepository(db);
+            customerAddressRepo = new DbCustomerAddressRepository();
+            productRepo = new DbProductRepository(db);
+        }
+
+        public JsonFileController(DbStoragePlaceRepository dbStoragePlaceRepository, DbOrderRepository dbOrderRepository, DbOrderProductRepository dbOrderProductRepository,
+            DbCustomerAddressRepository dbCustomerAddressRepository, DbProductRepository dbProductRepository)
+        {
+            storageRepo = dbStoragePlaceRepository;
+            orderRepo = dbOrderRepository;
+            orderProductRepo = dbOrderProductRepository;
+            customerAddressRepo = dbCustomerAddressRepository;
+            productRepo = dbProductRepository;
+        }
 
         // GET: JsonFile
         public ActionResult Index()
@@ -34,6 +60,12 @@ namespace Kundbolaget.Controllers
         {
             byte[] data;
 
+            if (model.File == null)
+            {
+                ModelState.AddModelError("NullFile", "Inget filnamn angivet");
+                return View();
+            }
+
             using (MemoryStream ms = new MemoryStream())
             {
                 model.File.InputStream.CopyTo(ms);
@@ -44,66 +76,69 @@ namespace Kundbolaget.Controllers
 
             JObject jCustomerOrder = JObject.Parse(json);
 
-            var customer = new DbCustomerRepository().GetItems().
-                Where(c => c.CustomerOrderId == (string)jCustomerOrder["customerid"]).FirstOrDefault();
+            var items = customerAddressRepo.GetItems();
 
-            if (customer == null)
-                return RedirectToAction("Index", "Customer");
+            var customerAddress = customerAddressRepo.GetItems().Where(
+                a => a.AddressType == AddressType.Leverans &&
+                a.Address.AddressOrderId == (string)jCustomerOrder["addressid"] &&
+                a.Customer.CustomerOrderId == (string)jCustomerOrder["customerid"]).SingleOrDefault();
 
-            var customerAddresses = new DbCustomerAddressRepository().GetItems().
-                Where(c => c.CustomerId == customer.Id).ToList();
-
-            if (customerAddresses.Count == 0)
-                return RedirectToAction("Index", "CustomerAddress");
-
-            var allProducts = new DbStoreRepository().GetProducts();
-            var db = new StoreContext();
-
-            JToken[] jOrders = jCustomerOrder["orders"].ToArray();
-            foreach (var o in jOrders)
+            if (customerAddress == null)
             {
-
-                // Skulle man kolla upp att adressen stämmer?
-                var addressid = (string)o["addressid"];
-
-                var address = customerAddresses.Where(c => c.Address.AddressOrderId == addressid).FirstOrDefault();
-
-                if (address == null)
-                    return RedirectToAction("Index", "Address");
-
-                var dDate = Convert.ToDateTime(o["date"]);
-
-                var order = new Order
-                {
-                    CustomerAddressId = address.Id,
-                    DesiredDeliveryDate = dDate,
-                    OrderDate = DateTime.Today,
-                    PlannedDeliveryDate = dDate.AddDays(customer.DaysToDelievery),
-                };
-
-                List<OrderProduct> orderProducts = new List<OrderProduct>();
-                var jProducts = o["products"].ToArray();
-                foreach (var prod in jProducts)
-                {
-                    var p = allProducts.SingleOrDefault(a => a.ProductOrderId == (string)prod["pno"]);
-                    if (p != null)
-                        orderProducts.Add(new OrderProduct {OrderId = order.Id, Comment = (string)prod["comments"],
-                            ProductId = p.Id, OrderedAmount = (int)prod["amount"] });
-                    else
-                        return RedirectToAction("Index", "Order");
-
-                }
-                order.OrderProducts = orderProducts;
-                order.Comments = (string)o["comments"];
-
-                db.OrderProducts.AddRange(order.OrderProducts);
-                db.Orders.Add(order);
-                db.SaveChanges();
-
+                ModelState.AddModelError("CustomerAddress", "V.g. kontrollera angivet CustomerOrderId eller AddressOrderId");
+                return View();
             }
 
+            var customer = customerAddress.Customer;
 
+            var allProducts = productRepo.GetItems();
 
+            var deliveryDate = Convert.ToDateTime(jCustomerOrder["date"]);
+
+            var jProducts = jCustomerOrder["products"].ToArray();
+            var order = new Order
+            {
+                CustomerId = customerAddress.Customer.Id,
+                AddressId = customerAddress.Address.Id,
+                OrderDate = DateTime.Today,
+                DesiredDeliveryDate = Convert.ToDateTime(jCustomerOrder["date"]),
+                Comment = (string)jCustomerOrder["comment"],
+            };
+
+            if (customer != null)
+            {
+                var firstPossibleDate = DateTime.Today.AddDays(customer.DaysToDelievery);
+                order.PlannedDeliveryDate = (order.DesiredDeliveryDate.CompareTo(firstPossibleDate) < 0) ? firstPossibleDate : order.DesiredDeliveryDate;
+            }
+
+            foreach (var jProduct in jProducts)
+            {
+                var orderProduct = new OrderProduct
+                {
+                    OrderId = order.Id,
+                    Comment = (string)jProduct["comment"],
+                    ProductId = productRepo.GetItem((string)jProduct["pno"]).Id,
+                    OrderedAmount = (int)jProduct["amount"]
+                };
+                order.OrderProducts.Add(orderProduct);
+            }
+
+            var existingOrders = orderRepo.GetItems().Where(o => o.AddressId == order.AddressId && o.CustomerId == order.CustomerId);
+            foreach (var item in existingOrders)
+            {
+                if (item.DesiredDeliveryDate.Equals(order.DesiredDeliveryDate) && item.Comment.Equals(order.Comment))
+                {
+                    ModelState.AddModelError("SimilarOrder", "Kanske upprepad order");
+                    return View();
+                }
+            }
+
+            orderRepo.CreateItem(order);
+            //foreach (var item in order.OrderProducts)
+            //{
+            //    orderProductRepo.CreateItem(item);
+            //}
+            //orderRepo.HandleOrder(order);
             return RedirectToAction("Index", "Orders");
         }
     }

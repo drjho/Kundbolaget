@@ -1,26 +1,35 @@
 ﻿@model Kundbolaget.Models.ViewModels.OrderUploadVM
 @{
-    ViewBag.Title = "UploadJson";
+    ViewBag.Title = "Kundbolaget-Kundorderfil";
 }
 
-<h2>UploadJson</h2>
+<h2>Kundorder</h2>
 
-@using (Html.BeginForm("UploadJson", "JsonFile",
-                                   FormMethod.Post,
-                                   new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("UploadJson", "JsonFile", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Upload a json file</h4>
+        <h4>Skicka en json-fil</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                @Html.TextBoxFor(model => model.File, new { type = "file" })
-                @Html.ValidationMessageFor(model => model.File)
-                <input type="submit" value="Upload" class="btn btn-default" />
+                <p>
+                    @Html.TextBoxFor(model => model.File, new { type = "file" })
+                </p>
+                <p>
+                    @Html.ValidationMessageFor(model => model.File)
+                </p>
+                <p>
+                    <input type="submit" value="Ladda upp filen" class="btn btn-default" />
+                </p>
+                <p>
+                    @Html.ValidationMessage("SimilarOrder", new { @class = "text-danger" })
+                    @Html.ValidationMessage("CustomerAddress", new { @class = "text-danger" })
+                </p>
             </div>
+
         </div>
     </div>
 }

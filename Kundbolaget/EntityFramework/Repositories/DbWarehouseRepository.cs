@@ -9,54 +9,57 @@ using Kundbolaget.Models.EntityModels;
 
 namespace Kundbolaget.EntityFramework.Repositories
 {
-    public class DbWarehouseRepository : IGenericRepository<Warehouse>
+    public class DbWarehouseRepository : IGenericRepository<Warehouse>, IDisposable
     {
-        public void CreateItem(Warehouse newWarehouse)
+        private StoreContext db;
+
+        public DbWarehouseRepository()
         {
-            using (var db = new StoreContext())
-            {
-                db.Warehouses.Add(newWarehouse);
-                db.SaveChanges();
-            }
+            db  = new StoreContext();
         }
 
-        public void DeleteItem(int Id)
+        public DbWarehouseRepository(StoreContext context)
         {
-            using (var db = new StoreContext())
-            {
-                var warehouse = db.Warehouses.Include(w => w.StoragePlace).SingleOrDefault(w => w.Id == Id);
-                db.StoragePlaces.RemoveRange(warehouse.StoragePlace);
-                db.Warehouses.Remove(warehouse);
-                db.SaveChanges();
-            }
+            db = context;
+        }
+        public void CreateItem(Warehouse newWarehouse)
+        {
+            db.Warehouses.Add(newWarehouse);
+            db.SaveChanges();
+        }
+
+        public void DeleteItem(int id)
+        {
+            var warehouse = db.Warehouses.Include(w => w.StoragePlaces).SingleOrDefault(w => w.Id == id);
+            db.StoragePlaces.RemoveRange(warehouse.StoragePlaces);
+            db.Warehouses.Remove(warehouse);
+            db.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            db.Dispose();
         }
 
         public Warehouse GetItem(int Id)
         {
-            using (var db = new StoreContext())
-            {
-                var warehouse = db.Warehouses.Include(w => w.StoragePlace.Select(s => s.Product)).SingleOrDefault(w => w.Id == Id);
-                return warehouse;
-            }
+            var warehouse = db.Warehouses.Include(w => w.StoragePlaces.Select(s => s.Product)).SingleOrDefault(w => w.Id == Id);
+            return warehouse;
         }
 
         public Warehouse[] GetItems()
         {
-            using (var db = new StoreContext())
-            {
-                return db.Warehouses.ToArray();
-            }
+            return db.Warehouses.ToArray();
         }
 
         public void UpdateItem(Warehouse updatedWarehouse)
         {
-            using (var db = new StoreContext())
-            {
-                db.Warehouses.Attach(updatedWarehouse);
-                var entry = db.Entry(updatedWarehouse);
-                entry.State = EntityState.Modified;
-                db.SaveChanges();
-            }
+            db.Warehouses.Attach(updatedWarehouse);
+            var entry = db.Entry(updatedWarehouse);
+            entry.State = EntityState.Modified;
+            db.SaveChanges();
         }
+
+
     }
 }

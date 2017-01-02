@@ -8,18 +8,37 @@ using System.Web;
 using System.Web.Mvc;
 using Kundbolaget.EntityFramework.Context;
 using Kundbolaget.Models.EntityModels;
+using Kundbolaget.EntityFramework.Repositories;
 
 namespace Kundbolaget.Controllers
 {
     public class OrderProductsController : Controller
     {
-        private StoreContext db = new StoreContext();
+        private DbOrderProductRepository orderProductRepo;
+        private DbOrderRepository orderRepo;
+        private DbProductRepository productRepo;
+
+        public OrderProductsController()
+        {
+            var db = new StoreContext();
+            orderProductRepo = new DbOrderProductRepository(db);
+            orderRepo = new DbOrderRepository(db);
+            productRepo = new DbProductRepository(db);
+        }
+
+        public OrderProductsController(DbOrderProductRepository dbOrderProductRepository, DbOrderRepository dbOrderRepository, DbProductRepository dbProductRepository)
+        {
+            orderProductRepo = dbOrderProductRepository;
+            orderRepo = dbOrderRepository;
+            productRepo = dbProductRepository;
+        }
 
         // GET: OrderProducts
         public ActionResult Index()
         {
-            var orderProducts = db.OrderProducts.Include(o => o.Order).Include(o => o.Product);
-            return View(orderProducts.ToList());
+            //var orderProducts = db.OrderProducts.Include(o => o.Order).Include(o => o.Product);
+            var orderProducList = orderProductRepo.GetItems().ToArray();
+            return View(orderProducList);
         }
 
         // GET: OrderProducts/Details/5
@@ -29,7 +48,8 @@ namespace Kundbolaget.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OrderProduct orderProduct = db.OrderProducts.Find(id);
+
+            OrderProduct orderProduct = orderProductRepo.GetItem((int)id);
             if (orderProduct == null)
             {
                 return HttpNotFound();
@@ -40,8 +60,8 @@ namespace Kundbolaget.Controllers
         // GET: OrderProducts/Create
         public ActionResult Create()
         {
-            ViewBag.OrderId = new SelectList(db.Orders, "Id", "Id");
-            ViewBag.ProductId = new SelectList(db.Products, "Id", "Name");
+            ViewBag.OrderId = new SelectList(orderRepo.GetItems(), "Id", "Id");
+            ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name");
             return View();
         }
 
@@ -50,18 +70,21 @@ namespace Kundbolaget.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProductId,OrderedAmount,DeliveredAmount,AcceptedAmount,Comment,OrderId")] OrderProduct orderProduct)
+        public ActionResult Create([Bind(Include = "Id,ProductId,OrderedAmount,AvailabeAmount,DeliveredAmount,AcceptedAmount,Comment,OrderId")] OrderProduct newOrderProduct)
         {
+            if (newOrderProduct.ProductId == null)
+                ModelState.AddModelError("ProductId", "Produktid ej satt");
             if (ModelState.IsValid)
             {
-                db.OrderProducts.Add(orderProduct);
-                db.SaveChanges();
+                //db.OrderProducts.Add(orderProduct);
+                //db.SaveChanges();
+                orderProductRepo.CreateItem(newOrderProduct);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.OrderId = new SelectList(db.Orders, "Id", "Id", orderProduct.OrderId);
-            ViewBag.ProductId = new SelectList(db.Products, "Id", "Name", orderProduct.ProductId);
-            return View(orderProduct);
+            ViewBag.OrderId = new SelectList(orderRepo.GetItems(), "Id", "Id", newOrderProduct.OrderId);
+            ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name", newOrderProduct.ProductId);
+            return View(newOrderProduct);
         }
 
         // GET: OrderProducts/Edit/5
@@ -71,13 +94,13 @@ namespace Kundbolaget.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OrderProduct orderProduct = db.OrderProducts.Find(id);
+            OrderProduct orderProduct = orderProductRepo.GetItem((int)id);
             if (orderProduct == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.OrderId = new SelectList(db.Orders, "Id", "Id", orderProduct.OrderId);
-            ViewBag.ProductId = new SelectList(db.Products, "Id", "Name", orderProduct.ProductId);
+            ViewBag.OrderId = new SelectList(orderRepo.GetItems(), "Id", "Id", orderProduct.OrderId);
+            ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name", orderProduct.ProductId);
             return View(orderProduct);
         }
 
@@ -86,17 +109,33 @@ namespace Kundbolaget.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ProductId,OrderedAmount,DeliveredAmount,AcceptedAmount,Comment,OrderId")] OrderProduct orderProduct)
+        public ActionResult Edit([Bind(Include = "Id,ProductId,OrderedAmount,AvailabeAmount,DeliveredAmount,AcceptedAmount,Comment,OrderId")] OrderProduct updatedOrderProduct)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(orderProduct).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                orderProductRepo.UpdateItem(updatedOrderProduct);
+                var order = orderRepo.GetItem((int)updatedOrderProduct.OrderId);
+                switch (order.OrderStatus)
+                {
+                    case OrderStatus.Behandlar:
+                        return RedirectToAction("PrepareOrder", "Orders", new { id = updatedOrderProduct.OrderId });
+                    case OrderStatus.Plockar:
+                        return View();
+                    case OrderStatus.Fraktar:
+                        return View();
+                    case OrderStatus.Levererad:
+                        return RedirectToAction("FinalizeDelivery", "Orders", new { id = updatedOrderProduct.OrderId });
+                    case OrderStatus.Fakturerar:
+                        return View();
+                    case OrderStatus.Arkiverad:
+                        return View();
+                    default:
+                        return View();
+                }
             }
-            ViewBag.OrderId = new SelectList(db.Orders, "Id", "Id", orderProduct.OrderId);
-            ViewBag.ProductId = new SelectList(db.Products, "Id", "Name", orderProduct.ProductId);
-            return View(orderProduct);
+            ViewBag.OrderId = new SelectList(orderRepo.GetItems(), "Id", "Id", updatedOrderProduct.OrderId);
+            ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name", updatedOrderProduct.ProductId);
+            return View(updatedOrderProduct);
         }
 
         // GET: OrderProducts/Delete/5
@@ -106,7 +145,7 @@ namespace Kundbolaget.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OrderProduct orderProduct = db.OrderProducts.Find(id);
+            OrderProduct orderProduct = orderProductRepo.GetItem((int)id);
             if (orderProduct == null)
             {
                 return HttpNotFound();
@@ -119,9 +158,12 @@ namespace Kundbolaget.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            OrderProduct orderProduct = db.OrderProducts.Find(id);
-            db.OrderProducts.Remove(orderProduct);
-            db.SaveChanges();
+            OrderProduct orderProduct = orderProductRepo.GetItem(id);
+            if (orderProduct == null)
+            {
+                return HttpNotFound();
+            }
+            orderProductRepo.DeleteItem(orderProduct.Id);
             return RedirectToAction("Index");
         }
 
@@ -129,7 +171,9 @@ namespace Kundbolaget.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                orderProductRepo.Dispose();
+                orderRepo.Dispose();
+                productRepo.Dispose();
             }
             base.Dispose(disposing);
         }

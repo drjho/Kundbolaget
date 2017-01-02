@@ -17,6 +17,12 @@ namespace Kundbolaget.Controllers
         {
             repository = new DbCustomerGroupRepository();
         }
+
+        public CustomerGroupController(DbCustomerGroupRepository dbCustomerGroupRepository)
+        {
+            repository = dbCustomerGroupRepository;
+        }
+
         // GET: CustomerGroup
         public ActionResult Index()
         {

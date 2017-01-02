@@ -1,57 +1,85 @@
 ﻿@model IEnumerable<Kundbolaget.Models.EntityModels.Order>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Kundbolaget-Order";
 }
 
-<h2>Kundordrar</h2>
+<h2>Ordrar</h2>
 
 <p>
-    @*@Html.ActionLink("Create New", "Create")*@
+    @*@Html.ActionLink("Skapa ny order", "Create")*@
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Id)
+            @Html.DisplayNameFor(model => model.Address.AddressString)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CustomerAddress.Customer.Name)
+            @Html.DisplayNameFor(model => model.Customer.Name)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.OrderDate)
         </th>
-        @*<th>
+        <th>
             @Html.DisplayNameFor(model => model.DesiredDeliveryDate)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PlannedDeliveryDate)
-        </th>*@
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderStatus)
+        </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CustomerAddress.Customer.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OrderDate)
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.DesiredDeliveryDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PlannedDeliveryDate)
-        </td>*@
-        <td>
-            @Html.ActionLink("Ändra", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Detaljer", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Ta bort", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address.AddressString)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DesiredDeliveryDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlannedDeliveryDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderStatus)
+            </td>
+            <td>
+                @if (item.OrderStatus == Kundbolaget.Models.EntityModels.OrderStatus.Behandlar)
+                {
+                    @Html.ActionLink("Gör ordning", "PrepareOrder", new { id = item.Id }) @Html.Raw(" | ")
+                }
+                @if (item.OrderStatus == Kundbolaget.Models.EntityModels.OrderStatus.Plockar)
+                {
+                    @Html.ActionLink("PlockOrder", "ShowPickingOrder", new { id = item.Id }) @Html.Raw(" | ")
+                }
+                @if (item.OrderStatus == Kundbolaget.Models.EntityModels.OrderStatus.Fraktar)
+                {
+                    @Html.ActionLink("Följsedel", "ShowDeliveryNote", new { id = item.Id }) @Html.Raw(" | ")
+                }
+                @if (item.OrderStatus == Kundbolaget.Models.EntityModels.OrderStatus.Levererad)
+                {
+                    @Html.ActionLink("Leveransavslut", "FinalizeDelivery", new { id = item.Id }) @Html.Raw(" | ")
+                }
+                @Html.ActionLink("Detaljer", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Ta bort", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -12,35 +13,13 @@ namespace Kundbolaget.Models.EntityModels
 
     public class StoragePlace
     {
+        public string StoragePlaceId => $"Aisle:{AisleNr} Side:{Side.ToString()} Spot:{Spot} Shelf:{ShelfNr}";
 
-        public StoragePlace()
-        {
-
-        }
-        /// <summary>
-        /// Sets the storageplaceId by the following constructor
-        /// </summary>
-        public StoragePlace(int aNr, Side side, int s, int sNr)
-        {
-            AisleNr = aNr;
-            Side = side;
-            Spot = s;
-            ShelfNr = sNr;
-        }
-
-        public string StoragePlaceId
-        {
-            get
-            {
-                return $"Aisle:{AisleNr} Side:{Side.ToString()} Spot:{Spot} Shelf:{ShelfNr}";
-            }
-        }
-
-        public int? WarehouseId { get; set; }
+        public int WarehouseId { get; set; }
         public virtual Warehouse Warehouse { get; set; }
 
-        public virtual Product Product { get; set; }
         public int? ProductId { get; set; }
+        public virtual Product Product { get; set; }
 
         /// <summary>
         /// Primary key.
@@ -66,10 +45,19 @@ namespace Kundbolaget.Models.EntityModels
         /// <summary>
         /// The arrival time of the product.
         /// </summary>
-        public DateTime ArrivalDate { get; set; } = DateTime.Today;
+        public DateTime? ArrivalDate { get; set; }
         /// <summary>
         /// Set to false when it is occupied.
         /// </summary>
         public bool Vacant { get; set; } = true;
+
+        [Display(Name = "Totalt")]
+        public int TotalAmount { get; set; }
+
+        [Display(Name = "Reserverat")]
+        public int ReservedAmount { get; set; }
+
+        [Display(Name = "Tillgängligt")]
+        public int AvailableAmount => TotalAmount - ReservedAmount;
     }
 }

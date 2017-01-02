@@ -4,17 +4,19 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>Uppdatera</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>OrderProduct</h4>
+        <h4>Produktorder: @Model.Id</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.AvailabeAmount)
+
 
         <div class="form-group">
             @Html.LabelFor(model => model.ProductId, "ProductId", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -73,5 +75,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Tillbaka till ordrarna", "Index", "Orders") |
+    @Html.ActionLink("Tillbaka till leveransavslut", "FinalizeDelivery", "Orders", new { id = Model.Order.Id }, null) |
+    @Html.ActionLink("Tillbaka till produktordrarna", "Index")
 </div>

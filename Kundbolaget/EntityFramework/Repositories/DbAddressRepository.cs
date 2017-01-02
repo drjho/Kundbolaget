@@ -8,52 +8,55 @@ using System.Web;
 
 namespace Kundbolaget.EntityFramework.Repositories
 {
-    public class DbAddressRepository : IGenericRepository<Address>
+    public class DbAddressRepository : IGenericRepository<Address>, IDisposable
     {
+        private StoreContext db;
+
+        public DbAddressRepository()
+        {
+            db = new StoreContext();
+
+        }
+
+        public DbAddressRepository(StoreContext fakeContext)
+        {
+            db = fakeContext;
+        }
+
         public void CreateItem(Address newAddress)
         {
-            using (var db = new StoreContext())
-            {
-                db.Addresses.Add(newAddress);
-                db.SaveChanges();
-            }
+            db.Addresses.Add(newAddress);
+            db.SaveChanges();
         }
 
         public void DeleteItem(int addressId)
         {
-            using (var db = new StoreContext())
-            {
-                var address = db.Addresses.SingleOrDefault(c => c.Id == addressId);
-                db.Addresses.Remove(address);
-                db.SaveChanges();
-            }
+            var address = db.Addresses.SingleOrDefault(c => c.Id == addressId);
+            db.Addresses.Remove(address);
+            db.SaveChanges();
         }
 
         public Address GetItem(int addressId)
         {
-            using (var db = new StoreContext())
-            {
-                return db.Addresses.SingleOrDefault(c => c.Id == addressId);
-            }
+            return db.Addresses.SingleOrDefault(c => c.Id == addressId);
         }
 
         public Address[] GetItems()
         {
-            using (var db = new StoreContext())
-            {
-                return db.Addresses.ToArray();
-            }
+            return db.Addresses.ToArray();
         }
 
         public void UpdateItem(Address updatedAddress)
         {
-            using (var db = new StoreContext())
-            {
-                db.Addresses.Attach(updatedAddress);
-                var entry = db.Entry(updatedAddress);
-                entry.State = EntityState.Modified;
-                db.SaveChanges();
-            }
+            db.Addresses.Attach(updatedAddress);
+            var entry = db.Entry(updatedAddress);
+            entry.State = EntityState.Modified;
+            db.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            db.Dispose();
         }
     }
 }
