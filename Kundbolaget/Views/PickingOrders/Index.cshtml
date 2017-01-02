@@ -13,7 +13,7 @@
 @using (Html.BeginForm())
 {
     <p>
-        Sök datum: @Html.TextBox("searchDate", string.Format("{0:dd MMM yyy}", searchDate), new { @class = "DatePicker" })
+        Sök leveransdatum (åååå-mm-dd): @Html.TextBox("searchDate", string.Format("{0:yyyy-MM-dd}", searchDate), new { @class = "DatePicker" })
         <input type="submit" value="Sök" />
     </p>
 }
