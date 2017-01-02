@@ -1,5 +1,5 @@
 {
-  "customerid": "000001",
+  "customerid": "100001",
   "addressid": "00000001",
   "products": [
     {
@@ -13,6 +13,6 @@
       "comment": ""
     }
   ],
-  "date": "01/01/2017",
+  "date": "01/01/2018",
   "comment": "ring vid leverans"
 }

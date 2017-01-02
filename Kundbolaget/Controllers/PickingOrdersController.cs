@@ -38,9 +38,11 @@ namespace Kundbolaget.Controllers
         }
 
         // GET: PickingOrders
-        public ActionResult Index()
+        public ActionResult Index(DateTime? searchDate)
         {
             var pickingOrders = pickingOrderRepo.GetItems();
+            if (searchDate.HasValue)
+                pickingOrders = pickingOrders.Where(x => x.OrderProduct.Order.PlannedDeliveryDate == searchDate).ToArray();
             return View(pickingOrders.ToList());
         }
 

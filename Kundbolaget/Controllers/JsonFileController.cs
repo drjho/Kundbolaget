@@ -78,14 +78,17 @@ namespace Kundbolaget.Controllers
 
             var items = customerAddressRepo.GetItems();
 
+            var cid = (string)jCustomerOrder["customerid"];
+            var aid = (string)jCustomerOrder["addressid"];
+
             var customerAddress = customerAddressRepo.GetItems().Where(
                 a => a.AddressType == AddressType.Leverans &&
-                a.Address.AddressOrderId == (string)jCustomerOrder["addressid"] &&
-                a.Customer.CustomerOrderId == (string)jCustomerOrder["customerid"]).SingleOrDefault();
+                a.Address.AddressOrderId == aid &&
+                a.Customer.CustomerOrderId == cid).SingleOrDefault();
 
             if (customerAddress == null)
             {
-                ModelState.AddModelError("CustomerAddress", "V.g. kontrollera angivet CustomerOrderId eller AddressOrderId");
+                ModelState.AddModelError("", $"Kundorderid: {cid} eller Adressorderid: {aid} är felaktigt.");
                 return View();
             }
 
@@ -95,7 +98,6 @@ namespace Kundbolaget.Controllers
 
             var deliveryDate = Convert.ToDateTime(jCustomerOrder["date"]);
 
-            var jProducts = jCustomerOrder["products"].ToArray();
             var order = new Order
             {
                 CustomerId = customerAddress.Customer.Id,
@@ -111,8 +113,16 @@ namespace Kundbolaget.Controllers
                 order.PlannedDeliveryDate = (order.DesiredDeliveryDate.CompareTo(firstPossibleDate) < 0) ? firstPossibleDate : order.DesiredDeliveryDate;
             }
 
+            var jProducts = jCustomerOrder["products"].ToArray();
             foreach (var jProduct in jProducts)
             {
+                var prodString = (string)jProduct["pno"];
+                var product = productRepo.GetItem(prodString);
+                if (product == null)
+                {
+                    ModelState.AddModelError("", $"Produktorderid: {prodString} finns inte.");
+                    return View();
+                }
                 var orderProduct = new OrderProduct
                 {
                     OrderId = order.Id,
@@ -128,7 +138,7 @@ namespace Kundbolaget.Controllers
             {
                 if (item.DesiredDeliveryDate.Equals(order.DesiredDeliveryDate) && item.Comment.Equals(order.Comment))
                 {
-                    ModelState.AddModelError("SimilarOrder", "Kanske upprepad order");
+                    ModelState.AddModelError("", "En order med samma kundorderid, adressorderid och önskat leveransdatum är redan registrerad.");
                     return View();
                 }
             }

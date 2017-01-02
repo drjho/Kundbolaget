@@ -277,7 +277,7 @@ namespace UnitTestMoq
             var expectedCount = ResourceData.Orders.Count;
 
             // Act
-            var actionResult = _orderController.Index();
+            var actionResult = _orderController.Index(null);
             var viewResult = actionResult as ViewResult;
             var viewResultModel = (Order[])viewResult.Model;
             var actual = viewResultModel.ToList();

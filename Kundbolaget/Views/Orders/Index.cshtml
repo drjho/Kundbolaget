@@ -2,14 +2,21 @@
 
 @{
     ViewBag.Title = "Kundbolaget-Order";
+    var searchDate = DateTime.Now.Date;
 }
 
-<h2>Ordrar</h2>
+<h2>Order</h2>
 
 <p>
     @*@Html.ActionLink("Skapa ny order", "Create")*@
-
 </p>
+@using (Html.BeginForm())
+{
+    <p>
+        Sök datum: (dd mmm yyyy) @Html.TextBox("searchDate", string.Format("{0:dd MMM yyy}", searchDate), new { @class = "DatePicker" })
+        <input type="submit" value="Sök" />
+    </p>
+}
 <table class="table">
     <tr>
         <th>

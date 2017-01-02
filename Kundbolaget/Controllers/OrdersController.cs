@@ -52,10 +52,12 @@ namespace Kundbolaget.Controllers
         }
 
         // GET: Orders
-        public ActionResult Index()
+        public ActionResult Index(DateTime? searchDate)
         {
             //var model = orderRepo.GetItems().Where(p => p.OrderStatus == OrderStatus.Behandlar);
             var model = orderRepo.GetItems();
+            if (searchDate.HasValue)
+                model = model.Where(x => x.PlannedDeliveryDate == searchDate).ToArray();
             return View(model);
         }
 

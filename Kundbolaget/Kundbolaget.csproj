@@ -143,6 +143,8 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Data\test_beta.json" />
+    <Content Include="Data\test_longterm.json" />
+    <Content Include="Data\test_wrongCustomerId.json" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -155,6 +157,8 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Data\test_beta2.json" />
     <Content Include="Data\test_wrong.json" />
+    <Content Include="Data\test_wrongProductId.json" />
+    <Content Include="Data\test_wrongAddressId.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
