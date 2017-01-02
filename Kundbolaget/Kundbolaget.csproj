@@ -156,9 +156,12 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Data\test_beta2.json" />
-    <Content Include="Data\test_wrong.json" />
+    <Content Include="Data\test_wrongCustomerId_as_text.json" />
     <Content Include="Data\test_wrongProductId.json" />
     <Content Include="Data\test_wrongAddressId.json" />
+    <Content Include="Data\test_wrongAmount_as_text.json" />
+    <Content Include="Data\test_wrongAmount_zero.json" />
+    <Content Include="Data\test_wrongAmount_negative.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

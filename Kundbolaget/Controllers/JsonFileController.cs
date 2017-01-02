@@ -123,12 +123,25 @@ namespace Kundbolaget.Controllers
                     ModelState.AddModelError("", $"Produktorderid: {prodString} finns inte.");
                     return View();
                 }
+
+                var aStr = (string)jProduct["amount"];
+                uint oa;
+                if (!uint.TryParse(aStr, out oa))
+                {
+                    ModelState.AddModelError("", $"Beställt antal: {aStr} är felaktigt.");
+                    return View();
+                }
+                if (oa < 1)
+                {
+                    ModelState.AddModelError("", $"Beställt antal: {aStr} mindre än 1.");
+                    return View();
+                }
                 var orderProduct = new OrderProduct
                 {
                     OrderId = order.Id,
                     Comment = (string)jProduct["comment"],
                     ProductId = productRepo.GetItem((string)jProduct["pno"]).Id,
-                    OrderedAmount = (int)jProduct["amount"]
+                    OrderedAmount = (int)oa
                 };
                 order.OrderProducts.Add(orderProduct);
             }
