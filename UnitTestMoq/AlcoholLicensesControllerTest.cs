@@ -64,8 +64,8 @@ namespace UnitTestMoq
         {
             var actionResult = _alcoholLicenseController.Edit(1);
             var viewResult = actionResult as ViewResult;
-            var priceList = (AlcoholLicense)viewResult.Model;
-            Assert.AreEqual(1, priceList.Id);
+            var alcoholLicense = (AlcoholLicense)viewResult.Model;
+            Assert.AreEqual(1, alcoholLicense.Id);
         }
 
         [Test]
