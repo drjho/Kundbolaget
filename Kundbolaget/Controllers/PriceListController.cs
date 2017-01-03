@@ -5,16 +5,19 @@ using System.Web;
 using System.Web.Mvc;
 using Kundbolaget.EntityFramework.Repositories;
 using Kundbolaget.Models.EntityModels;
+using Kundbolaget.Models.ViewModels;
 
 namespace Kundbolaget.Controllers
 {
     public class PriceListController : Controller
     {
         DbPriceListRepository repository;
+        DbCustomerGroupRepository customerGroupRepository;
 
         public PriceListController()
         {
             repository = new DbPriceListRepository();
+            customerGroupRepository = new DbCustomerGroupRepository();
         }
 
         public PriceListController(DbPriceListRepository dbPriceListRepository)
@@ -82,6 +85,21 @@ namespace Kundbolaget.Controllers
             }
             repository.DeleteItem(id);
             return RedirectToAction("Index");
+        }
+
+        public ActionResult AddToCustomerGroup(int id)
+        {
+            var priceList = repository.GetItem(id);
+
+            List<SelectListItem> listItems = customerGroupRepository.GetItems().Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
+
+            CustomerGroupVM model = new CustomerGroupVM {PriceListId = priceList.Id, CustomerGroupList = listItems};
+
+            return View(model);
         }
     }
 }

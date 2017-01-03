@@ -244,6 +244,7 @@
     <Compile Include="Models\EntityModels\Product.cs" />
     <Compile Include="Models\EntityModels\StoragePlace.cs" />
     <Compile Include="Models\EntityModels\Warehouse.cs" />
+    <Compile Include="Models\ViewModels\CustomerGroupVM.cs" />
     <Compile Include="Models\ViewModels\OrderProductVM.cs" />
     <Compile Include="Models\ViewModels\OrderVM.cs" />
     <Compile Include="Models\ViewModels\StoragePlaceProductVM.cs" />
@@ -332,6 +333,7 @@
     <Content Include="Views\Orders\ShowPickingOrder.cshtml" />
     <Content Include="Views\Orders\ShowDeliveryNote.cshtml" />
     <Content Include="Views\Orders\FinalizeDelivery.cshtml" />
+    <Content Include="Views\PriceList\AddToCustomerGroup.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -100,6 +100,12 @@ namespace Kundbolaget.Migrations
             //    Name = "Matbutiker"
             //};
 
+            var customergroup = new CustomerGroup[]
+            {
+                new CustomerGroup {Id = 1, Name = "ICA AB", ListOfCustomers = customers.ToList()},
+                new CustomerGroup {Id = 1, Name = "Coop AB", ListOfCustomers = customers.ToList()}
+            };
+
             var ca = new CustomerAddress[]
             {
                 new CustomerAddress { Id = 1, CustomerId =1, AddressId = 1, AddressType = AddressType.Leverans },
@@ -118,6 +124,7 @@ namespace Kundbolaget.Migrations
             context.Addresses.AddOrUpdate(addresses);
             context.Products.AddOrUpdate(products);
             context.CustomerAddresses.AddOrUpdate(ca);
+            context.CustomerGroups.AddOrUpdate(customergroup);
 
         }
     }
