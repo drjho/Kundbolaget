@@ -157,6 +157,14 @@ namespace Kundbolaget.Controllers
             storageRepo.UpdateItems(updatedStorages);
         }
 
+        public ActionResult DeliveryNotes(DateTime? searchDate)
+        {
+            var orders = orderRepo.GetItems().Where(x => x.OrderStatus == OrderStatus.Fraktar).ToArray();
+            if (searchDate.HasValue)
+                orders = orders.Where(x => x.PlannedDeliveryDate == searchDate).ToArray();
+            return View(orders);
+        }
+
         /// <summary>
         /// Anropas när man vill visa följsedel av en order
         /// </summary>

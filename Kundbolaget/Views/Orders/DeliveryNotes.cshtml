@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Kundbolaget.Models.EntityModels.Order>
+
+@{
+    ViewBag.Title = "Kundbolaget-Följesedlar";
+    var searchDate = DateTime.Now.Date;
+}
+
+<h2>Följsedlar</h2>
+@using (Html.BeginForm())
+{
+    <p>
+        Sök leveransdatum: (åååå-mm-dd) @Html.TextBox("searchDate", string.Format("{0:yyyy-MM-dd}", searchDate), new { @class = "DatePicker" })
+        <input type="submit" value="Sök" />
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PlannedDeliveryDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderProducts.First().Product)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderProducts.First().DeliveredAmount)
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        foreach (var op in item.OrderProducts)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PlannedDeliveryDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address.AddressString)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => op.Product.ShortDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => op.DeliveredAmount)
+                </td>
+                <td>
+                    @*     @Html.ActionLink("Uppdatera", "Edit", "OrderProducts", new { id = item.Id }, null)*@
+                </td>
+            </tr>
+        }
+    }
+
+</table>
+<p>
+    <a href="@Url.Action("PrintDeliveryNotes", "Orders")" class="btn btn-default">
+        <span class="glyphicon glyphicon-print" aria-hidden="true"> </span> Skriv ut</a>
+    <a href="@Url.Action("Index", "Orders")" class="btn btn-default">
+        <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"> </span> Tillbaka till ordrarna</a>
+</p>
+

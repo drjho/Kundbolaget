@@ -25,7 +25,7 @@ namespace Kundbolaget.Models.EntityModels
         public int AvailabeAmount { get; set; }
 
         [Required]
-        [Display(Name = "Levererat antal")]
+        [Display(Name = "Plockat antal")]
         public int DeliveredAmount { get; set; }
 
         [Display(Name = "Mottaget antal")]

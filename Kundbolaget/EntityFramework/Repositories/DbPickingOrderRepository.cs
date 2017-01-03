@@ -56,7 +56,7 @@ namespace Kundbolaget.EntityFramework.Repositories
 
         public PickingOrder[] GetItems()
         {
-            return db.PickingOrders.ToArray();
+            return db.PickingOrders.Include(x=> x.OrderProduct).ToArray();
         }
 
         public void UpdateItems(IEnumerable<PickingOrder> updatedItems)
