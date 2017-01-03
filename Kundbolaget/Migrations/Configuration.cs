@@ -102,7 +102,7 @@ namespace Kundbolaget.Migrations
 
             var customergroup = new CustomerGroup[]
             {
-                new CustomerGroup {Id = 1, Name = "ICA AB", ListOfCustomers = customers.ToList()},
+                new CustomerGroup {Id = 0, Name = "ICA AB", ListOfCustomers = customers.ToList()},
                 new CustomerGroup {Id = 1, Name = "Coop AB", ListOfCustomers = customers.ToList()}
             };
 
