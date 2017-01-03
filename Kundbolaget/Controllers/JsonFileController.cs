@@ -88,7 +88,7 @@ namespace Kundbolaget.Controllers
 
             if (customerAddress == null)
             {
-                ModelState.AddModelError("", $"Kundorderid: {cid} eller Adressorderid: {aid} är felaktigt.");
+                ModelState.AddModelError("", $"Kundorderid: '{cid}' eller Adressorderid: '{aid}' är felaktigt.");
                 return View();
             }
 
@@ -96,21 +96,32 @@ namespace Kundbolaget.Controllers
 
             var allProducts = productRepo.GetItems();
 
-            var deliveryDate = Convert.ToDateTime(jCustomerOrder["date"]);
+            string dStr = (string)jCustomerOrder["date"];
+            DateTime dDate;
+
+            if (dStr.Length < 1)
+            {
+                dDate = DateTime.Now;
+            }
+            else if (!DateTime.TryParse(dStr, out dDate))
+            {
+                ModelState.AddModelError("", $"Önskad leveransdatum: '{dStr}' är felaktigt.");
+                return View();
+            }
 
             var order = new Order
             {
                 CustomerId = customerAddress.Customer.Id,
                 AddressId = customerAddress.Address.Id,
                 OrderDate = DateTime.Today,
-                DesiredDeliveryDate = Convert.ToDateTime(jCustomerOrder["date"]),
-                Comment = (string)jCustomerOrder["comment"],
+                DesiredDeliveryDate = dDate,
+                Comment = (string)jCustomerOrder["comment"]
             };
 
             if (customer != null)
             {
                 var firstPossibleDate = DateTime.Today.AddDays(customer.DaysToDelievery);
-                order.PlannedDeliveryDate = (order.DesiredDeliveryDate.CompareTo(firstPossibleDate) < 0) ? firstPossibleDate : order.DesiredDeliveryDate;
+                order.PlannedDeliveryDate = (order.DesiredDeliveryDate.CompareTo(firstPossibleDate) <= 0) ? firstPossibleDate : order.DesiredDeliveryDate;
             }
 
             var jProducts = jCustomerOrder["products"].ToArray();
@@ -120,7 +131,7 @@ namespace Kundbolaget.Controllers
                 var product = productRepo.GetItem(prodString);
                 if (product == null)
                 {
-                    ModelState.AddModelError("", $"Produktorderid: {prodString} finns inte.");
+                    ModelState.AddModelError("", $"Produktorderid: '{prodString}' finns inte.");
                     return View();
                 }
 
@@ -128,12 +139,12 @@ namespace Kundbolaget.Controllers
                 uint oa;
                 if (!uint.TryParse(aStr, out oa))
                 {
-                    ModelState.AddModelError("", $"Beställt antal: {aStr} är felaktigt.");
+                    ModelState.AddModelError("", $"Beställt antal: '{aStr}' är felaktigt.");
                     return View();
                 }
                 if (oa < 1)
                 {
-                    ModelState.AddModelError("", $"Beställt antal: {aStr} mindre än 1.");
+                    ModelState.AddModelError("", $"Beställt antal: '{aStr}' mindre än 1.");
                     return View();
                 }
                 var orderProduct = new OrderProduct
