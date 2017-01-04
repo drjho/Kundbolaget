@@ -28,8 +28,8 @@ namespace Kundbolaget.Controllers
         }
 
         public PickingOrdersController(
-            DbPickingOrderRepository dbPickingOrderRepo, 
-            DbOrderProductRepository dbOrderProductRepo, 
+            DbPickingOrderRepository dbPickingOrderRepo,
+            DbOrderProductRepository dbOrderProductRepo,
             DbStoragePlaceRepository dbstoragePlaceRepo)
         {
             pickingOrderRepo = dbPickingOrderRepo;
@@ -40,7 +40,7 @@ namespace Kundbolaget.Controllers
         // GET: PickingOrders
         public ActionResult Index(DateTime? searchDate)
         {
-            var pickingOrders = pickingOrderRepo.GetItems();
+            var pickingOrders = pickingOrderRepo.GetItems().Where(x => x.OrderProduct.Order.OrderStatus == OrderStatus.Plockar).ToArray();
             if (searchDate.HasValue)
                 pickingOrders = pickingOrders.Where(x => x.OrderProduct.Order.PlannedDeliveryDate == searchDate).ToArray();
             return View(pickingOrders.ToList());
@@ -118,7 +118,7 @@ namespace Kundbolaget.Controllers
                 pickingOrderRepo.UpdateItem(pickingOrder);
                 //return RedirectToAction("Index");
                 var orderId = orderProductRepo.GetItem((int)pickingOrder.OrderProductId).OrderId;
-                return RedirectToAction("ShowPickingOrder", "Orders", new { id = orderId } );
+                return RedirectToAction("ShowPickingOrder", "Orders", new { id = orderId });
             }
             ViewBag.OrderProductId = new SelectList(orderProductRepo.GetItems(), "Id", "Id", pickingOrder.OrderProductId);
             ViewBag.StoragePlaceId = new SelectList(storageRepo.GetItems(), "Id", "Id", pickingOrder.StoragePlaceId);

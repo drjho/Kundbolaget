@@ -1,21 +1,29 @@
-﻿@model Kundbolaget.Models.EntityModels.Order
+﻿@model IEnumerable<Kundbolaget.Models.EntityModels.Order>
 
 @{
-    ViewBag.Title = "Kundbolaget-Leverans";
+    ViewBag.Title = "Kundbolaget-Följesedlar";
+    var searchDate = DateTime.Now.Date;
 }
 
-<h2>Uppdatera antal accepterade kolli</h2>
+<h2>Följsedlar</h2>
+@using (@Html.BeginForm())
+{
+    <p>
+        Sök leveransdatum: (åååå-mm-dd) @Html.TextBox("searchDate", string.Format("{0:yyyy-MM-dd}", searchDate), new { @class = "DatePicker" })
+        <input type="submit" value="Sök" />
+    </p>
+}
+<hr />
+@foreach (var item in Model)
+{
 
-<div>
-    <h4>Order: @Model.Id</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Address.AddressString)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Address.AddressString)
+            @Html.DisplayFor(model => item.Address.AddressString)
         </dd>
 
         <dt>
@@ -23,7 +31,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Customer.Name)
+            @Html.DisplayFor(model => item.Customer.Name)
         </dd>
 
         <dt>
@@ -31,7 +39,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.OrderDate)
+            @Html.DisplayFor(model => item.OrderDate)
         </dd>
 
         <dt>
@@ -39,7 +47,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.DesiredDeliveryDate)
+            @Html.DisplayFor(model => item.DesiredDeliveryDate)
         </dd>
 
         <dt>
@@ -47,7 +55,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PlannedDeliveryDate)
+            @Html.DisplayFor(model => item.PlannedDeliveryDate)
         </dd>
 
         <dt>
@@ -55,7 +63,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Comment)
+            @Html.DisplayFor(model => item.Comment)
         </dd>
 
         <dt>
@@ -63,7 +71,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.OrderStatus)
+            @Html.DisplayFor(model => item.OrderStatus)
         </dd>
         <dd>
             <table class="table">
@@ -80,49 +88,40 @@
                     <th>
                         @Html.DisplayNameFor(model => model.OrderProducts.First().DeliveredAmount)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.OrderProducts.First().AcceptedAmount)
-                    </th>
                     <th></th>
                 </tr>
-                @foreach (var item in Model.OrderProducts)
+                @foreach (var op in item.OrderProducts)
                 {
-                    var str = (Model.OrderStatus < Kundbolaget.Models.EntityModels.OrderStatus.Fakturerar) ? "?" : "";
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Product.ProductOrderId)
+                            @Html.DisplayFor(modelItem => op.Product.ProductOrderId)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Product.ShortDescription)
+                            @Html.DisplayFor(modelItem => op.Product.ShortDescription)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.OrderedAmount)
+                            @Html.DisplayFor(modelItem => op.OrderedAmount)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.DeliveredAmount)
-                        </td>
-                        <td class="alert-success">
-                            @Html.DisplayFor(modelItem => item.AcceptedAmount)@Html.Raw(str)
+                            @Html.DisplayFor(modelItem => op.DeliveredAmount)
                         </td>
                         <td>
-                            <a href="@Url.Action("Edit", "OrderProducts", new { id = item.Id })" class="btn btn-success">
-                                <span class="glyphicon glyphicon-edit" aria-hidden="true"> </span> Uppdatera
-                            </a>
-                            @*@Html.ActionLink("Uppdatera", "Edit", "OrderProducts", new { id = item.Id }, null)*@
+                            @*     @Html.ActionLink("Uppdatera", "Edit", "OrderProducts", new { id = item.Id }, null)*@
                         </td>
                     </tr>
                 }
             </table>
         </dd>
     </dl>
-</div>
+    <hr />
+}
+
 <p>
-    <a href="@Url.Action("ReadyForInvoice", "Orders", new { id = Model.Id })" class="btn btn-primary">
-        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"> </span> Redo för fakturering
+    <a href="@Url.Action("PrintDeliveryNotes", "Orders")" class="btn btn-primary">
+        <span class="glyphicon glyphicon-print" aria-hidden="true"> </span> Skriv ut
     </a>
     <a href="@Url.Action("Index", "Orders")" class="btn btn-default">
         <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"> </span> Tillbaka till ordrarna
     </a>
-    @*@Html.ActionLink("Redo för fakturering", "ReadyForInvoice", new { id = Model.Id }) |
-    @Html.ActionLink("Tillbaka till ordrarna", "Index")*@
 </p>
+

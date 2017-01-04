@@ -341,6 +341,7 @@
     <Content Include="Views\Orders\ShowPickingOrder.cshtml" />
     <Content Include="Views\Orders\ShowDeliveryNote.cshtml" />
     <Content Include="Views\Orders\FinalizeDelivery.cshtml" />
+    <Content Include="Views\Orders\DeliveryNotes.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
