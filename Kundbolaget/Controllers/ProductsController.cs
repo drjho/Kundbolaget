@@ -99,34 +99,5 @@ namespace Kundbolaget.Controllers
             productRepo.DeleteItem(id);
             return RedirectToAction("Index");
         }
-
-        public ActionResult AddToWarehouse(int id)
-        {
-            var prod = productRepo.GetItem(id);
-
-            List<SelectListItem> listItems = productRepo.GetWarehouses().Select(c => new SelectListItem
-            {
-                Value = c.Id.ToString(),
-                Text = c.Name
-            }).ToList();
-
-            CreateProductVM model = new CreateProductVM { Id = prod.Id, Name = prod.Name,
-                 WarehouseList = listItems };
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult AddToWarehouse(CreateProductVM model)
-        {
-
-            if (!ModelState.IsValid)
-                return View(model);
-
-            productRepo.AddToStorage(model);
-
-            return RedirectToAction("Index");
-        }
-
     }
 }
