@@ -30,12 +30,12 @@ namespace Kundbolaget.Models.EntityModels
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Önskad leveransdatum")]
+        [Display(Name = "Önskat leveransdatum")]
         public DateTime DesiredDeliveryDate { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Planerad leveransdatum")]
+        [Display(Name = "Planerat leveransdatum")]
         public DateTime PlannedDeliveryDate { get; set; }
 
         [Required(ErrorMessage = "Angett fel adressorder id")]

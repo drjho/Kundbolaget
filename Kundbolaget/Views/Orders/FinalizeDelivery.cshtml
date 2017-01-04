@@ -87,6 +87,7 @@
                 </tr>
                 @foreach (var item in Model.OrderProducts)
                 {
+                    var str = (Model.OrderStatus < Kundbolaget.Models.EntityModels.OrderStatus.Fakturerar) ? "?" : "";
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.Product.ProductOrderId)
@@ -100,11 +101,14 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.DeliveredAmount)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.AcceptedAmount)
+                        <td class="alert-success">
+                            @Html.DisplayFor(modelItem => item.AcceptedAmount)@Html.Raw(str)
                         </td>
                         <td>
-                            @Html.ActionLink("Uppdatera", "Edit", "OrderProducts", new { id = item.Id }, null)
+                            <a href="@Url.Action("Edit", "OrderProducts", new { id = item.Id })" class="btn btn-success">
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true"> </span> Uppdatera
+                            </a>
+                            @*@Html.ActionLink("Uppdatera", "Edit", "OrderProducts", new { id = item.Id }, null)*@
                         </td>
                     </tr>
                 }
@@ -113,6 +117,12 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Redo för fakturering", "ReadyForInvoice", new { id = Model.Id }) |
-    @Html.ActionLink("Tillbaka till ordrarna", "Index")
+    <a href="@Url.Action("ReadyForInvoice", "Orders", new { id = Model.Id })" class="btn btn-primary">
+        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"> </span> Redo för fakturering
+    </a>
+    <a href="@Url.Action("Index", "Orders")" class="btn btn-default">
+        <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"> </span> Tillbaka till ordrarna
+    </a>
+    @*@Html.ActionLink("Redo för fakturering", "ReadyForInvoice", new { id = Model.Id }) |
+    @Html.ActionLink("Tillbaka till ordrarna", "Index")*@
 </p>

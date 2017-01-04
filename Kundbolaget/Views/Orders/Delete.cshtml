@@ -12,11 +12,11 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Address.StreetName)
+            @Html.DisplayNameFor(model => model.Address.AddressString)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Address.StreetName)
+            @Html.DisplayFor(model => model.Address.AddressString)
         </dd>
 
         <dt>
@@ -51,6 +51,55 @@
             @Html.DisplayFor(model => model.Comment)
         </dd>
 
+        <dd>
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderProducts)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderProducts.First().Product)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderProducts.First().OrderedAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderProducts.First().AvailabeAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderProducts.First().DeliveredAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderProducts.First().AcceptedAmount)
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.OrderProducts)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderedAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AvailabeAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DeliveredAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AcceptedAmount)
+                        </td>
+                        <td></td>
+                    </tr>
+                }
+            </table>
+        </dd>
     </dl>
 
     @using (Html.BeginForm()) {
