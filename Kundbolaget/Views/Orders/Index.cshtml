@@ -45,7 +45,35 @@
 
     @foreach (var item in Model)
     {
-        <tr>
+        string str = "";
+        switch (item.OrderStatus)
+        {
+            case Kundbolaget.Models.EntityModels.OrderStatus.Behandlar:
+                str = "alert alert-info";
+                break;
+            case Kundbolaget.Models.EntityModels.OrderStatus.Plockar:
+                if (item.OrderProducts.Any(x => x.AvailabeAmount == 0))
+                {
+                    str = "alert alert-warning";
+                }
+                break;
+            case Kundbolaget.Models.EntityModels.OrderStatus.Fraktar:
+                if (item.OrderProducts.Any(x => x.DeliveredAmount == 0))
+                {
+                    str = "alert alert-danger";
+                }
+                break;
+            case Kundbolaget.Models.EntityModels.OrderStatus.Levererad:
+                break;
+            case Kundbolaget.Models.EntityModels.OrderStatus.Fakturerar:
+                break;
+            case Kundbolaget.Models.EntityModels.OrderStatus.Arkiverad:
+                break;
+            default:
+                break;
+        }
+        <tr class="@str">
+
             <td>
                 @Html.DisplayFor(modelItem => item.Address.AddressString)
             </td>

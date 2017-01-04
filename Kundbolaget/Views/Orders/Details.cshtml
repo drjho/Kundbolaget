@@ -6,6 +6,12 @@
 
 <h2>Detaljinfo</h2>
 
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+}
+
 <div>
     <h4>Order</h4>
     <hr />
@@ -105,7 +111,10 @@
 
         <div class="form-actions no-color">
             @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |
-            @Html.ActionLink("Tillbaka till listan", "Index")
+            @*@Html.ActionLink("Tillbaka till listan", "Index")*@
+            <a href="@Url.Action("Index", "Orders")" class="btn btn-default">
+                <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"> </span> Tillbaka till ordrarna
+            </a>
         </div>
     }
 </div>

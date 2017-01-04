@@ -312,7 +312,6 @@ namespace Kundbolaget.Controllers
                 orderProduct.PickList = ReserveItem(orderProduct.ProductId, orderProduct.OrderedAmount);
                 orderProduct.PickList.ForEach(x => x.OrderProductId = orderProduct.Id);
                 orderProduct.AvailabeAmount = orderProduct.PickList.Sum(x => x.ReservedAmount);
-
                 // Vad gör man om det blir en tomlista?
 
                 // Funkar inte? Hur visar vi att availableAmount är 0?                
@@ -356,7 +355,7 @@ namespace Kundbolaget.Controllers
                 int pickAmount = Math.Min(sp.AvailableAmount, remainAmount);
                 if (pickAmount > 0)
                 {
-                    pickList.Add(new PickingOrder { StoragePlaceId = sp.Id, ReservedAmount = pickAmount });
+                    pickList.Add(new PickingOrder { StoragePlaceId = sp.Id, PickedAmount = pickAmount, ReservedAmount = pickAmount });
                     sp.ReservedAmount += pickAmount;
                     remainAmount -= pickAmount;
                 }
