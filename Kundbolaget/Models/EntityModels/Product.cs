@@ -21,6 +21,11 @@ namespace Kundbolaget.Models.EntityModels
         Cider, Rödvin, Vitvin, Starksprit, Öl
     }
 
+    public enum ProductStatus
+    {
+        Beställningsvara, Normal, Avvaktar, Problem, Utsålt, Utgått 
+    }
+
     public class Product
     {
         public int Id { get; set; }
@@ -52,6 +57,8 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Momskod")]
         public int VatCode { get; set; }
 
+        [Display(Name = "Produkt status")]
+        public ProductStatus ProductStatus { get; set; } = ProductStatus.Normal;
 
         public virtual List<StoragePlace> StoragePlaces { get; set; }
 

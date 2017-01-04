@@ -240,6 +240,10 @@
     <Compile Include="Migrations\201612291508186_addedShortDecriptionInProduct.Designer.cs">
       <DependentUpon>201612291508186_addedShortDecriptionInProduct.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701041543436_addedProductStatus.cs" />
+    <Compile Include="Migrations\201701041543436_addedProductStatus.Designer.cs">
+      <DependentUpon>201701041543436_addedProductStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\AlcoholLicense.cs" />
@@ -373,6 +377,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612291508186_addedShortDecriptionInProduct.resx">
       <DependentUpon>201612291508186_addedShortDecriptionInProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701041543436_addedProductStatus.resx">
+      <DependentUpon>201701041543436_addedProductStatus.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
