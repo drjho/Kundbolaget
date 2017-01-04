@@ -23,7 +23,7 @@ namespace Kundbolaget.Models.EntityModels
 
     public enum ProductStatus
     {
-        Beställningsvara, Normal, Avvaktar, Problem, Utsålt, Utgått 
+        Normal, Beställningsvara, Avvaktar, Problem, Utsålt, Utgått 
     }
 
     public class Product
@@ -57,7 +57,7 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Momskod")]
         public int VatCode { get; set; }
 
-        [Display(Name = "Produkt status")]
+        [Display(Name = "Säljstatus", ShortName = "Status")]
         public ProductStatus ProductStatus { get; set; } = ProductStatus.Normal;
 
         public virtual List<StoragePlace> StoragePlaces { get; set; }

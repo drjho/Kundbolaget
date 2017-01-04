@@ -4,10 +4,10 @@
     ViewBag.Title = "Produkt Info";
 }
 
-<h2>Information</h2>
+<h2>Produktinformation</h2>
 
 <div>
-    <h4>Produkt</h4>
+    @*<h4>Produkt</h4>*@
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -16,6 +16,14 @@
 
         <dd>
             @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductStatus)
         </dd>
 
         <dt>
@@ -85,6 +93,12 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Tillbaka till listan", "Index")
+    <a href="@Url.Action("Edit", "Products", new { id = Model.Id })" class="btn btn-primary">
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"> </span> Uppdatera produkt
+    </a>
+    <a href="@Url.Action("Index", "Products")" class="btn btn-default">
+        <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"> </span> Tillbaka till produkter
+    </a>
+    @*@Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |*@
+    @*@Html.ActionLink("Tillbaka till listan", "Index")*@
 </p>

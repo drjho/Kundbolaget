@@ -19,6 +19,14 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.ProductStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductStatus)
+        </dd>
+        
+        <dt>
             @Html.DisplayNameFor(model => model.ConsumerPackage)
         </dt>
 
@@ -88,8 +96,13 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Ta bort" class="btn btn-default" /> |
-            @Html.ActionLink("Tillbaka till listan", "Index")
+            <button type="submit" value="Ta bort" class="btn btn-danger">
+                <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"> </span> Ta bort
+            </button>
+            <a href="@Url.Action("Index", "Products")" class="btn btn-default">
+                <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"> </span> Tillbaka till produkter
+            </a>
+            @* | @Html.ActionLink("Tillbaka till listan", "Index")*@
         </div>
     }
 </div>
