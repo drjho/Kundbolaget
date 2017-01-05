@@ -240,6 +240,10 @@
     <Compile Include="Migrations\201612291508186_addedShortDecriptionInProduct.Designer.cs">
       <DependentUpon>201612291508186_addedShortDecriptionInProduct.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701041543436_addedProductStatus.cs" />
+    <Compile Include="Migrations\201701041543436_addedProductStatus.Designer.cs">
+      <DependentUpon>201701041543436_addedProductStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201701050959102_AddCustomerInAlocolicese.cs" />
     <Compile Include="Migrations\201701050959102_AddCustomerInAlocolicese.Designer.cs">
       <DependentUpon>201701050959102_AddCustomerInAlocolicese.cs</DependentUpon>
@@ -260,7 +264,6 @@
     <Compile Include="Models\ViewModels\OrderProductVM.cs" />
     <Compile Include="Models\ViewModels\OrderVM.cs" />
     <Compile Include="Models\ViewModels\StoragePlaceProductVM.cs" />
-    <Compile Include="Models\ViewModels\CreateProductVM.cs" />
     <Compile Include="Models\ViewModels\OrderUploadVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -295,7 +298,6 @@
     <Content Include="Views\Address\Details.cshtml" />
     <Content Include="Views\Address\Delete.cshtml" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
-    <Content Include="Views\Products\AddToWarehouse.cshtml" />
     <Content Include="Views\CustomerGroup\Index.cshtml" />
     <Content Include="Views\CustomerGroup\Create.cshtml" />
     <Content Include="Views\CustomerGroup\Edit.cshtml" />
@@ -377,6 +379,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612291508186_addedShortDecriptionInProduct.resx">
       <DependentUpon>201612291508186_addedShortDecriptionInProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701041543436_addedProductStatus.resx">
+      <DependentUpon>201701041543436_addedProductStatus.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701050959102_AddCustomerInAlocolicese.resx">
       <DependentUpon>201701050959102_AddCustomerInAlocolicese.cs</DependentUpon>
