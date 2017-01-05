@@ -59,6 +59,7 @@ namespace Kundbolaget.Controllers
         {
             var model = repository.GetItem(id);
             ViewBag.ProductId = new SelectList(productRepository.GetItems(), "Id", "Name");
+            ViewBag.CustomerGroupId = new SelectList(customerGroupRepository.GetItems(), "Id", "Name");
             return View(model);
         }
         //Post: PriceList/Edit{id}
@@ -95,40 +96,5 @@ namespace Kundbolaget.Controllers
             repository.DeleteItem(id);
             return RedirectToAction("Index");
         }
-        //Todo: Ta bort?
-        ////public ActionResult AddToCustomerGroups(int id)
-        ////{
-        ////    var priceList = repository.GetItem(id);
-
-        ////    List<SelectListItem> listItems = customerGroupRepository.GetItems().Select(c => new SelectListItem
-        ////    {
-        ////        Value = c.Id.ToString(),
-        ////        Text = c.Name
-        ////    }).ToList();
-
-        ////    CustomerGroupVM model = new CustomerGroupVM {PriceListId = priceList.Id, Name = priceList.CustomerGroup.Name, CustomerGroupList = listItems};
-        ////    repository.AddToCustomerGroup(model);
-        ////    return View(model);
-        ////}
-
-        //public ActionResult AddToCustomerGroup(int id)
-        //{
-        //    var model = repository.GetItem(id);
-        //    ViewBag.PriceListName = model.Product.Name;
-        //    ViewBag.CustomerGroupId = new SelectList(customerGroupRepository.GetItems(), "Id", "Name");
-        //    return View(new CustomerGroupVM {PriceListId = id});
-        //}
-
-        //[HttpPost]
-        //public ActionResult AddToCustomerGroup(CustomerGroupVM model)
-        //{
-        //    ViewBag.CustomerGroupId = new SelectList(customerGroupRepository.GetItems(), "Id", "Name");
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-        //    repository.AddToCustomerGroup(model);
-        //    return RedirectToAction("Index");
-        //}
     }
 }

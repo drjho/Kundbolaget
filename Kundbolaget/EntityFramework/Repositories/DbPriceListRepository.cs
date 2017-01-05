@@ -55,18 +55,5 @@ namespace Kundbolaget.EntityFramework.Repositories
                 db.PriceLists.Remove(pricelist);
                 db.SaveChanges();          
         }
-
-        public void AddToCustomerGroup(CustomerGroupVM model)
-        {
-            var pricelist = db.PriceLists.Attach(GetItem(model.Id));
-            db.PriceLists.Add(pricelist);
-            db.SaveChanges();
-        }
-
-        public void AddProductToPriceList(Product model)
-        {
-            var pricelist = db.Products.Attach(model);
-
-        }
     }
 }

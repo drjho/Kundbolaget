@@ -244,7 +244,6 @@
     <Compile Include="Models\EntityModels\Product.cs" />
     <Compile Include="Models\EntityModels\StoragePlace.cs" />
     <Compile Include="Models\EntityModels\Warehouse.cs" />
-    <Compile Include="Models\ViewModels\CustomerGroupVM.cs" />
     <Compile Include="Models\ViewModels\OrderProductVM.cs" />
     <Compile Include="Models\ViewModels\OrderVM.cs" />
     <Compile Include="Models\ViewModels\StoragePlaceProductVM.cs" />
