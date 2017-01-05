@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using Kundbolaget.EntityFramework.Context;
 using Kundbolaget.Models.EntityModels;
+using Kundbolaget.Models.ViewModels;
 
 namespace Kundbolaget.EntityFramework.Repositories
 {
@@ -55,7 +56,7 @@ namespace Kundbolaget.EntityFramework.Repositories
                 db.SaveChanges();          
         }
 
-        public void AddToCustomerGroup(CustomerGroup model)
+        public void AddToCustomerGroup(CustomerGroupVM model)
         {
             var pricelist = db.PriceLists.Attach(GetItem(model.Id));
             db.PriceLists.Add(pricelist);
