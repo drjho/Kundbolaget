@@ -121,6 +121,13 @@ namespace Kundbolaget.Migrations
                 new PriceList { Id = 4, CustomerGroupId = 1, ProductId = 4, Price = 20, RebatePerPallet = 5, StartDate = DateTime.Parse("01/01/2017") },
             };
 
+            var licenses = new AlcoholLicense[]
+            {
+                new AlcoholLicense {Id = 1, CustomerId = 1, StartDate = DateTime.Parse("2016-01-01"), EndDate = DateTime.Parse("2016-12-31") },
+                new AlcoholLicense {Id = 2, CustomerId = 1, StartDate = DateTime.Parse("2017-01-01"), EndDate = DateTime.Parse("2017-12-31") },
+                new AlcoholLicense {Id = 3, CustomerId = 2, StartDate = DateTime.Parse("2017-01-01"), EndDate = DateTime.Parse("2017-12-31") },
+            };
+
             context.Warehouses.AddOrUpdate(warehouses);
             context.Customers.AddOrUpdate(customers);
             context.StoragePlaces.AddOrUpdate(x => x.Id, storagePlaces);
@@ -129,6 +136,7 @@ namespace Kundbolaget.Migrations
             context.CustomerAddresses.AddOrUpdate(ca);
             context.CustomerGroups.AddOrUpdate(customergroup);
             context.PriceLists.AddOrUpdate(priceLists);
+            context.AlcoholLicense.AddOrUpdate(licenses);
         }
     }
 }

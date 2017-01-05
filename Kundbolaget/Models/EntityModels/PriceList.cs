@@ -11,6 +11,7 @@ namespace Kundbolaget.Models.EntityModels
         public int Id { get; set; }
 
         [Display(Name = "Giltig från")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
 
         [Display(Name = "Pris")]

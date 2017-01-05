@@ -13,29 +13,31 @@ namespace Kundbolaget.Controllers
     public class AlcoholLicenseController : Controller
     {
 
-        DbAlcoholLicenseRepository repository;
+        DbAlcoholLicenseRepository licenseRepo;
+        DbCustomerRepository customerRepo;
 
         public AlcoholLicenseController()
         {
-            repository = new DbAlcoholLicenseRepository();
+            var db = new StoreContext();
+            licenseRepo = new DbAlcoholLicenseRepository(db);
+            customerRepo = new DbCustomerRepository(db);
         }
 
         public AlcoholLicenseController(DbAlcoholLicenseRepository dbAlcoholLicenseRepository)
         {
-            repository = dbAlcoholLicenseRepository;
+            licenseRepo = dbAlcoholLicenseRepository;
         }
 
         // GET: AlcoholLicense
         public ActionResult Index()
         {
-            var model = repository.GetItems();
+            var model = licenseRepo.GetItems();
             return View(model);
         }
 
         public ActionResult Create()
         {
-            ViewBag.CustomerId = new SelectList(new StoreContext().Customers, "Id", "Name");
-
+            ViewBag.CustomerId = new SelectList(customerRepo.GetItems(), "Id", "Name");
             return View();
         }
 
@@ -44,7 +46,7 @@ namespace Kundbolaget.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            repository.CreateItem(model);
+            licenseRepo.CreateItem(model);
 
             return RedirectToAction("Index");
         }
@@ -52,9 +54,8 @@ namespace Kundbolaget.Controllers
         // GET: Alcohollicense/Edit/{id}
         public ActionResult Edit(int id)
         {
-            var model = repository.GetItem(id);
-            ViewBag.Customers = new SelectList(new StoreContext().Customers, "Id", "Name");
-
+            var model = licenseRepo.GetItem(id);
+            ViewBag.CustomerId = new SelectList(customerRepo.GetItems(), "Id", "Name", model.CustomerId);
             return View(model);
         }
 
@@ -65,21 +66,21 @@ namespace Kundbolaget.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            repository.UpdateItem(model);
+            licenseRepo.UpdateItem(model);
             return RedirectToAction("Index");
         }
 
         // GET: Alcohollicense/Details/{id}
         public ActionResult Details(int id)
         {
-            var model = repository.GetItem(id);
+            var model = licenseRepo.GetItem(id);
             return View(model);
         }
 
         // GET: Adress/Delete/{id}
         public ActionResult Delete(int id)
         {
-            var model = repository.GetItem(id);
+            var model = licenseRepo.GetItem(id);
             return View(model);
         }
 
@@ -92,7 +93,7 @@ namespace Kundbolaget.Controllers
                 ModelState.AddModelError("Name", "Bad request");
                 return View(model);
             }
-            repository.DeleteItem(id);
+            licenseRepo.DeleteItem(id);
             return RedirectToAction("Index");
         }
             

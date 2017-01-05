@@ -1,7 +1,7 @@
 ﻿@model Kundbolaget.Models.EntityModels.AlcoholLicense
 
 @{
-    ViewBag.Title = "Ta bort";
+    ViewBag.Title = "Kundbolaget-Alkohollicens";
 }
 
 <h2>Ta bort</h2>
@@ -24,6 +24,14 @@
 
         <dd>
             @Html.DisplayFor(model => model.EndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer.Name)
         </dd>
 
     </dl>
