@@ -3,7 +3,51 @@
     ViewBag.Title = "Kundbolaget-Kundorder";
 }
 
-<h2>Kundorder</h2>
-
-@Html.ActionLink("Ladda upp en kundorderfil i json format", "UploadJson")
+<h2>Orderfil</h2>
+<hr />
+<div>
+    <h2>
+        Teknisk beskrivning av ordermallen
+    </h2>
+    <div>
+        <h4>
+            Ordern ska formateras i Json. <br />
+            Kundnummer (customerid) anges i ‘string’ 6-tecken. <br />
+            adress id (addressid) i ‘string’ 8-tecken. <br /> 
+            en lista av produkter (products) som beställs, varje post innehåller: <br />
+            en produkt id (pno) i ‘string’ 6-tecken <br />
+            antal kolli (amount) man vill beställa i from av ‘int’ <br />
+            kommentar (comment) i string. <br />
+            Önskad leveransdatum (date) anges i ‘string’ i format mm/dd/yyyy’. <br />
+            Kommentarer (comment) anges i ‘string’. <br />
+        </h4>
+    </div>
+    <div>
+        <h3>
+            Ett exempel ses här nedan:
+        </h3>
+        <h4>
+        {
+        "customerid" : "000001",<br />
+         "addressid" : “00000001”,<br />
+        "products" :[<br />
+        { "pno" : “000001”, "amount": 100, comment" : "...." },<br />
+        { "pno" : “000002”, "amount": 200, comment" : "...." }<br />
+        ],<br />
+        "date" : "12/14/2016",<br />
+        "comment" : "...." }<br />
+        }
+        </h4>
+    </div>
+</div>
+<hr />
+<div>
+    <a href="@Url.Action("FileUpload")" class="btn btn-primary">
+        <span class="glyphicon glyphicon-upload" aria-hidden="true"> </span> Ladda upp en orderfil i Json-format (ny)
+    </a>
+    <a href="@Url.Action("UploadJson")" class="btn btn-primary">
+        <span class="glyphicon glyphicon-upload" aria-hidden="true"> </span> Ladda upp en orderfil i Json-format
+    </a>
+</div>
+@*@Html.ActionLink("Ladda upp en kundorderfil i json format", "UploadJson")*@
 
