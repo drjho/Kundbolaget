@@ -13,7 +13,10 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Namn")]
         public string Name { get; set; }
 
-        public virtual List<Customer> ListOfCustomers { get; set; }
+        public int? PriceListId { get; set; }
+        public int? CustomerId { get; set; }
+
+        public List<Customer> ListOfCustomers { get; set; }
         
     }
 }

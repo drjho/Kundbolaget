@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using Kundbolaget.EntityFramework.Context;
 using Kundbolaget.Models.EntityModels;
+using Kundbolaget.Models.ViewModels;
 
 namespace Kundbolaget.EntityFramework.Repositories
 {
@@ -54,10 +55,5 @@ namespace Kundbolaget.EntityFramework.Repositories
                 db.PriceLists.Remove(pricelist);
                 db.SaveChanges();          
         }
-
-        //public void AddToCustomerGroup(CustomerGroup model)
-        //{
-        //    var pricelist
-        //}
     }
 }

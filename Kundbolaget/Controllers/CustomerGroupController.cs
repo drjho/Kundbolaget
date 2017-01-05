@@ -12,9 +12,11 @@ namespace Kundbolaget.Controllers
     public class CustomerGroupController : Controller
     {
         DbCustomerGroupRepository repository;
+        private DbCustomerRepository customerRepository;
 
         public CustomerGroupController()
         {
+            customerRepository = new DbCustomerRepository();
             repository = new DbCustomerGroupRepository();
         }
 
@@ -32,7 +34,7 @@ namespace Kundbolaget.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.Customers = new SelectList(new StoreContext().Customers, "Id", "Name");
+            ViewBag.CustomerId = new SelectList(customerRepository.GetItems(), "Id", "Name");
             return View();
         }
 
@@ -46,11 +48,12 @@ namespace Kundbolaget.Controllers
             repository.CreateItem(model);
             return RedirectToAction("Index");
         }
+        //Todo: I Edit visas inte vilken kundgrupp som tidigare varit vald.
         //Get: CustomerGroup/Edit/{Id}
         public ActionResult Edit(int id)
         {
             var model = repository.GetItem(id);
-            ViewBag.Customers = new SelectList(new StoreContext().Customers, "Id", "Name");
+            ViewBag.CustomerId = new SelectList(customerRepository.GetItems(), "Id", "Name");
             return View(model);
         }
         //POST: CustomerGroups/Edit/{Id}

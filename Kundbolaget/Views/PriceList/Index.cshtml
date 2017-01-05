@@ -23,6 +23,9 @@
         <th>
             @Html.DisplayNameFor(model => model.RebatePerPallet)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomerGroup.Name)
+        </th>
         <th></th>
     </tr>
 
@@ -39,6 +42,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.RebatePerPallet)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomerGroup.Name)
         </td>
         <td>
             @Html.ActionLink("Ändra", "Edit", new { id=item.Id }) |

@@ -33,5 +33,7 @@ namespace Kundbolaget.Models.EntityModels
 
         [Display(Name = "Organisationsnummer")]
         public string OrganisationNumber { get; set; }
+
+        public CustomerGroup CustomerGroup { get; set; }
     }
 }
