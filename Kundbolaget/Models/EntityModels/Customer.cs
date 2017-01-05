@@ -23,10 +23,8 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Kreditgräns")]
         public int CreditLimit { get; set; }
 
-
         [Display(Name = "Leveranstid")]
         public int DaysToDelievery { get; set; }
-
 
         [Display(Name = "Kundbokföringskod")]
         public int CustomerAuditCode { get; set; }
@@ -34,6 +32,10 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Organisationsnummer")]
         public string OrganisationNumber { get; set; }
 
-        public CustomerGroup CustomerGroup { get; set; }
+        [Display(Name = "Kundgruppsid")]
+        public int CustomerGroupId { get; set; }
+
+        [Display(Name = "Kundgrupp")]
+        public virtual CustomerGroup CustomerGroup { get; set; }
     }
 }

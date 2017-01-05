@@ -21,10 +21,12 @@ namespace Kundbolaget.Migrations
             {
                 new Customer { Id = 1, Name = "Coop", CorporateStucture = "Koncern",
                     CreditLimit = -1, DaysToDelievery = 3,
-                    CustomerAuditCode = 1, OrganisationNumber = "555555-5455"},
+                    CustomerAuditCode = 1, OrganisationNumber = "555555-5455",
+                    CustomerGroupId = 1},
                 new Customer { Id = 2, Name = "ICA", CorporateStucture = "Koncern",
                     CreditLimit = -1, DaysToDelievery = 3,
-                    CustomerAuditCode = 1, OrganisationNumber = "345555-7645"}
+                    CustomerAuditCode = 1, OrganisationNumber = "345555-7645",
+                    CustomerGroupId = 1}
             };
 
             var addresses = new Address[]
@@ -94,7 +96,9 @@ namespace Kundbolaget.Migrations
 
             var customergroup = new CustomerGroup[]
             {
-                new CustomerGroup {Id = 1, Name = "Livsmedelbutiker", ListOfCustomers = customers.ToList()},
+                new CustomerGroup {Id = 1, Name = "Livsmedelbutik"},
+                new CustomerGroup {Id = 2, Name = "Högskola"},
+                new CustomerGroup {Id = 3, Name = "Restaurang"},
             };
 
             var ca = new CustomerAddress[]

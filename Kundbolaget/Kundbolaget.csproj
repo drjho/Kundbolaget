@@ -216,9 +216,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201701052204477_initCreate_sprint4.cs" />
-    <Compile Include="Migrations\201701052204477_initCreate_sprint4.Designer.cs">
-      <DependentUpon>201701052204477_initCreate_sprint4.cs</DependentUpon>
+    <Compile Include="Migrations\201701052238597_initCreate_sprint4.cs" />
+    <Compile Include="Migrations\201701052238597_initCreate_sprint4.Designer.cs">
+      <DependentUpon>201701052238597_initCreate_sprint4.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
@@ -334,8 +334,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201701052204477_initCreate_sprint4.resx">
-      <DependentUpon>201701052204477_initCreate_sprint4.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201701052238597_initCreate_sprint4.resx">
+      <DependentUpon>201701052238597_initCreate_sprint4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

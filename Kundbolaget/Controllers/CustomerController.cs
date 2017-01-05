@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Kundbolaget.EntityFramework.Repositories;
 using Kundbolaget.Models.EntityModels;
+using Kundbolaget.EntityFramework.Context;
 
 namespace Kundbolaget.Controllers
 {
@@ -12,11 +13,14 @@ namespace Kundbolaget.Controllers
     {
         DbCustomerRepository customerRepo;
         DbCustomerAddressRepository customerAdressRepo;
+        DbCustomerGroupRepository customerGroupRepo;
 
         public CustomerController()
         {
-            customerRepo = new DbCustomerRepository();
-            customerAdressRepo = new DbCustomerAddressRepository();
+            var db = new StoreContext();
+            customerRepo = new DbCustomerRepository(db);
+            customerAdressRepo = new DbCustomerAddressRepository(db);
+            customerGroupRepo = new DbCustomerGroupRepository(db);
         }
 
         public CustomerController(DbCustomerRepository dbCustomer, DbCustomerAddressRepository dbCustomerAddress)
@@ -35,6 +39,7 @@ namespace Kundbolaget.Controllers
         // GET: Customer/Create
         public ActionResult Create()
         {
+            ViewBag.CustomerGroupId = new SelectList(customerGroupRepo.GetItems(), "Id", "Name");
             return View();
         }
 
@@ -52,6 +57,7 @@ namespace Kundbolaget.Controllers
         public ActionResult Edit(int id)
         {
             var model = customerRepo.GetItem(id);
+            ViewBag.CustomerGroupId = new SelectList(customerGroupRepo.GetItems(), "Id", "Name");
             return View(model);
         }
 

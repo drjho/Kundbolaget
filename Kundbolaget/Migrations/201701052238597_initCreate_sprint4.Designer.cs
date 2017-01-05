@@ -13,7 +13,7 @@ namespace Kundbolaget.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201701052204477_initCreate_sprint4"; }
+            get { return "201701052238597_initCreate_sprint4"; }
         }
         
         string IMigrationMetadata.Source

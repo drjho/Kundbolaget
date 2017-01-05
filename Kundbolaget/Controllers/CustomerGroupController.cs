@@ -34,7 +34,6 @@ namespace Kundbolaget.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.CustomerId = new SelectList(customerRepository.GetItems(), "Id", "Name");
             return View();
         }
 
@@ -53,7 +52,6 @@ namespace Kundbolaget.Controllers
         public ActionResult Edit(int id)
         {
             var model = repository.GetItem(id);
-            ViewBag.CustomerId = new SelectList(customerRepository.GetItems(), "Id", "Name");
             return View(model);
         }
         //POST: CustomerGroups/Edit/{Id}

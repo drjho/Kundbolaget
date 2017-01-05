@@ -44,11 +44,11 @@ namespace Kundbolaget.Migrations
                         DaysToDelievery = c.Int(nullable: false),
                         CustomerAuditCode = c.Int(nullable: false),
                         OrganisationNumber = c.String(),
-                        CustomerGroup_Id = c.Int(),
+                        CustomerGroupId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.CustomerGroups", t => t.CustomerGroup_Id)
-                .Index(t => t.CustomerGroup_Id);
+                .ForeignKey("dbo.CustomerGroups", t => t.CustomerGroupId, cascadeDelete: true)
+                .Index(t => t.CustomerGroupId);
             
             CreateTable(
                 "dbo.CustomerGroups",
@@ -56,8 +56,6 @@ namespace Kundbolaget.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
-                        PriceListId = c.Int(),
-                        CustomerId = c.Int(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -217,7 +215,7 @@ namespace Kundbolaget.Migrations
             DropForeignKey("dbo.CustomerAddresses", "CustomerId", "dbo.Customers");
             DropForeignKey("dbo.CustomerAddresses", "AddressId", "dbo.Addresses");
             DropForeignKey("dbo.AlcoholLicenses", "CustomerId", "dbo.Customers");
-            DropForeignKey("dbo.Customers", "CustomerGroup_Id", "dbo.CustomerGroups");
+            DropForeignKey("dbo.Customers", "CustomerGroupId", "dbo.CustomerGroups");
             DropIndex("dbo.PriceLists", new[] { "CustomerGroupId" });
             DropIndex("dbo.PriceLists", new[] { "ProductId" });
             DropIndex("dbo.StoragePlaces", new[] { "ProductId" });
@@ -230,7 +228,7 @@ namespace Kundbolaget.Migrations
             DropIndex("dbo.OrderProducts", new[] { "ProductId" });
             DropIndex("dbo.CustomerAddresses", new[] { "AddressId" });
             DropIndex("dbo.CustomerAddresses", new[] { "CustomerId" });
-            DropIndex("dbo.Customers", new[] { "CustomerGroup_Id" });
+            DropIndex("dbo.Customers", new[] { "CustomerGroupId" });
             DropIndex("dbo.AlcoholLicenses", new[] { "CustomerId" });
             DropTable("dbo.PriceLists");
             DropTable("dbo.Warehouses");
