@@ -20,5 +20,14 @@ namespace Kundbolaget.Models.EntityModels
         public DateTime EndDate { get; set; }
 
         public virtual Customer Customer { get; set; }
+
+        public string AlcoLicenseString
+        {
+            get { return $"{StartDate} {EndDate} {Customer}"; }
+        }
+
+        public int? CustomerId  { get; set; }
+        
+        
     }
 }
