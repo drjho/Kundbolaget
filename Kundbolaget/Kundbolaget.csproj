@@ -216,37 +216,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612181433343_initCreate3.cs" />
-    <Compile Include="Migrations\201612181433343_initCreate3.Designer.cs">
-      <DependentUpon>201612181433343_initCreate3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612200026029_orderDesiredDate.cs" />
-    <Compile Include="Migrations\201612200026029_orderDesiredDate.Designer.cs">
-      <DependentUpon>201612200026029_orderDesiredDate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612200841423_addedOrderStatus.cs" />
-    <Compile Include="Migrations\201612200841423_addedOrderStatus.Designer.cs">
-      <DependentUpon>201612200841423_addedOrderStatus.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612201959130_revisedForPrepareOrder.cs" />
-    <Compile Include="Migrations\201612201959130_revisedForPrepareOrder.Designer.cs">
-      <DependentUpon>201612201959130_revisedForPrepareOrder.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612291146569_addedPickingOrder.cs" />
-    <Compile Include="Migrations\201612291146569_addedPickingOrder.Designer.cs">
-      <DependentUpon>201612291146569_addedPickingOrder.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612291508186_addedShortDecriptionInProduct.cs" />
-    <Compile Include="Migrations\201612291508186_addedShortDecriptionInProduct.Designer.cs">
-      <DependentUpon>201612291508186_addedShortDecriptionInProduct.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701041543436_addedProductStatus.cs" />
-    <Compile Include="Migrations\201701041543436_addedProductStatus.Designer.cs">
-      <DependentUpon>201701041543436_addedProductStatus.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701050959102_AddCustomerInAlocolicese.cs" />
-    <Compile Include="Migrations\201701050959102_AddCustomerInAlocolicese.Designer.cs">
-      <DependentUpon>201701050959102_AddCustomerInAlocolicese.cs</DependentUpon>
+    <Compile Include="Migrations\201701052204477_initCreate_sprint4.cs" />
+    <Compile Include="Migrations\201701052204477_initCreate_sprint4.Designer.cs">
+      <DependentUpon>201701052204477_initCreate_sprint4.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
@@ -362,29 +334,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201612181433343_initCreate3.resx">
-      <DependentUpon>201612181433343_initCreate3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612200026029_orderDesiredDate.resx">
-      <DependentUpon>201612200026029_orderDesiredDate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612200841423_addedOrderStatus.resx">
-      <DependentUpon>201612200841423_addedOrderStatus.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612201959130_revisedForPrepareOrder.resx">
-      <DependentUpon>201612201959130_revisedForPrepareOrder.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612291146569_addedPickingOrder.resx">
-      <DependentUpon>201612291146569_addedPickingOrder.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612291508186_addedShortDecriptionInProduct.resx">
-      <DependentUpon>201612291508186_addedShortDecriptionInProduct.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701041543436_addedProductStatus.resx">
-      <DependentUpon>201701041543436_addedProductStatus.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701050959102_AddCustomerInAlocolicese.resx">
-      <DependentUpon>201701050959102_AddCustomerInAlocolicese.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201701052204477_initCreate_sprint4.resx">
+      <DependentUpon>201701052204477_initCreate_sprint4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

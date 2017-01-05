@@ -92,18 +92,9 @@ namespace Kundbolaget.Migrations
             storagePlaces[9].TotalAmount = 300;
             storagePlaces[9].Vacant = false;
 
-
-            //var customerGroup = new CustomerGroup
-            //{
-            //    Id = 1,
-            //    ListOfCustomers = customers.ToList(),
-            //    Name = "Matbutiker"
-            //};
-
             var customergroup = new CustomerGroup[]
             {
-                new CustomerGroup {Id = 0, Name = "ICA AB", ListOfCustomers = customers.ToList()},
-                new CustomerGroup {Id = 1, Name = "Coop AB", ListOfCustomers = customers.ToList()}
+                new CustomerGroup {Id = 1, Name = "Livsmedelbutiker", ListOfCustomers = customers.ToList()},
             };
 
             var ca = new CustomerAddress[]
@@ -118,6 +109,14 @@ namespace Kundbolaget.Migrations
 
             };
 
+            var priceLists = new PriceList[]
+            {
+                new PriceList { Id = 1, CustomerGroupId = 1, ProductId = 1, Price = 20, RebatePerPallet = 2, StartDate = DateTime.Parse("01/01/2017") },
+                new PriceList { Id = 2, CustomerGroupId = 1, ProductId = 2, Price = 20, RebatePerPallet = 3, StartDate = DateTime.Parse("01/01/2017") },
+                new PriceList { Id = 3, CustomerGroupId = 1, ProductId = 3, Price = 20, RebatePerPallet = 4, StartDate = DateTime.Parse("01/01/2017") },
+                new PriceList { Id = 4, CustomerGroupId = 1, ProductId = 4, Price = 20, RebatePerPallet = 5, StartDate = DateTime.Parse("01/01/2017") },
+            };
+
             context.Warehouses.AddOrUpdate(warehouses);
             context.Customers.AddOrUpdate(customers);
             context.StoragePlaces.AddOrUpdate(x => x.Id, storagePlaces);
@@ -125,7 +124,7 @@ namespace Kundbolaget.Migrations
             context.Products.AddOrUpdate(products);
             context.CustomerAddresses.AddOrUpdate(ca);
             context.CustomerGroups.AddOrUpdate(customergroup);
-
+            context.PriceLists.AddOrUpdate(priceLists);
         }
     }
 }
