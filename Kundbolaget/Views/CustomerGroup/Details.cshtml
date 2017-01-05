@@ -17,8 +17,17 @@
         <dd>
             @Html.DisplayFor(model => model.Name)
         </dd>
+        <tr>
+            @if (Model.ListOfCustomers != null) { 
+            foreach (var item in this.Model.ListOfCustomers)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                }
+            }
 
-    </dl>
+</dl>
 </div>
 <p>
     @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |

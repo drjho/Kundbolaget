@@ -96,5 +96,6 @@ namespace Kundbolaget.Controllers
             repository.DeleteItem(id);
             return RedirectToAction("Index");
         }
+        
     }
 }

@@ -59,6 +59,6 @@ namespace Kundbolaget.Models.EntityModels
         public string ProductOrderId => Id.ToString().PadLeft(6, '0');
 
         public string ShortDescription => $"{Name} | {Volume} cl | {Alcohol} %";
-
+       
     }
 }

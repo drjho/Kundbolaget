@@ -14,8 +14,9 @@ namespace Kundbolaget.Models.EntityModels
         public string Name { get; set; }
 
         public int? PriceListId { get; set; }
+        public int? CustomerId { get; set; }
 
-        public virtual List<Customer> ListOfCustomers { get; set; }
+        public List<Customer> ListOfCustomers { get; set; }
         
     }
 }
