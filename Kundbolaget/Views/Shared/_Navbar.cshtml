@@ -10,14 +10,10 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li>
-                    @Html.ActionLink("Produkter", "Index", "Products")
-                </li>
-                <li>
-                    @Html.ActionLink("Lager", "Index", "Warehouse")
-                </li>
+                <li><a href="@Url.Action("Index", "Products")"><span class="glyphicon glyphicon-glass"></span> Produkter</a></li>
+                <li><a href="@Url.Action("Index", "Warehouse")"><span class="glyphicon glyphicon-shopping-cart"></span> Lager</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Kundhantering<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> Kundhantering<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
                             @Html.ActionLink("Kunder", "Index", "Customer")
@@ -34,7 +30,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Orderhantering<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-paperclip"></span> Orderhantering<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
                             @Html.ActionLink("Order", "Index", "Orders")
@@ -50,8 +46,8 @@
                 <li><a href="@Url.Action("Index", "JsonFile")"><span class="glyphicon glyphicon-upload"></span> Orderfil</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Skapa konto</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logga in</a></li>
+                @*<li><a href="#"><span class="glyphicon glyphicon-user"></span> Skapa konto</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logga in</a></li>*@
             </ul>
         </div>
     </div>
