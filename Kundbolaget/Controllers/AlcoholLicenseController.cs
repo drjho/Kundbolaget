@@ -34,7 +34,7 @@ namespace Kundbolaget.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.Customers = new SelectList(new StoreContext().Customers, "Id", "Name");
+            ViewBag.CustomerId = new SelectList(new StoreContext().Customers, "Id", "Name");
 
             return View();
         }
