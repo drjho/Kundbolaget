@@ -43,7 +43,8 @@ namespace Kundbolaget.Migrations
                 new Product { Id = 1, Name = "Pripps blå", Alcohol = 3.5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Öl, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 33},
                 new Product { Id = 2, Name = "IPA", Alcohol = 4f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Öl, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 33},
                 new Product { Id = 3, Name = "Strongbow", Alcohol = 4.5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Cider, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 50},
-                new Product { Id = 4, Name = "Bishops finger", Alcohol = 5.5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Öl, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 50}
+                new Product { Id = 4, Name = "Bishops finger", Alcohol = 5.5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Öl, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 50},
+                new Product { Id = 5, Name = "Chapel Hill", Alcohol = 12f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Mosserande, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 75}
             };
 
             var warehouses = new Warehouse[]
@@ -119,6 +120,7 @@ namespace Kundbolaget.Migrations
                 new PriceList { Id = 2, CustomerGroupId = 1, ProductId = 2, Price = 20, RebatePerPallet = 3, StartDate = DateTime.Parse("01/01/2017") },
                 new PriceList { Id = 3, CustomerGroupId = 1, ProductId = 3, Price = 20, RebatePerPallet = 4, StartDate = DateTime.Parse("01/01/2017") },
                 new PriceList { Id = 4, CustomerGroupId = 1, ProductId = 4, Price = 20, RebatePerPallet = 5, StartDate = DateTime.Parse("01/01/2017") },
+                new PriceList { Id = 5, CustomerGroupId = 1, ProductId = 5, Price = 20, RebatePerPallet = 1, StartDate = DateTime.Parse("01/01/2017") },
             };
 
             var licenses = new AlcoholLicense[]

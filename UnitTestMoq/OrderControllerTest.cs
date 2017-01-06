@@ -94,10 +94,13 @@ namespace UnitTestMoq
             var dbStorageRepository = new DbStoragePlaceRepository(_mockContext.Object);
             var dbCustomerRepository = new DbCustomerRepository(_mockContext.Object);
             var dbPickingOrderRepository = new DbPickingOrderRepository(_mockContext.Object);
+            var dbLicenseRepository = new DbAlcoholLicenseRepository(_mockContext.Object); // not set up properly here!
+
 
             //Setup fakerepo via overloaded constructor
             _orderController = new OrdersController(dbOrderRepository, dbAddressRepository,
-                dbStoragePlaceRepository, dbOrderProductRepository, dbCustomerRepository, dbPickingOrderRepository);
+                dbStoragePlaceRepository, dbOrderProductRepository, dbCustomerRepository,
+                dbPickingOrderRepository, dbLicenseRepository);
         }
 
 

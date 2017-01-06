@@ -164,6 +164,7 @@
     <Content Include="Data\test_wrongAmount_negative.json" />
     <Content Include="Data\test_wrongDateFormat.json" />
     <Content Include="Data\test_emptyDate.json" />
+    <Content Include="Data\test_out_of_stock.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

@@ -24,6 +24,7 @@ namespace Kundbolaget.Controllers
 
         private DbAddressRepository addressRepo;
         private DbCustomerRepository customerRepo;
+        private DbAlcoholLicenseRepository licenseRepo;
 
         public OrdersController()
         {
@@ -33,13 +34,15 @@ namespace Kundbolaget.Controllers
             orderProductRepo = new DbOrderProductRepository(db);
             pickingOrderRepo = new DbPickingOrderRepository(db);
 
-            addressRepo = new DbAddressRepository();
-            customerRepo = new DbCustomerRepository();
+            addressRepo = new DbAddressRepository(db);
+            customerRepo = new DbCustomerRepository(db);
+            licenseRepo = new DbAlcoholLicenseRepository(db);
         }
 
         public OrdersController(DbOrderRepository dbOrderRepo, DbAddressRepository dbAddressRepo,
             DbStoragePlaceRepository dbStorageRepo, DbOrderProductRepository dbOrderProductRepo,
-            DbCustomerRepository dbCustomerRepo, DbPickingOrderRepository dbPickingOrderRepo)
+            DbCustomerRepository dbCustomerRepo, DbPickingOrderRepository dbPickingOrderRepo,
+            DbAlcoholLicenseRepository dbLicenseRepo)
         {
             // TODO: update input for test.
             orderRepo = dbOrderRepo;
@@ -49,6 +52,7 @@ namespace Kundbolaget.Controllers
 
             addressRepo = dbAddressRepo;
             customerRepo = dbCustomerRepo;
+            licenseRepo = dbLicenseRepo;
         }
 
         // GET: Orders
@@ -265,6 +269,18 @@ namespace Kundbolaget.Controllers
             {
                 return HttpNotFound();
             }
+
+            // TODO: Kolla alkolicens här!
+            if (licenseRepo.GetItems().SingleOrDefault(x => x.CustomerId == order.CustomerId && x.StartDate.CompareTo(order.OrderDate) <= 0 && x.EndDate.CompareTo(order.OrderDate) >= 0) == null)
+            {
+                ModelState.AddModelError("", "Kunden har ingen alkohollicens.");
+            }
+
+            // TODO: Kolla saldot redan här! och reservera
+
+            // TODO: Kolla priset här och jämför kreditgräns.
+
+
             var orderVM = new OrderVM
             {
                 Id = order.Id,
@@ -307,23 +323,28 @@ namespace Kundbolaget.Controllers
             order.Comment = orderVM.Comment;
             //for (int i = 0; i < order.OrderProducts.Count; i++)
             //var orderProduct = order.OrderProducts[i];
+            List<PickingOrder> pickList = new List<PickingOrder>();
             foreach (var orderProduct in order.OrderProducts)
             {
                 orderProduct.PickList = ReserveItem(orderProduct.ProductId, orderProduct.OrderedAmount);
                 orderProduct.PickList.ForEach(x => x.OrderProductId = orderProduct.Id);
                 orderProduct.AvailabeAmount = orderProduct.PickList.Sum(x => x.ReservedAmount);
-                // Vad gör man om det blir en tomlista?
 
-                // Funkar inte? Hur visar vi att availableAmount är 0?                
-                //if (orderProduct.AvailabeAmount == 0)
-                //{
-                //    ModelState.AddModelError("AvailabeAmount", "Det finns inga varor i lager");
-                //    // Varför har orderVM inget orderproducts helt plötsligt?!
-                //    return View(orderVM);
-                //}
+                if (orderProduct.AvailabeAmount == 0)
+                {
+                    ModelState.AddModelError("AvailabeAmount", "Det finns inga varor i lager");
+                    break;
+                }
 
-                pickingOrderRepo.CreateItems(orderProduct.PickList);
+                pickList.AddRange(orderProduct.PickList);
             }
+
+            if (!ModelState.IsValid)
+            {
+                return PrepareOrder(order.Id);
+            }
+
+            pickingOrderRepo.CreateItems(pickList);
 
             order.OrderStatus = OrderStatus.Plockar;
             orderRepo.UpdateItem(order);
