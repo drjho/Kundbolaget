@@ -57,7 +57,7 @@ namespace Kundbolaget.Controllers
         public ActionResult Edit(int id)
         {
             var model = customerRepo.GetItem(id);
-            ViewBag.CustomerGroupId = new SelectList(customerGroupRepo.GetItems(), "Id", "Name");
+            ViewBag.CustomerGroupId = new SelectList(customerGroupRepo.GetItems(), "Id", "Name", model.CustomerGroupId);
             return View(model);
         }
 

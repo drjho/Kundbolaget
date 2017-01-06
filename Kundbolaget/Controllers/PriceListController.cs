@@ -58,8 +58,8 @@ namespace Kundbolaget.Controllers
         public ActionResult Edit(int id)
         {
             var model = repository.GetItem(id);
-            ViewBag.ProductId = new SelectList(productRepository.GetItems(), "Id", "Name");
-            ViewBag.CustomerGroupId = new SelectList(customerGroupRepository.GetItems(), "Id", "Name");
+            ViewBag.ProductId = new SelectList(productRepository.GetItems(), "Id", "Name", model.ProductId);
+            ViewBag.CustomerGroupId = new SelectList(customerGroupRepository.GetItems(), "Id", "Name", model.CustomerGroupId);
             return View(model);
         }
         //Post: PriceList/Edit{id}

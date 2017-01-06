@@ -279,7 +279,7 @@ namespace Kundbolaget.Controllers
             // TODO: Kolla saldot redan här! och reservera
 
             // TODO: Kolla priset här och jämför kreditgräns.
-
+            
 
             var orderVM = new OrderVM
             {
