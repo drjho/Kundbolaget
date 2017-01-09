@@ -294,9 +294,7 @@ namespace Kundbolaget.Controllers
                 var pickList = pickingOrderRepo.GetItems().Where(x => x.OrderProductId == op.Id);
                 // Ta fram reserverat antal.
                 var reservedAmount = pickList.Sum(x => x.ReservedAmount);
-                // Skapa viewmodel för orderproduct.
-
-
+                
                 // Räkna fram priset.
                 float productTotalPrice = 0;
                 float unitPrice = 0;
