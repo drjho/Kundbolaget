@@ -282,11 +282,30 @@ namespace Kundbolaget.Controllers
                 ModelState.AddModelError("", "Kunden har ingen alkohollicens.");
             }
 
-            // TODO: Kolla saldot redan här! och reservera
+            var priceList = priceListRepository.GetItems().Where(x => x.CustomerGroupId == order.Customer.CustomerGroupId);
+
+            var orderProductVMs = new List<OrderProductVM>();
+            // Kolla lagersaldot och försök att reservera.
+            foreach (var op in order.OrderProducts)
+            {
+                // Försök att reservera om det går.
+                ReserveItem(op);
+                // Få fram plockordrar på nytt.
+                var pickList = pickingOrderRepo.GetItems().Where(x => x.OrderProductId == op.Id);
+                // Skapa viewmodel för orderproduct.
+                orderProductVMs.Add(new OrderProductVM
+                {
+                    Id = op.Id,
+                    ProductId = (int)op.ProductId,
+                    OrderedAmount = op.OrderedAmount,
+                    AvailabeAmount = pickList.Sum(x => x.ReservedAmount),
+                    Comment = op.Comment
+                });
+            }
 
             // TODO: Kolla priset här och jämför kreditgräns.
             var totPrice = CalculatePrice(order);
-            
+
             if (totPrice > order.Customer.CreditLimit && order.Customer.CreditLimit != -1)
             {
                 ModelState.AddModelError("", "Kundens kredigräns är för låg.");
@@ -300,17 +319,40 @@ namespace Kundbolaget.Controllers
                 PlannedDeliveryDate = order.PlannedDeliveryDate,
                 AddressId = order.AddressId,
                 Comment = order.Comment,
-                OrderProducts = order.OrderProducts.Select(p => new OrderProductVM
-                {
-                    Id = p.Id,
-                    ProductId = (int)p.ProductId,
-                    OrderedAmount = p.OrderedAmount,
-                    AvailabeAmount = p.AvailabeAmount,
-                    Comment = p.Comment
-                }).ToList()
+                OrderProducts = orderProductVMs
             };
             return View(orderVM);
         }
+
+        /// <summary>
+        /// Reserverar en orderrad och lägg även till plockorder, sparas direkt i db.
+        /// </summary>
+        /// <param name="orderProduct"></param>
+        public void ReserveItem(OrderProduct orderProduct)
+        {
+            // This assume that there is only 1 warehouse!!!
+            int remainAmount = orderProduct.OrderedAmount - orderProduct.PickList.Sum(x => x.ReservedAmount);
+            var storagePlaces = storageRepo.GetItems().Where(x => x.ProductId == orderProduct.ProductId).ToArray();
+            var pickList = new List<PickingOrder>();
+            var updatedSP = new List<StoragePlace>();
+            foreach (var storage in storagePlaces)
+            {
+                int reserveAmount = Math.Min(storage.AvailableAmount, remainAmount);
+                if (reserveAmount > 0)
+                {
+                    storage.ReservedAmount += reserveAmount;
+                    updatedSP.Add(storage);
+                    remainAmount -= reserveAmount;
+                    pickList.Add(new PickingOrder { OrderProductId = orderProduct.Id, StoragePlaceId = storage.Id, ReservedAmount = reserveAmount });
+                }
+                if (remainAmount < 1)
+                    break;
+            }
+            storageRepo.UpdateItems(updatedSP);
+            pickingOrderRepo.CreateItems(pickList);
+            return;
+        }
+
         /// <summary>
         /// Priset för varje produkt hämtas för kunden, och räknar ut totala summan 
         /// utan rabatt eller moms.
@@ -321,11 +363,11 @@ namespace Kundbolaget.Controllers
 
             var priceList1 = priceListRepository.GetItems().ToList();
             var priceListWithProd = products.GroupJoin(priceList1, x => x.ProductId, y => y.ProductId,
-            (x, priceList) => new { x.Product, x.OrderedAmount, priceList});
+            (x, priceList) => new { x.Product, x.OrderedAmount, priceList });
 
             decimal totPrice = 0;
             decimal rebatePercent = 0;
-            
+
             foreach (var prod in priceListWithProd)
             {
                 decimal price = 0;
@@ -334,9 +376,9 @@ namespace Kundbolaget.Controllers
                     price = priceList.Price;
                     rebatePercent = priceList.RebatePerPallet;
                 }
-                
+
                 if ((prod.Product.StoragePackage == StoragePackage.Flak && prod.OrderedAmount > 480)
-                    || (prod.Product.StoragePackage == StoragePackage.Back && prod.OrderedAmount > 384) 
+                    || (prod.Product.StoragePackage == StoragePackage.Back && prod.OrderedAmount > 384)
                     || (prod.Product.StoragePackage == StoragePackage.Kartong && prod.OrderedAmount > 240))
                 {
                     price = price * prod.OrderedAmount;
@@ -414,13 +456,10 @@ namespace Kundbolaget.Controllers
         public List<PickingOrder> ReserveItem(int? productId, int orderedAmount)
         {
             // This assume that there is only 1 warehouse!!!
-
             int remainAmount = orderedAmount;
-
             var storagePlaces = storageRepo.GetItems().Where(sp => sp.ProductId == productId).ToArray();
-
             var pickList = new List<PickingOrder>();
-
+            var updatedSP = new List<StoragePlace>();
             foreach (var sp in storagePlaces)
             {
                 int pickAmount = Math.Min(sp.AvailableAmount, remainAmount);
@@ -428,12 +467,13 @@ namespace Kundbolaget.Controllers
                 {
                     pickList.Add(new PickingOrder { StoragePlaceId = sp.Id, PickedAmount = pickAmount, ReservedAmount = pickAmount });
                     sp.ReservedAmount += pickAmount;
+                    updatedSP.Add(sp);
                     remainAmount -= pickAmount;
                 }
                 if (remainAmount < 1)
                     break;
             }
-            storageRepo.UpdateItems(storagePlaces);
+            storageRepo.UpdateItems(updatedSP);
             return pickList;
         }
 
