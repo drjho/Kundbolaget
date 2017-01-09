@@ -10,6 +10,8 @@ using Kundbolaget.EntityFramework.Context;
 using Kundbolaget.Models.EntityModels;
 using Kundbolaget.EntityFramework.Repositories;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using Castle.Core.Internal;
 using Kundbolaget.Models.ViewModels;
 
 namespace Kundbolaget.Controllers
@@ -25,6 +27,8 @@ namespace Kundbolaget.Controllers
         private DbAddressRepository addressRepo;
         private DbCustomerRepository customerRepo;
         private DbAlcoholLicenseRepository licenseRepo;
+        private DbProductRepository productRepository;
+        private DbPriceListRepository priceListRepository;
 
         public OrdersController()
         {
@@ -37,6 +41,8 @@ namespace Kundbolaget.Controllers
             addressRepo = new DbAddressRepository(db);
             customerRepo = new DbCustomerRepository(db);
             licenseRepo = new DbAlcoholLicenseRepository(db);
+            productRepository = new DbProductRepository(db);
+            priceListRepository = new DbPriceListRepository(db);
         }
 
         public OrdersController(DbOrderRepository dbOrderRepo, DbAddressRepository dbAddressRepo,
@@ -279,7 +285,12 @@ namespace Kundbolaget.Controllers
             // TODO: Kolla saldot redan här! och reservera
 
             // TODO: Kolla priset här och jämför kreditgräns.
+            var totPrice = CalculatePrice(order);
             
+            if (totPrice > order.Customer.CreditLimit && order.Customer.CreditLimit != -1)
+            {
+                ModelState.AddModelError("", "Kundens kredigräns är för låg.");
+            }
 
             var orderVM = new OrderVM
             {
@@ -300,7 +311,44 @@ namespace Kundbolaget.Controllers
             };
             return View(orderVM);
         }
+        /// <summary>
+        /// Priset för varje produkt hämtas för kunden, och räknar ut totala summan 
+        /// utan rabatt eller moms.
+        /// </summary>
+        public decimal CalculatePrice(Order order)
+        {
+            var products = order.OrderProducts.ToList();
 
+            var priceList1 = priceListRepository.GetItems().ToList();
+            var priceListWithProd = products.GroupJoin(priceList1, x => x.ProductId, y => y.ProductId,
+            (x, priceList) => new { x.Product, x.OrderedAmount, priceList});
+
+            decimal totPrice = 0;
+            decimal rebatePercent = 0;
+            
+            foreach (var prod in priceListWithProd)
+            {
+                decimal price = 0;
+                foreach (var priceList in priceList1.Where(x => x.ProductId == prod.Product.Id))
+                {
+                    price = priceList.Price;
+                    rebatePercent = priceList.RebatePerPallet;
+                }
+                
+                if ((prod.Product.ConsumerPackage == ConsumerPackage.Burk && prod.OrderedAmount > 480) || (prod.Product.ConsumerPackage == ConsumerPackage.Flaska && prod.OrderedAmount > 384))
+                {
+                    price = price*prod.OrderedAmount;
+                    var totalRebate = price * (rebatePercent / 100);
+                    price = price - totalRebate;
+                }
+                else
+                {
+                    price = price * prod.OrderedAmount;
+                }
+                totPrice += price;
+            }
+            return totPrice;
+        }
         /// <summary>
         /// Användaren har kollat att ordern stämmer. Då blir varorna reserverade i lagret.
         /// Antalet reserverade kolli registreras i 'OrderProduct'.
