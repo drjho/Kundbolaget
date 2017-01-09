@@ -335,9 +335,11 @@ namespace Kundbolaget.Controllers
                     rebatePercent = priceList.RebatePerPallet;
                 }
                 
-                if ((prod.Product.ConsumerPackage == ConsumerPackage.Burk && prod.OrderedAmount > 480) || (prod.Product.ConsumerPackage == ConsumerPackage.Flaska && prod.OrderedAmount > 384))
+                if ((prod.Product.StoragePackage == StoragePackage.Flak && prod.OrderedAmount > 480)
+                    || (prod.Product.StoragePackage == StoragePackage.Back && prod.OrderedAmount > 384) 
+                    || (prod.Product.StoragePackage == StoragePackage.Kartong && prod.OrderedAmount > 240))
                 {
-                    price = price*prod.OrderedAmount;
+                    price = price * prod.OrderedAmount;
                     var totalRebate = price * (rebatePercent / 100);
                     price = price - totalRebate;
                 }
