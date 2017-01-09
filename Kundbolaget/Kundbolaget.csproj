@@ -221,6 +221,14 @@
     <Compile Include="Migrations\201701052238597_initCreate_sprint4.Designer.cs">
       <DependentUpon>201701052238597_initCreate_sprint4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701092258241_AddedPriceInOrderProduct.cs" />
+    <Compile Include="Migrations\201701092258241_AddedPriceInOrderProduct.Designer.cs">
+      <DependentUpon>201701092258241_AddedPriceInOrderProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701092310164_AddedPriceInOrderProduct2.cs" />
+    <Compile Include="Migrations\201701092310164_AddedPriceInOrderProduct2.Designer.cs">
+      <DependentUpon>201701092310164_AddedPriceInOrderProduct2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\AlcoholLicense.cs" />
@@ -337,6 +345,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201701052238597_initCreate_sprint4.resx">
       <DependentUpon>201701052238597_initCreate_sprint4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701092258241_AddedPriceInOrderProduct.resx">
+      <DependentUpon>201701092258241_AddedPriceInOrderProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701092310164_AddedPriceInOrderProduct2.resx">
+      <DependentUpon>201701092310164_AddedPriceInOrderProduct2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

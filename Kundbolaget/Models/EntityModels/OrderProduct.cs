@@ -39,6 +39,9 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Order")]
         public virtual Order Order { get; set; }
 
+        [Display(Name = "Pris")]
+        public float Price { get; set; }
+
         [Display(Name = "Plockordrar")]
         public virtual List<PickingOrder> PickList { get; set; }
     }

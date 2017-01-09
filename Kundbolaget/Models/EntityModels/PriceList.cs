@@ -15,7 +15,7 @@ namespace Kundbolaget.Models.EntityModels
         public DateTime StartDate { get; set; }
 
         [Display(Name = "Pris")]
-        public decimal Price { get; set; }
+        public float Price { get; set; }
 
         [Display(Name = "Kundgrupp")]
         public virtual CustomerGroup CustomerGroup { get; set; }

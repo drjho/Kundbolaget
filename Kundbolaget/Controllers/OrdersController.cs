@@ -292,21 +292,55 @@ namespace Kundbolaget.Controllers
                 ReserveItem(op);
                 // Få fram plockordrar på nytt.
                 var pickList = pickingOrderRepo.GetItems().Where(x => x.OrderProductId == op.Id);
+                // Ta fram reserverat antal.
+                var reservedAmount = pickList.Sum(x => x.ReservedAmount);
                 // Skapa viewmodel för orderproduct.
+
+
+                // Räkna fram priset.
+                float productTotalPrice = 0;
+                float unitPrice = 0;
+                var productPrice = priceList.SingleOrDefault(x => x.ProductId == op.ProductId);
+                if (productPrice == null)
+                {
+                    ModelState.AddModelError("", $"Kunden har inget pris för {op.Product.ShortDescription}.");
+                }
+                else
+                {
+                    
+                    var limit = 0;
+                    switch (productPrice.Product.StoragePackage)
+                    {
+                        case StoragePackage.Back:
+                            limit = 384;
+                            break;
+                        case StoragePackage.Kartong:
+                            limit = 240;
+                            break;
+                        case StoragePackage.Flak:
+                            limit = 480;
+                            break;
+                    }
+                    unitPrice = productPrice.Price * (reservedAmount > limit ? (1 - productPrice.RebatePerPallet * .01f) : 1);
+                    productTotalPrice = reservedAmount * unitPrice;
+                }
+
                 orderProductVMs.Add(new OrderProductVM
                 {
                     Id = op.Id,
                     ProductId = (int)op.ProductId,
                     OrderedAmount = op.OrderedAmount,
-                    AvailabeAmount = pickList.Sum(x => x.ReservedAmount),
+                    AvailabeAmount = reservedAmount,
+                    Price = productTotalPrice,
+                    UnitPrice = unitPrice,
                     Comment = op.Comment
                 });
             }
 
-            // TODO: Kolla priset här och jämför kreditgräns.
-            var totPrice = CalculatePrice(order);
+            // Jämför kreditgräns.
+            var totalPrice = orderProductVMs.Sum(x => x.Price);
 
-            if (totPrice > order.Customer.CreditLimit && order.Customer.CreditLimit != -1)
+            if (order.Customer.CreditLimit != -1 && totalPrice > order.Customer.CreditLimit)
             {
                 ModelState.AddModelError("", "Kundens kredigräns är för låg.");
             }
@@ -319,7 +353,8 @@ namespace Kundbolaget.Controllers
                 PlannedDeliveryDate = order.PlannedDeliveryDate,
                 AddressId = order.AddressId,
                 Comment = order.Comment,
-                OrderProducts = orderProductVMs
+                OrderProducts = orderProductVMs,
+                Price = totalPrice
             };
             return View(orderVM);
         }
@@ -373,7 +408,7 @@ namespace Kundbolaget.Controllers
                 decimal price = 0;
                 foreach (var priceList in priceList1.Where(x => x.ProductId == prod.Product.Id))
                 {
-                    price = priceList.Price;
+                    price = (Decimal) priceList.Price;
                     rebatePercent = priceList.RebatePerPallet;
                 }
 
@@ -407,36 +442,36 @@ namespace Kundbolaget.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult PrepareOrder(OrderVM orderVM)
         {
+            //for (int i = 0; i < order.OrderProducts.Count; i++)
+            //var orderProduct = order.OrderProducts[i];
+            //List<PickingOrder> pickList = new List<PickingOrder>();
+            //foreach (var orderProduct in order.OrderProducts)
+            //{
+            //    orderProduct.PickList = ReserveItem(orderProduct.ProductId, orderProduct.OrderedAmount);
+            //    orderProduct.PickList.ForEach(x => x.OrderProductId = orderProduct.Id);
+            //    orderProduct.AvailabeAmount = orderProduct.PickList.Sum(x => x.ReservedAmount);
+
+            //    if (orderProduct.AvailabeAmount == 0)
+            //    {
+            //        ModelState.AddModelError("AvailabeAmount", "Det finns inga varor i lager");
+            //        break;
+            //    }
+
+            //    pickList.AddRange(orderProduct.PickList);
+            //}
+            //pickingOrderRepo.CreateItems(pickList);
+
+            if (!ModelState.IsValid)
+            {
+                return PrepareOrder(orderVM.Id);
+            }
+
             var order = orderRepo.GetItem(orderVM.Id);
             order.OrderDate = orderVM.OrderDate;
             order.CustomerId = orderVM.CustomerId;
             order.PlannedDeliveryDate = orderVM.PlannedDeliveryDate;
             order.AddressId = orderVM.AddressId;
             order.Comment = orderVM.Comment;
-            //for (int i = 0; i < order.OrderProducts.Count; i++)
-            //var orderProduct = order.OrderProducts[i];
-            List<PickingOrder> pickList = new List<PickingOrder>();
-            foreach (var orderProduct in order.OrderProducts)
-            {
-                orderProduct.PickList = ReserveItem(orderProduct.ProductId, orderProduct.OrderedAmount);
-                orderProduct.PickList.ForEach(x => x.OrderProductId = orderProduct.Id);
-                orderProduct.AvailabeAmount = orderProduct.PickList.Sum(x => x.ReservedAmount);
-
-                if (orderProduct.AvailabeAmount == 0)
-                {
-                    ModelState.AddModelError("AvailabeAmount", "Det finns inga varor i lager");
-                    break;
-                }
-
-                pickList.AddRange(orderProduct.PickList);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return PrepareOrder(order.Id);
-            }
-
-            pickingOrderRepo.CreateItems(pickList);
 
             order.OrderStatus = OrderStatus.Plockar;
             orderRepo.UpdateItem(order);

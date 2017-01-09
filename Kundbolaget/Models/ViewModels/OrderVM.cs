@@ -10,24 +10,27 @@ namespace Kundbolaget.Models.EntityModels
 {
     public class OrderVM
     {
-        [Display(Name = "Order id")]
+        [Display(Name = "Orderid")]
         public int Id { get; set; }
 
-        [Required]
-        [Display( Name ="Orderdatum")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Orderdatum")]
         public DateTime OrderDate { get; set; }
 
-        [Required (ErrorMessage = "Angett fel kundorder id")]
-        [Display(Name = "Kund id")]
+        [Required(ErrorMessage = "Angett fel kundorder id")]
+        [Display(Name = "Kundid")]
         public int? CustomerId { get; set; }
         [Display(Name = "Kund")]
         public Customer Customer { get; set; }
 
-        [Display( Name ="Planerad leveransdatum")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Planerad leveransdatum")]
         public DateTime PlannedDeliveryDate { get; set; }
 
         [Required(ErrorMessage = "Angett fel adressorder id")]
-        [Display(Name ="Kundadress id")]
+        [Display(Name = "Kundadressid")]
         public int? AddressId { get; set; }
         [Display(Name = "Kundadress")]
         public Address Address { get; set; }
@@ -35,7 +38,10 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Kommentarer")]
         public string Comment { get; set; }
 
-        public List<OrderProductVM> OrderProducts { get; set; }
+        [Display(Name = "Totalpris")]
+        public float Price { get; set; } 
+
+        public List<OrderProductVM> OrderProducts { get; set; } 
 
     }
 }

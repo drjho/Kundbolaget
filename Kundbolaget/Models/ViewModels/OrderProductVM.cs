@@ -24,6 +24,13 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Tillgängligt antal")]
         public int AvailabeAmount { get; set; }
 
+        [Display(Name = "á Pris")]
+        public float UnitPrice { get; set; }
+
+
+        [Display(Name = "Pris")]
+        public float Price { get; set; }
+
         [Display(Name = "Kommentar")]
         public string Comment { get; set; }
 
