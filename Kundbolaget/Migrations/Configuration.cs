@@ -136,10 +136,10 @@ namespace Kundbolaget.Migrations
                 new CustomerAddress { Id = 4, CustomerId =1, AddressId = 3, AddressType = AddressType.Besök },
                 new CustomerAddress { Id = 5, CustomerId =2, AddressId = 4, AddressType = AddressType.Leverans },
                 new CustomerAddress { Id = 6, CustomerId =2, AddressId = 4, AddressType = AddressType.Faktura },
-                new CustomerAddress { Id = 5, CustomerId =3, AddressId = 6, AddressType = AddressType.Leverans },
-                new CustomerAddress { Id = 6, CustomerId =3, AddressId = 6, AddressType = AddressType.Faktura },
-                new CustomerAddress { Id = 5, CustomerId =4, AddressId = 7, AddressType = AddressType.Leverans },
-                new CustomerAddress { Id = 6, CustomerId =4, AddressId = 7, AddressType = AddressType.Faktura }
+                new CustomerAddress { Id = 7, CustomerId =3, AddressId = 6, AddressType = AddressType.Leverans },
+                new CustomerAddress { Id = 8, CustomerId =3, AddressId = 6, AddressType = AddressType.Faktura },
+                new CustomerAddress { Id = 9, CustomerId =4, AddressId = 7, AddressType = AddressType.Leverans },
+                new CustomerAddress { Id = 10, CustomerId =4, AddressId = 7, AddressType = AddressType.Faktura }
 
             };
 
