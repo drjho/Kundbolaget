@@ -309,12 +309,14 @@ namespace Kundbolaget.Controllers
             // Kolla lagersaldot och försök att reservera.
             foreach (var op in order.OrderProducts)
             {
+                // TODO: Måste markera att jag har reserverat redan och inte gör om!
+                // if picklist exist then dont reserve or if reserveamount == orderedamount.
                 // Försök att reservera om det går.
                 ReserveItem(op);
                 // Få fram plockordrar på nytt.
                 var pickList = pickingOrderRepo.GetItems().Where(x => x.OrderProductId == op.Id);
                 // Ta fram reserverat antal.
-                var reservedAmount = pickList.Sum(x => x.ReservedAmount);
+                op.AvailabeAmount = pickList.Sum(x => x.ReservedAmount);
 
                 // Räkna fram priset.
                 float productTotalPrice = 0;
@@ -339,8 +341,8 @@ namespace Kundbolaget.Controllers
                             limit = 480;
                             break;
                     }
-                    unitPrice = productPrice.Price * (reservedAmount > limit ? (1 - productPrice.RebatePerPallet * .01f) : 1);
-                    productTotalPrice = reservedAmount * unitPrice;
+                    unitPrice = productPrice.Price * (op.AvailabeAmount > limit ? (1 - productPrice.RebatePerPallet * .01f) : 1);
+                    productTotalPrice = op.AvailabeAmount * unitPrice;
                 }
 
                 var opvm = new OrderProductVM
@@ -348,24 +350,27 @@ namespace Kundbolaget.Controllers
                     Id = op.Id,
                     ProductId = (int)op.ProductId,
                     OrderedAmount = op.OrderedAmount,
-                    AvailabeAmount = reservedAmount,
+                    AvailabeAmount = op.AvailabeAmount,
                     Price = productTotalPrice,
                     UnitPrice = unitPrice,
                     Comment = op.Comment
                 };
 
                 // Skapa rest order om lagret inte har tillräckligt många varor. 
-                if (op.OrderedAmount > reservedAmount)
+                if (op.OrderedAmount > op.AvailabeAmount)
                 {
                     // Sparar undan restorder tills vidare.
+                    // TODO: Man kan inte skapa restorder om och om igen!? Dra man ned på orderedamount?
                     backOrder.OrderProducts.Add(CreateBackOrder(op));
                     // Om det finns lite varor i lagret.
-                    if (reservedAmount > 0)
+                    if (op.AvailabeAmount > 0)
                     {
                         orderProductVMs.Add(opvm);
+                        op.OrderedAmount = op.AvailabeAmount;
+                        orderProductRepo.UpdateItem(op);
+
                     }
                 }
-                //ModelState.AddModelError("", "Restorder har genererats.");
 
             }
             orderVM.OrderProducts = orderProductVMs;
@@ -386,7 +391,8 @@ namespace Kundbolaget.Controllers
             else
             {
                 orderRepo.CreateItem(backOrder);
-                orderProductRepo.CreateItems(backOrder.OrderProducts);
+                ModelState.AddModelError("", "Restorder har genererats.");
+                //orderProductRepo.CreateItems(backOrder.OrderProducts);
             }
 
             return View(orderVM);
@@ -401,7 +407,7 @@ namespace Kundbolaget.Controllers
                 OrderedAmount = op.OrderedAmount - op.AvailabeAmount,
                 Comment = "Autogenererad restorder",
             };
- 
+
             return backOrderProduct;
         }
 
@@ -521,7 +527,7 @@ namespace Kundbolaget.Controllers
 
             order.OrderStatus = OrderStatus.Plockar;
             orderRepo.UpdateItem(order);
-            orderProductRepo.UpdateItems(order.OrderProducts);
+            //orderProductRepo.UpdateItems(order.OrderProducts);
             return RedirectToAction("Index");
         }
 
