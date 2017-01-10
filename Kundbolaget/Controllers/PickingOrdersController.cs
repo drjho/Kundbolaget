@@ -111,18 +111,35 @@ namespace Kundbolaget.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,StoragePlaceId,ReservedAmount,PickedAmount,Comment,OrderProductId")] PickingOrder pickingOrder)
+        public ActionResult Edit([Bind(Include = "Id,StoragePlaceId,ReservedAmount,PickedAmount,Comment,OrderProductId")] PickingOrder updated)
         {
+            var orderProduct = orderProductRepo.GetItem((int)updated.OrderProductId);
+            if (updated.PickedAmount > updated.ReservedAmount)
+            {
+                ModelState.AddModelError("PickedAmount", "Plockat antal är större än det reserade antalet.");
+            }
+            if (updated.PickedAmount < 0)
+            {
+                ModelState.AddModelError("PickedAmount", "Plockat antal är mindre än 0.");
+            }
+            if (updated.ReservedAmount > orderProduct.OrderedAmount)
+            {
+                ModelState.AddModelError("ReservedAmount", $"Reserverat antal borde inte vara beställt antal {orderProduct.OrderedAmount}.");
+            }
+            if (updated.ReservedAmount < 0)
+            {
+                ModelState.AddModelError("ReservedAmount", "Reserverat antal är mindre än 0.");
+            }
             if (ModelState.IsValid)
             {
-                pickingOrderRepo.UpdateItem(pickingOrder);
+                pickingOrderRepo.UpdateItem(updated);
                 //return RedirectToAction("Index");
-                var orderId = orderProductRepo.GetItem((int)pickingOrder.OrderProductId).OrderId;
+                var orderId = orderProduct.OrderId;
                 return RedirectToAction("ShowPickingOrder", "Orders", new { id = orderId });
             }
-            ViewBag.OrderProductId = new SelectList(orderProductRepo.GetItems(), "Id", "Id", pickingOrder.OrderProductId);
-            ViewBag.StoragePlaceId = new SelectList(storageRepo.GetItems(), "Id", "Id", pickingOrder.StoragePlaceId);
-            return View(pickingOrder);
+            ViewBag.OrderProductId = new SelectList(orderProductRepo.GetItems(), "Id", "Id", updated.OrderProductId);
+            ViewBag.StoragePlaceId = new SelectList(storageRepo.GetItems(), "Id", "Id", updated.StoragePlaceId);
+            return View(updated);
         }
 
         // GET: PickingOrders/Delete/5
