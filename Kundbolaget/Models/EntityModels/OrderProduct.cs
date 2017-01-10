@@ -9,22 +9,18 @@ namespace Kundbolaget.Models.EntityModels
     {
         public int Id { get; set; }
 
-        //[Required(ErrorMessage = "Angett fel produktorder id")]
         [Display(Name = "Produkt id")]
         public int? ProductId { get; set; }
 
         [Display(Name = "Produkt")]
         public virtual Product Product { get; set; }
 
-        [Required]
         [Display(Name = "Beställt antal")]
         public int OrderedAmount { get; set; }
 
-        [Required]
         [Display(Name = "Reserverat antal")]
         public int AvailabeAmount { get; set; }
 
-        [Required]
         [Display(Name = "Plockat antal")]
         public int DeliveredAmount { get; set; }
 
@@ -36,6 +32,7 @@ namespace Kundbolaget.Models.EntityModels
 
         [Display(Name = "Order id")]
         public int? OrderId { get; set; }
+
         [Display(Name = "Order")]
         public virtual Order Order { get; set; }
 

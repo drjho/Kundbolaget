@@ -317,7 +317,7 @@ namespace Kundbolaget.Controllers
                 var pickList = pickingOrderRepo.GetItems().Where(x => x.OrderProductId == op.Id);
                 // Ta fram reserverat antal och uppdatera availableAmount
                 op.AvailabeAmount = pickList.Sum(x => x.ReservedAmount);
-
+                orderProductRepo.UpdateItem(op);
                 // Räkna fram priset.
                 float productTotalPrice = 0;
                 float unitPrice = 0;

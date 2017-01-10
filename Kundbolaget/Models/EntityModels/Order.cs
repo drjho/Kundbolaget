@@ -34,7 +34,7 @@ namespace Kundbolaget.Models.EntityModels
         public DateTime DesiredDeliveryDate { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true, NullDisplayText = "Ej bestämt")]
         [Display(Name = "Planerat leveransdatum")]
         public DateTime? PlannedDeliveryDate { get; set; }
 
