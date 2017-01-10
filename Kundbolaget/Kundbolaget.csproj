@@ -229,6 +229,10 @@
     <Compile Include="Migrations\201701092310164_AddedPriceInOrderProduct2.Designer.cs">
       <DependentUpon>201701092310164_AddedPriceInOrderProduct2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701100036279_nullablePlannedDeliveryDate.cs" />
+    <Compile Include="Migrations\201701100036279_nullablePlannedDeliveryDate.Designer.cs">
+      <DependentUpon>201701100036279_nullablePlannedDeliveryDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\AlcoholLicense.cs" />
@@ -351,6 +355,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701092310164_AddedPriceInOrderProduct2.resx">
       <DependentUpon>201701092310164_AddedPriceInOrderProduct2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701100036279_nullablePlannedDeliveryDate.resx">
+      <DependentUpon>201701100036279_nullablePlannedDeliveryDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

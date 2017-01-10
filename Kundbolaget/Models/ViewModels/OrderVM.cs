@@ -27,7 +27,7 @@ namespace Kundbolaget.Models.EntityModels
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Planerad leveransdatum")]
-        public DateTime PlannedDeliveryDate { get; set; }
+        public DateTime? PlannedDeliveryDate { get; set; }
 
         [Required(ErrorMessage = "Angett fel adressorder id")]
         [Display(Name = "Kundadressid")]
@@ -41,7 +41,9 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Totalpris")]
         public float Price { get; set; } 
 
-        public List<OrderProductVM> OrderProducts { get; set; } 
+        public List<OrderProductVM> OrderProducts { get; set; }
+
+        public List<OrderProductVM> RestOrderProducts { get; set; }
 
     }
 }

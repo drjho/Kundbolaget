@@ -282,9 +282,30 @@ namespace Kundbolaget.Controllers
                 ModelState.AddModelError("", "Kunden har ingen alkohollicens.");
             }
 
+            var orderVM = new OrderVM
+            {
+                Id = order.Id,
+                OrderDate = order.OrderDate,
+                CustomerId = order.CustomerId,
+                PlannedDeliveryDate = order.PlannedDeliveryDate,
+                AddressId = order.AddressId,
+                Comment = order.Comment
+            };
+
             var priceList = priceListRepository.GetItems().Where(x => x.CustomerGroupId == order.Customer.CustomerGroupId);
 
             var orderProductVMs = new List<OrderProductVM>();
+            //var backOrderProducts = new List<OrderProduct>();
+            var backOrder = new Order
+            {
+                CustomerId = order.CustomerId,
+                AddressId = order.AddressId,
+                Comment = "*Restorder* " + order.Comment,
+                OrderDate = DateTime.Now.Date,
+                DesiredDeliveryDate = order.DesiredDeliveryDate,
+                OrderStatus = OrderStatus.Behandlar,
+                OrderProducts = new List<OrderProduct>()
+            };
             // Kolla lagersaldot och försök att reservera.
             foreach (var op in order.OrderProducts)
             {
@@ -294,7 +315,7 @@ namespace Kundbolaget.Controllers
                 var pickList = pickingOrderRepo.GetItems().Where(x => x.OrderProductId == op.Id);
                 // Ta fram reserverat antal.
                 var reservedAmount = pickList.Sum(x => x.ReservedAmount);
-                
+
                 // Räkna fram priset.
                 float productTotalPrice = 0;
                 float unitPrice = 0;
@@ -305,7 +326,6 @@ namespace Kundbolaget.Controllers
                 }
                 else
                 {
-                    
                     var limit = 0;
                     switch (productPrice.Product.StoragePackage)
                     {
@@ -323,7 +343,7 @@ namespace Kundbolaget.Controllers
                     productTotalPrice = reservedAmount * unitPrice;
                 }
 
-                orderProductVMs.Add(new OrderProductVM
+                var opvm = new OrderProductVM
                 {
                     Id = op.Id,
                     ProductId = (int)op.ProductId,
@@ -332,29 +352,57 @@ namespace Kundbolaget.Controllers
                     Price = productTotalPrice,
                     UnitPrice = unitPrice,
                     Comment = op.Comment
-                });
+                };
+
+                // Skapa rest order om lagret inte har tillräckligt många varor. 
+                if (op.OrderedAmount > reservedAmount)
+                {
+                    // Sparar undan restorder tills vidare.
+                    backOrder.OrderProducts.Add(CreateBackOrder(op));
+                    // Om det finns lite varor i lagret.
+                    if (reservedAmount > 0)
+                    {
+                        orderProductVMs.Add(opvm);
+                    }
+                }
+                //ModelState.AddModelError("", "Restorder har genererats.");
+
             }
+            orderVM.OrderProducts = orderProductVMs;
 
             // Jämför kreditgräns.
             var totalPrice = orderProductVMs.Sum(x => x.Price);
 
             if (order.Customer.CreditLimit != -1 && totalPrice > order.Customer.CreditLimit)
             {
-                ModelState.AddModelError("", "Kundens kredigräns är för låg.");
+                ModelState.AddModelError("Price", "Kundens kredigräns är för låg.");
+            }
+            orderVM.Price = totalPrice;
+
+            if (totalPrice == 0)
+            {
+                ModelState.AddModelError("", "Det finns ingen plockorder att skapa.");
+            }
+            else
+            {
+                orderRepo.CreateItem(backOrder);
+                orderProductRepo.CreateItems(backOrder.OrderProducts);
             }
 
-            var orderVM = new OrderVM
-            {
-                Id = order.Id,
-                OrderDate = order.OrderDate,
-                CustomerId = order.CustomerId,
-                PlannedDeliveryDate = order.PlannedDeliveryDate,
-                AddressId = order.AddressId,
-                Comment = order.Comment,
-                OrderProducts = orderProductVMs,
-                Price = totalPrice
-            };
             return View(orderVM);
+        }
+
+        public OrderProduct CreateBackOrder(OrderProduct op)
+        {
+            var backOrderProduct = new OrderProduct
+            {
+                OrderId = op.OrderId,
+                ProductId = op.ProductId,
+                OrderedAmount = op.OrderedAmount - op.AvailabeAmount,
+                Comment = "Autogenererad restorder",
+            };
+ 
+            return backOrderProduct;
         }
 
         /// <summary>
@@ -406,7 +454,7 @@ namespace Kundbolaget.Controllers
                 decimal price = 0;
                 foreach (var priceList in priceList1.Where(x => x.ProductId == prod.Product.Id))
                 {
-                    price = (Decimal) priceList.Price;
+                    price = (Decimal)priceList.Price;
                     rebatePercent = priceList.RebatePerPallet;
                 }
 

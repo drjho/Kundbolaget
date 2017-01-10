@@ -17,6 +17,12 @@ namespace Kundbolaget.EntityFramework.Repositories
             db = context;
         }
 
+        public void CreateItems(List<OrderProduct> newItems)
+        {
+            db.OrderProducts.AddRange(newItems);
+            db.SaveChanges();
+        }
+
         public void CreateItem(OrderProduct newItem)
         {
             db.OrderProducts.Add(newItem);
