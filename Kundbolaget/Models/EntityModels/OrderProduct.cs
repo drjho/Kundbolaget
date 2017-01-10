@@ -43,6 +43,6 @@ namespace Kundbolaget.Models.EntityModels
         public float Price { get; set; }
 
         [Display(Name = "Plockordrar")]
-        public virtual List<PickingOrder> PickList { get; set; }
+        public virtual List<PickingOrder> PickList { get; set; } = new List<PickingOrder>();
     }
 }

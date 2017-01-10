@@ -315,7 +315,7 @@ namespace Kundbolaget.Controllers
                 ReserveItem(op);
                 // Få fram plockordrar på nytt.
                 var pickList = pickingOrderRepo.GetItems().Where(x => x.OrderProductId == op.Id);
-                // Ta fram reserverat antal.
+                // Ta fram reserverat antal och uppdatera availableAmount
                 op.AvailabeAmount = pickList.Sum(x => x.ReservedAmount);
 
                 // Räkna fram priset.
@@ -345,30 +345,30 @@ namespace Kundbolaget.Controllers
                     productTotalPrice = op.AvailabeAmount * unitPrice;
                 }
 
-                var opvm = new OrderProductVM
+                // Om man har lyckats reservera varor i lagret.
+                if (op.AvailabeAmount > 0)
                 {
-                    Id = op.Id,
-                    ProductId = (int)op.ProductId,
-                    OrderedAmount = op.OrderedAmount,
-                    AvailabeAmount = op.AvailabeAmount,
-                    Price = productTotalPrice,
-                    UnitPrice = unitPrice,
-                    Comment = op.Comment
-                };
-
-                // Skapa rest order om lagret inte har tillräckligt många varor. 
-                if (op.OrderedAmount > op.AvailabeAmount)
-                {
-                    // Sparar undan restorder tills vidare.
-                    // TODO: Man kan inte skapa restorder om och om igen!? Dra man ned på orderedamount?
-                    backOrder.OrderProducts.Add(CreateBackOrder(op));
-                    // Om det finns lite varor i lagret.
-                    if (op.AvailabeAmount > 0)
+                    var opvm = new OrderProductVM
                     {
-                        orderProductVMs.Add(opvm);
-                        op.OrderedAmount = op.AvailabeAmount;
-                        orderProductRepo.UpdateItem(op);
+                        Id = op.Id,
+                        ProductId = (int)op.ProductId,
+                        OrderedAmount = op.OrderedAmount,
+                        AvailabeAmount = op.AvailabeAmount,
+                        Price = productTotalPrice,
+                        UnitPrice = unitPrice,
+                        Comment = op.Comment
+                    };
+                    orderProductVMs.Add(opvm);
 
+                    // Skapa rest order om lagret inte har tillräckligt många varor. 
+                    if (op.OrderedAmount > op.AvailabeAmount)
+                    {
+                        // Sparar undan restorder tills vidare.
+                        backOrder.OrderProducts.Add(CreateBackOrder(op));
+                        // Uppdatera beställt antal till det reserverade eftersom resten finns på restorder.
+                        op.OrderedAmount = op.AvailabeAmount;
+                        // Uppdatera databasen.
+                        orderProductRepo.UpdateItem(op);
                     }
                 }
 
@@ -390,9 +390,11 @@ namespace Kundbolaget.Controllers
             }
             else
             {
-                orderRepo.CreateItem(backOrder);
-                ModelState.AddModelError("", "Restorder har genererats.");
-                //orderProductRepo.CreateItems(backOrder.OrderProducts);
+                if (backOrder.OrderProducts.Count > 0)
+                {
+                    orderRepo.CreateItem(backOrder);
+                    ModelState.AddModelError("", "Restorder har genererats.");
+                }
             }
 
             return View(orderVM);

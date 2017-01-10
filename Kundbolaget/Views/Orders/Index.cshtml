@@ -98,7 +98,7 @@
             <td>
                 @if (item.OrderStatus == Kundbolaget.Models.EntityModels.OrderStatus.Behandlar)
                 {
-                    @Html.ActionLink("Gör ordning", "PrepareOrder", new { id = item.Id }) @Html.Raw(" | ")
+                    @Html.ActionLink("Reservera varor", "PrepareOrder", new { id = item.Id }) @Html.Raw(" | ")
                 }
                 @if (item.OrderStatus == Kundbolaget.Models.EntityModels.OrderStatus.Plockar)
                 {
