@@ -45,7 +45,9 @@ namespace UnitTestMoq
                 CreditLimit = 10000,
                 CustomerAuditCode = 1,
                 DaysToDelievery = 12,
-                OrganisationNumber = "100"
+                OrganisationNumber = "100",
+                CustomerGroupId = 1
+
             },
             new Customer
             {
@@ -55,7 +57,8 @@ namespace UnitTestMoq
                 CreditLimit = 10000,
                 CustomerAuditCode = 1,
                 DaysToDelievery = 12,
-                OrganisationNumber = "100"
+                OrganisationNumber = "100",
+                CustomerGroupId = 1
             },
             new Customer
             {
@@ -65,7 +68,8 @@ namespace UnitTestMoq
                 CreditLimit = 20000,
                 CustomerAuditCode = 2,
                 DaysToDelievery = 18,
-                OrganisationNumber = "200"
+                OrganisationNumber = "200",
+                CustomerGroupId = 1
             }
         };
 
@@ -74,6 +78,7 @@ namespace UnitTestMoq
             new Order
             {
                 Id = 1,
+                Customer = Customers[0],
                 CustomerId = 1,
                 AddressId = 1,
                 Comment = "none",
@@ -87,6 +92,7 @@ namespace UnitTestMoq
             new Order
             {
                 Id = 2,
+                Customer = Customers[1],
                 CustomerId = 2,
                 AddressId = 2,
                 Comment = "ring Johan",
@@ -239,7 +245,9 @@ namespace UnitTestMoq
                 Price = 100,
                 ProductId = 3,
                 RebatePerPallet = 10,
-                StartDate = DateTime.Now
+                StartDate = DateTime.Now,
+                CustomerGroupId = 1
+
             }
         };
 
@@ -248,7 +256,9 @@ namespace UnitTestMoq
             new AlcoholLicense
             {
                 Id = 1,
-                StartDate = DateTime.Today
+                CustomerId = 1,
+                StartDate = DateTime.Today,
+                EndDate = DateTime.Today.AddDays(365)
             }
         };
 
@@ -257,7 +267,7 @@ namespace UnitTestMoq
             new CustomerGroup
             {
                 Id = 1,
-                Name = "Ica"
+                Name = "Livsmedelsbutik"
             }
         };
 

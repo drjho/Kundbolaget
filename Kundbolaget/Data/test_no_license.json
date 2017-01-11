@@ -1,0 +1,18 @@
+{
+  "customerid": "000003",
+  "addressid": "00000005",
+  "products": [
+    {
+      "pno": "000001",
+      "amount": 10,
+      "comment": ""
+    },
+    {
+      "pno": "000002",
+      "amount": 10,
+      "comment": ""
+    }
+  ],
+  "date": "01/01/2017",
+  "comment": "har nog ingen licens"
+}
