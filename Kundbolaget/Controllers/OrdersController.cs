@@ -276,7 +276,7 @@ namespace Kundbolaget.Controllers
                 return HttpNotFound();
             }
 
-            // TODO: Kolla alkolicens här!
+            // Kolla alkolicens
             if (licenseRepo.GetItems().SingleOrDefault(x => x.CustomerId == order.CustomerId && x.StartDate.CompareTo(order.OrderDate) <= 0 && x.EndDate.CompareTo(order.OrderDate) >= 0) == null)
             {
                 ModelState.AddModelError("", "Kunden har ingen alkohollicens.");
@@ -295,7 +295,6 @@ namespace Kundbolaget.Controllers
             var priceList = priceListRepository.GetItems().Where(x => x.CustomerGroupId == order.Customer.CustomerGroupId);
 
             var orderProductVMs = new List<OrderProductVM>();
-            //var backOrderProducts = new List<OrderProduct>();
             var backOrder = new Order
             {
                 CustomerId = order.CustomerId,
@@ -306,11 +305,17 @@ namespace Kundbolaget.Controllers
                 OrderStatus = OrderStatus.Behandlar,
                 OrderProducts = new List<OrderProduct>()
             };
+
             // Kolla lagersaldot och försök att reservera.
             foreach (var op in order.OrderProducts)
             {
-                // TODO: Måste markera att jag har reserverat redan och inte gör om!
-                // if picklist exist then dont reserve or if reserveamount == orderedamount.
+                // Kolla om produkten säljs.
+                if (op.Product.ProductStatus != ProductStatus.Normal)
+                {
+                    backOrder.OrderProducts.Add(CreateBackOrder(op));
+                    continue;
+                }
+
                 // Försök att reservera om det går.
                 ReserveItem(op);
                 // Få fram plockordrar på nytt.
@@ -364,7 +369,7 @@ namespace Kundbolaget.Controllers
                     if (op.OrderedAmount > op.AvailabeAmount)
                     {
                         // Sparar undan restorder tills vidare.
-                        backOrder.OrderProducts.Add(CreateBackOrder(op));
+                        backOrder.OrderProducts.Add(CreateBackOrder(op));  
                         // Uppdatera beställt antal till det reserverade eftersom resten finns på restorder.
                         op.OrderedAmount = op.AvailabeAmount;
                         // Uppdatera databasen.

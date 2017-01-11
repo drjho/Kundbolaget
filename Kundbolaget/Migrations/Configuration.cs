@@ -26,6 +26,14 @@ namespace Kundbolaget.Migrations
                 new Customer { Id = 2, Name = "ICA", CorporateStucture = "Koncern",
                     CreditLimit = -1, DaysToDelievery = 3,
                     CustomerAuditCode = 1, OrganisationNumber = "345555-7645",
+                    CustomerGroupId = 1},
+                new Customer { Id = 3, Name = "No License Company", CorporateStucture = "",
+                    CreditLimit = 1000, DaysToDelievery = 1,
+                    CustomerAuditCode = 1, OrganisationNumber = "309545-2345",
+                    CustomerGroupId = 1},
+                new Customer { Id = 4, Name = "Low credit Company", CorporateStucture = "",
+                    CreditLimit = 100, DaysToDelievery = 1,
+                    CustomerAuditCode = 1, OrganisationNumber = "308775-2675",
                     CustomerGroupId = 1}
             };
 
@@ -34,7 +42,9 @@ namespace Kundbolaget.Migrations
                 new Address { Id = 1, StreetName = "Kungsgatan", Number = 1, PostalCode = "11232", Area = "Stockholm", Country = "Sweden"},
                 new Address { Id = 2, StreetName = "Kungsgatan", Number = 2, PostalCode = "11232", Area = "Stockholm", Country = "Sweden"},
                 new Address { Id = 3, StreetName = "Kungsgatan", Number = 3, PostalCode = "11232", Area = "Stockholm", Country = "Sweden"},
-                new Address { Id = 4, StreetName = "Bergsgatan", Number = 77, PostalCode = "11632", Area = "Stockholm", Country = "Sweden"}
+                new Address { Id = 4, StreetName = "Bergsgatan", Number = 77, PostalCode = "11632", Area = "Stockholm", Country = "Sweden"},
+                new Address { Id = 5, StreetName = "Licensgatan", Number = 101, PostalCode = "13452", Area = "Stockholm", Country = "Sweden"},
+                new Address { Id = 6, StreetName = "Kreditgatan", Number = 202, PostalCode = "10982", Area = "Stockholm", Country = "Sweden"}
 
             };
 
@@ -44,7 +54,8 @@ namespace Kundbolaget.Migrations
                 new Product { Id = 2, Name = "IPA", Alcohol = 4f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Öl, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 33},
                 new Product { Id = 3, Name = "Strongbow", Alcohol = 4.5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Cider, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 50},
                 new Product { Id = 4, Name = "Bishops finger", Alcohol = 5.5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Öl, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 50},
-                new Product { Id = 5, Name = "Chapel Hill", Alcohol = 12f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Mosserande, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 75}
+                new Product { Id = 5, Name = "Chapel Hill", Alcohol = 12f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Mosserande, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 75},
+                new Product { Id = 6, Name = "Koskenkorva", Alcohol = 40f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Starksprit, StoragePackage = StoragePackage.Kartong, VatCode = 1, Volume = 100}
             };
 
             var warehouses = new Warehouse[]
@@ -54,10 +65,6 @@ namespace Kundbolaget.Migrations
 
             var storagePlaces = Enumerable.Range(0, 1452).Select(x => new StoragePlace { Id = x, WarehouseId = 1 }).ToArray();
 
-            storagePlaces[10].ArrivalDate = DateTime.Today;
-            storagePlaces[10].ProductId = products[0].Id;
-            storagePlaces[10].TotalAmount = 20;
-            storagePlaces[10].Vacant = false;
             storagePlaces[1].ArrivalDate = DateTime.Today;
             storagePlaces[1].ProductId = products[0].Id;
             storagePlaces[1].TotalAmount = 30;
@@ -94,6 +101,19 @@ namespace Kundbolaget.Migrations
             storagePlaces[9].ProductId = products[3].Id;
             storagePlaces[9].TotalAmount = 300;
             storagePlaces[9].Vacant = false;
+            storagePlaces[10].ArrivalDate = DateTime.Today;
+            storagePlaces[10].ProductId = products[4].Id;
+            storagePlaces[10].TotalAmount = 200;
+            storagePlaces[10].Vacant = false;
+            storagePlaces[11].ArrivalDate = DateTime.Today;
+            storagePlaces[11].ProductId = products[5].Id;
+            storagePlaces[11].TotalAmount = 100;
+            storagePlaces[11].Vacant = false;
+            storagePlaces[12].ArrivalDate = DateTime.Today;
+            storagePlaces[12].ProductId = products[5].Id;
+            storagePlaces[12].TotalAmount = 100;
+            storagePlaces[12].Vacant = false;
+
 
             var customergroup = new CustomerGroup[]
             {
@@ -110,8 +130,10 @@ namespace Kundbolaget.Migrations
                 new CustomerAddress { Id = 4, CustomerId =1, AddressId = 3, AddressType = AddressType.Besök },
                 new CustomerAddress { Id = 5, CustomerId =2, AddressId = 4, AddressType = AddressType.Leverans },
                 new CustomerAddress { Id = 6, CustomerId =2, AddressId = 4, AddressType = AddressType.Faktura },
-
-
+                new CustomerAddress { Id = 7, CustomerId =3, AddressId = 5, AddressType = AddressType.Leverans },
+                new CustomerAddress { Id = 8, CustomerId =3, AddressId = 5, AddressType = AddressType.Faktura },
+                new CustomerAddress { Id = 9, CustomerId =4, AddressId = 6, AddressType = AddressType.Leverans },
+                new CustomerAddress { Id = 10, CustomerId =4, AddressId = 6, AddressType = AddressType.Faktura },
             };
 
             var priceLists = new PriceList[]
