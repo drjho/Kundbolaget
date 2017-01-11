@@ -39,7 +39,9 @@ namespace Kundbolaget.Models.EntityModels
         public string Comment { get; set; }
 
         [Display(Name = "Totalpris")]
-        public float Price { get; set; } 
+        public float Price { get; set; }
+
+        public bool CannotContinueRegsitration { get; set; } = false;
 
         public List<OrderProductVM> OrderProducts { get; set; }
 

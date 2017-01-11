@@ -65,14 +65,21 @@
             </div>
         </div>
 
-        @if (Model.Price > 0)
-        {
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @if (Model.CannotContinueRegsitration)
+                {
+                    <a href="@Url.Action("Delete", "Orders", new { id = Model.Id })" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"> </span> Ta bort från systemet
+                    </a>
+                }
+                else
+                {
+
                     <input type="submit" value="Skapa plockorder" class="btn btn-primary" />
-                </div>
+                }
             </div>
-        }
+        </div>
 
         <div class="form-horizontal">
             <table class="table">

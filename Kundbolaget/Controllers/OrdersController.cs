@@ -276,12 +276,6 @@ namespace Kundbolaget.Controllers
                 return HttpNotFound();
             }
 
-            // Kolla alkolicens
-            if (licenseRepo.GetItems().SingleOrDefault(x => x.CustomerId == order.CustomerId && x.StartDate.CompareTo(order.OrderDate) <= 0 && x.EndDate.CompareTo(order.OrderDate) >= 0) == null)
-            {
-                ModelState.AddModelError("", "Kunden har ingen alkohollicens.");
-            }
-
             var orderVM = new OrderVM
             {
                 Id = order.Id,
@@ -291,6 +285,13 @@ namespace Kundbolaget.Controllers
                 AddressId = order.AddressId,
                 Comment = order.Comment
             };
+
+            // Kolla alkolicens
+            if (licenseRepo.GetItems().SingleOrDefault(x => x.CustomerId == order.CustomerId && x.StartDate.CompareTo(order.OrderDate) <= 0 && x.EndDate.CompareTo(order.OrderDate) >= 0) == null)
+            {
+                ModelState.AddModelError("", "Kunden har ingen alkohollicens.");
+                orderVM.CannotContinueRegsitration = true;
+            }
 
             var priceList = priceListRepository.GetItems().Where(x => x.CustomerGroupId == order.Customer.CustomerGroupId);
 
@@ -330,6 +331,8 @@ namespace Kundbolaget.Controllers
                 if (productPrice == null)
                 {
                     ModelState.AddModelError("", $"Kunden har inget pris för {op.Product.ShortDescription}.");
+                    orderVM.CannotContinueRegsitration = true;
+
                 }
                 else
                 {
@@ -385,12 +388,14 @@ namespace Kundbolaget.Controllers
 
             if (order.Customer.CreditLimit != -1 && totalPrice > order.Customer.CreditLimit)
             {
-                ModelState.AddModelError("Price", "Kundens kredigräns är för låg.");
+                orderVM.CannotContinueRegsitration = true;
+                ModelState.AddModelError("Price", $"Kundens kredigräns är överstigen. ({order.Customer.CreditLimit}).");
             }
             orderVM.Price = totalPrice;
 
             if (totalPrice == 0)
             {
+                orderVM.CannotContinueRegsitration = true;
                 ModelState.AddModelError("", "Det finns ingen plockorder att skapa.");
             }
             else
