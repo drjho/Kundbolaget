@@ -8,45 +8,36 @@ namespace Kundbolaget.Models.EntityModels
 {
     public class Invoice
     {
-        [Display(Name = "Order id")]
         public int Id { get; set; }
 
+        [Display(Name = "Order Id")]
+        public int OrderId { get; set; }
+        public virtual Order Order { get; set; }
+
         [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Faktureringsdatum")]
         public DateTime InvoiceDate { get; set; }
 
         [Display(Name = "Produkt")]
-        public virtual List<Product> Product { get; set; }
+        public virtual List<OrderProduct> Product { get; set; }
 
         [Display(Name = "Betald")]
         public bool Paid { get; set; }
 
-        [Display(Name = "Förfallodag")]
-        public DateTime PayBefore {
-            get { return this.InvoiceDate.Date.AddDays(15); }
-            set { this.InvoiceDate.Date.AddDays(15); } }
+        public bool IsOverdue => DateTime.Today.Date.CompareTo(InvoiceDate.Date.AddDays(15)) > 0;
 
+        public int? CustomerId { get; set; }
         [Display(Name = "Kund")]
         public virtual Customer Customer { get; set; }
 
+        public int? AddressId { get; set; }
         [Display(Name = "Kundadress")]
-        public Address Address { get; set; }
+        public virtual Address Address { get; set; }
+
+        public virtual List<PriceList> PriceList { get; set; }
 
         
-
-        //public PriceList PriceList { get; set; }
-
-        //[Required]
-        //[Display(Name = "Rabatt")]
-        //public int Rebate { get; set; }
-
-        //[Display(Name = "Antal")]
-        //public int ProductAmount { get; set; }
-        //[Display(Name = "Momskod")]
-        //public decimal VatCode { get; set; }
-
-        //[Required]
-        //[Display(Name = "Pris")]
-        //public decimal Price { get; set; }
     }
 }
