@@ -3,7 +3,7 @@ namespace Kundbolaget.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class initCreate_sprint4 : DbMigration
+    public partial class initCreate_sprint4_2 : DbMigration
     {
         public override void Up()
         {
@@ -75,6 +75,38 @@ namespace Kundbolaget.Migrations
                 .Index(t => t.AddressId);
             
             CreateTable(
+                "dbo.Invoices",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        OrderId = c.Int(nullable: false),
+                        InvoiceDate = c.DateTime(nullable: false),
+                        Paid = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Orders", t => t.OrderId, cascadeDelete: true)
+                .Index(t => t.OrderId);
+            
+            CreateTable(
+                "dbo.Orders",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        CustomerId = c.Int(nullable: false),
+                        OrderDate = c.DateTime(nullable: false),
+                        DesiredDeliveryDate = c.DateTime(nullable: false),
+                        PlannedDeliveryDate = c.DateTime(),
+                        AddressId = c.Int(nullable: false),
+                        Comment = c.String(),
+                        OrderStatus = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Addresses", t => t.AddressId, cascadeDelete: true)
+                .ForeignKey("dbo.Customers", t => t.CustomerId, cascadeDelete: true)
+                .Index(t => t.CustomerId)
+                .Index(t => t.AddressId);
+            
+            CreateTable(
                 "dbo.OrderProducts",
                 c => new
                     {
@@ -86,31 +118,13 @@ namespace Kundbolaget.Migrations
                         AcceptedAmount = c.Int(nullable: false),
                         Comment = c.String(),
                         OrderId = c.Int(),
+                        Price = c.Single(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Orders", t => t.OrderId)
                 .ForeignKey("dbo.Products", t => t.ProductId)
                 .Index(t => t.ProductId)
                 .Index(t => t.OrderId);
-            
-            CreateTable(
-                "dbo.Orders",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        CustomerId = c.Int(nullable: false),
-                        OrderDate = c.DateTime(nullable: false),
-                        DesiredDeliveryDate = c.DateTime(nullable: false),
-                        PlannedDeliveryDate = c.DateTime(nullable: false),
-                        AddressId = c.Int(nullable: false),
-                        Comment = c.String(),
-                        OrderStatus = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Addresses", t => t.AddressId, cascadeDelete: true)
-                .ForeignKey("dbo.Customers", t => t.CustomerId, cascadeDelete: true)
-                .Index(t => t.CustomerId)
-                .Index(t => t.AddressId);
             
             CreateTable(
                 "dbo.PickingOrders",
@@ -187,7 +201,7 @@ namespace Kundbolaget.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         StartDate = c.DateTime(nullable: false),
-                        Price = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Price = c.Single(nullable: false),
                         ProductId = c.Int(),
                         CustomerGroupId = c.Int(),
                         RebatePerPallet = c.Int(nullable: false),
@@ -204,6 +218,7 @@ namespace Kundbolaget.Migrations
         {
             DropForeignKey("dbo.PriceLists", "ProductId", "dbo.Products");
             DropForeignKey("dbo.PriceLists", "CustomerGroupId", "dbo.CustomerGroups");
+            DropForeignKey("dbo.Invoices", "OrderId", "dbo.Orders");
             DropForeignKey("dbo.OrderProducts", "ProductId", "dbo.Products");
             DropForeignKey("dbo.PickingOrders", "StoragePlaceId", "dbo.StoragePlaces");
             DropForeignKey("dbo.StoragePlaces", "WarehouseId", "dbo.Warehouses");
@@ -222,10 +237,11 @@ namespace Kundbolaget.Migrations
             DropIndex("dbo.StoragePlaces", new[] { "WarehouseId" });
             DropIndex("dbo.PickingOrders", new[] { "OrderProductId" });
             DropIndex("dbo.PickingOrders", new[] { "StoragePlaceId" });
-            DropIndex("dbo.Orders", new[] { "AddressId" });
-            DropIndex("dbo.Orders", new[] { "CustomerId" });
             DropIndex("dbo.OrderProducts", new[] { "OrderId" });
             DropIndex("dbo.OrderProducts", new[] { "ProductId" });
+            DropIndex("dbo.Orders", new[] { "AddressId" });
+            DropIndex("dbo.Orders", new[] { "CustomerId" });
+            DropIndex("dbo.Invoices", new[] { "OrderId" });
             DropIndex("dbo.CustomerAddresses", new[] { "AddressId" });
             DropIndex("dbo.CustomerAddresses", new[] { "CustomerId" });
             DropIndex("dbo.Customers", new[] { "CustomerGroupId" });
@@ -235,8 +251,9 @@ namespace Kundbolaget.Migrations
             DropTable("dbo.Products");
             DropTable("dbo.StoragePlaces");
             DropTable("dbo.PickingOrders");
-            DropTable("dbo.Orders");
             DropTable("dbo.OrderProducts");
+            DropTable("dbo.Orders");
+            DropTable("dbo.Invoices");
             DropTable("dbo.CustomerAddresses");
             DropTable("dbo.CustomerGroups");
             DropTable("dbo.Customers");

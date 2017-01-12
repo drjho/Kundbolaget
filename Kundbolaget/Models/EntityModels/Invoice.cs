@@ -8,9 +8,10 @@ namespace Kundbolaget.Models.EntityModels
 {
     public class Invoice
     {
+        [Display(Name = "Fakturaid")]
         public int Id { get; set; }
 
-        [Display(Name = "Order Id")]
+        [Display(Name = "Orderid")]
         public int OrderId { get; set; }
         public virtual Order Order { get; set; }
 
@@ -23,15 +24,11 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Betald")]
         public bool Paid { get; set; }
 
+        [Display(Name = "Förfallen")]
         public bool IsOverdue => DateTime.Today.Date.CompareTo(InvoiceDate.Date.AddDays(15)) > 0;
 
-        public int? CustomerId { get; set; }
-        [Display(Name = "Kund")]
-        public virtual Customer Customer { get; set; }
-
-        public int? AddressId { get; set; }
-        [Display(Name = "Kundadress")]
-        public virtual Address Address { get; set; }
+        [Display(Name = "Totalpris")]
+        public float TotalPrice => (Order != null && Order.OrderProducts != null) ? Order.OrderProducts.Sum(x => x.Price) : 0;
 
     }
 }

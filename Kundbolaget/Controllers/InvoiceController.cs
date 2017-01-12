@@ -16,7 +16,7 @@ namespace Kundbolaget.Controllers
     {
         private DbInvoiceDepository invoiceRepo;
         private DbOrderRepository orderRepo;
-        private DbPriceListRepository priceListRepository;
+        private DbPriceListRepository priceListRepo;
 
 
         public InvoiceController()
@@ -24,7 +24,7 @@ namespace Kundbolaget.Controllers
             StoreContext db = new StoreContext();
             invoiceRepo = new DbInvoiceDepository(db);
             orderRepo = new DbOrderRepository(db);
-            priceListRepository = new DbPriceListRepository(db);
+            priceListRepo = new DbPriceListRepository(db);
 
         }
         // GET: Invoice
@@ -53,38 +53,92 @@ namespace Kundbolaget.Controllers
             return View(invoice);
         }
 
-        
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var invoice = invoiceRepo.GetItem((int)id);
+            if (invoice == null)
+            {
+                return HttpNotFound();
+            }
+            return View(invoice);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var invoice = invoiceRepo.GetItem(id);
+            if (invoice == null)
+            {
+                return HttpNotFound();
+            }
+            invoiceRepo.DeleteItem(id);
+            return RedirectToAction("Index");
+
+        }
+
+        public float GetTotalPrice(int customerGroupId, int productId, int amount)
+        {
+            var productPrice = priceListRepo.GetItems().SingleOrDefault(x => x.CustomerGroupId == customerGroupId && x.ProductId == productId);
+            var limit = 0;
+            switch (productPrice.Product.StoragePackage)
+            {
+                case StoragePackage.Back:
+                    limit = 384;
+                    break;
+                case StoragePackage.Kartong:
+                    limit = 240;
+                    break;
+                case StoragePackage.Flak:
+                    limit = 480;
+                    break;
+            }
+            var unitPrice = productPrice.Price * (amount > limit ? (1 - productPrice.RebatePerPallet * .01f) : 1);
+            return amount * unitPrice;
+        }
+
         public ActionResult Create(int id)
         {
             //TODO: Kolla att det inte redan finns en Faktura med detta orderID
             var order = orderRepo.GetItem(id);
 
+            var customerGroupId = order.Customer.CustomerGroupId;
 
-            //FileStream fs = new FileStream(@"C:\Users\pontu\Source\Repos\Kundbolaget\Kundbolaget\PDF\" + "\\" + "First PDF document.pdf", FileMode.Create);
-            //var pricelists = priceListRepository.GetItems().ToList();
-            //var priceList = new List<PriceList>();
-            //foreach (var price in pricelists)
-            //{
-            //    foreach (var product in order.OrderProducts)
-            //    {
-            //        if (price.Product.Id == product.Product.Id && order.Customer.CustomerGroupId == price.CustomerGroupId)
-            //        {
-            //            priceList.Add(price);
-            //        }
-            //    }
-            //}
+            foreach (var item in order.OrderProducts)
+            {
+                item.Price = GetTotalPrice(customerGroupId, (int)item.ProductId, item.AcceptedAmount);
+            }
 
-            var invoice = new Invoice {
+            order.OrderStatus = OrderStatus.Fakturerar;
+            orderRepo.UpdateItem(order);
+
+            var invoice = new Invoice
+            {
                 OrderId = order.Id,
                 InvoiceDate = DateTime.Today.Date,
                 Paid = false,
-                CustomerId = order.CustomerId,
-                AddressId = order.AddressId
             };
 
             invoiceRepo.CreateItem(invoice);
             return RedirectToAction("Index");
         }
-        
+
+        public ActionResult ChangeToPaid(int id)
+        {
+            var invoice = invoiceRepo.GetItem(id);
+            if (invoice == null)
+            {
+                return HttpNotFound();
+            }
+            invoice.Paid = true;
+            invoice.Order.OrderStatus = OrderStatus.Arkiverad;
+            invoiceRepo.UpdateItem(invoice);
+            return RedirectToAction("Index");
+        }
+
     }
 }

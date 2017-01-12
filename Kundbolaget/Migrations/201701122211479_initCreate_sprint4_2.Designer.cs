@@ -7,18 +7,18 @@ namespace Kundbolaget.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddedPriceInOrderProduct : IMigrationMetadata
+    public sealed partial class initCreate_sprint4_2 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedPriceInOrderProduct));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(initCreate_sprint4_2));
         
         string IMigrationMetadata.Id
         {
-            get { return "201701092258241_AddedPriceInOrderProduct"; }
+            get { return "201701122211479_initCreate_sprint4_2"; }
         }
         
         string IMigrationMetadata.Source
         {
-            get { return Resources.GetString("Source"); }
+            get { return null; }
         }
         
         string IMigrationMetadata.Target

@@ -391,7 +391,7 @@ namespace Kundbolaget.Controllers
             if (order.Customer.CreditLimit != -1 && totalPrice > order.Customer.CreditLimit)
             {
                 orderVM.CannotContinueRegsitration = true;
-                ModelState.AddModelError("Price", $"Kundens kredigräns är överstigen. ({order.Customer.CreditLimit}).");
+                ModelState.AddModelError("Price", $"Kundens kredigräns är överstigen ({order.Customer.CreditLimit}).");
             }
             orderVM.Price = totalPrice;
 
@@ -455,46 +455,6 @@ namespace Kundbolaget.Controllers
         }
 
         /// <summary>
-        /// Priset för varje produkt hämtas för kunden, och räknar ut totala summan 
-        /// utan rabatt eller moms.
-        /// </summary>
-        public decimal CalculatePrice(Order order)
-        {
-            var products = order.OrderProducts.ToList();
-
-            var priceList1 = priceListRepository.GetItems().ToList();
-            var priceListWithProd = products.GroupJoin(priceList1, x => x.ProductId, y => y.ProductId,
-            (x, priceList) => new { x.Product, x.OrderedAmount, priceList });
-
-            decimal totPrice = 0;
-            decimal rebatePercent = 0;
-
-            foreach (var prod in priceListWithProd)
-            {
-                decimal price = 0;
-                foreach (var priceList in priceList1.Where(x => x.ProductId == prod.Product.Id))
-                {
-                    price = (Decimal)priceList.Price;
-                    rebatePercent = priceList.RebatePerPallet;
-                }
-
-                if ((prod.Product.StoragePackage == StoragePackage.Flak && prod.OrderedAmount > 480)
-                    || (prod.Product.StoragePackage == StoragePackage.Back && prod.OrderedAmount > 384)
-                    || (prod.Product.StoragePackage == StoragePackage.Kartong && prod.OrderedAmount > 240))
-                {
-                    price = price * prod.OrderedAmount;
-                    var totalRebate = price * (rebatePercent / 100);
-                    price = price - totalRebate;
-                }
-                else
-                {
-                    price = price * prod.OrderedAmount;
-                }
-                totPrice += price;
-            }
-            return totPrice;
-        }
-        /// <summary>
         /// Användaren har kollat att ordern stämmer. Då blir varorna reserverade i lagret.
         /// Antalet reserverade kolli registreras i 'OrderProduct'.
         /// En plock sedel skapas och orderns status ändras till 'Plockar'. 
@@ -508,25 +468,6 @@ namespace Kundbolaget.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult PrepareOrder(OrderVM orderVM)
         {
-            //for (int i = 0; i < order.OrderProducts.Count; i++)
-            //var orderProduct = order.OrderProducts[i];
-            //List<PickingOrder> pickList = new List<PickingOrder>();
-            //foreach (var orderProduct in order.OrderProducts)
-            //{
-            //    orderProduct.PickList = ReserveItem(orderProduct.ProductId, orderProduct.OrderedAmount);
-            //    orderProduct.PickList.ForEach(x => x.OrderProductId = orderProduct.Id);
-            //    orderProduct.AvailabeAmount = orderProduct.PickList.Sum(x => x.ReservedAmount);
-
-            //    if (orderProduct.AvailabeAmount == 0)
-            //    {
-            //        ModelState.AddModelError("AvailabeAmount", "Det finns inga varor i lager");
-            //        break;
-            //    }
-
-            //    pickList.AddRange(orderProduct.PickList);
-            //}
-            //pickingOrderRepo.CreateItems(pickList);
-
             if (!ModelState.IsValid)
             {
                 return PrepareOrder(orderVM.Id);
@@ -541,7 +482,6 @@ namespace Kundbolaget.Controllers
 
             order.OrderStatus = OrderStatus.Plockar;
             orderRepo.UpdateItem(order);
-            //orderProductRepo.UpdateItems(order.OrderProducts);
             return RedirectToAction("Index");
         }
 

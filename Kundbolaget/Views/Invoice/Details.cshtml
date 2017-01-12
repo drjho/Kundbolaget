@@ -1,29 +1,28 @@
 ﻿@model Kundbolaget.Models.EntityModels.Invoice
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Kundbolaget-Faktura";
 }
 
-<h2>Details</h2>
+<h2>Fakturadetaljer</h2>
 
 <div>
-    <h4>Invoice</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Address.AddressString)
+            @Html.DisplayNameFor(model => model.Order.Address.AddressString)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Address.AddressString)
+            @Html.DisplayFor(model => model.Order.Address.AddressString)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Customer.Name)
+            @Html.DisplayNameFor(model => model.Order.Customer)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Customer.Name)
+            @Html.DisplayFor(model => model.Order.Customer.Name)
         </dd>
 
         <dt>
@@ -41,6 +40,13 @@
         <dd>
             @Html.DisplayFor(model => model.Paid)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalPrice)
+        </dd>
         <dd>
             <table class="table">
                 <tr>
@@ -53,44 +59,35 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Order.OrderProducts.First().OrderedAmount)
                     </th>
-                    
+
                     <th>
                         @Html.DisplayNameFor(model => model.Order.OrderProducts.First().AcceptedAmount)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Order.OrderProducts.First().Price)
                     </th>
-                    @*<th>
-                        @Html.DisplayNameFor(model => model.PriceList.First().RebatePerPallet)
-                    </th>*@
                     <th></th>
                 </tr>
                 @foreach (var item in Model.Order.OrderProducts)
                 {
-                    foreach (var price in Model.PriceList.Where(x => x.ProductId == item.Product.Id)) { 
-                         <tr>
-                             <td>
-                                 @Html.DisplayFor(modelItem => item.Id)
-                             </td>
-                             <td>
-                                 @Html.DisplayFor(modelItem => item.Product.Name)
-                             </td>
-                             <td>
-                                 @Html.DisplayFor(modelItem => item.OrderedAmount)
-                             </td>
-                   
-                             <td>
-                                 @Html.DisplayFor(modelItem => item.AcceptedAmount)
-                             </td>
-                             <td>
-                                 @Html.DisplayFor(modelItem => price.Price)
-                             </td>
-                             @*<td>
-                                 @Html.DisplayFor(modelItem => price.RebatePerPallet)
-                             </td>*@
-                             <td></td>
-                         </tr>
-                    }
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderedAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AcceptedAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td></td>
+                    </tr>
                 }
             </table>
         </dd>
@@ -98,6 +95,13 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @if (!Model.Paid)
+    {
+        <a href="@Url.Action("ChangeToPaid", new { id = Model.Id })" class="btn btn-primary">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"> </span> Ändra till betald
+        </a>
+    }
+    <a href="@Url.Action("Index")" class="btn btn-default">
+        <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"> </span> Tillbaka till listan
+    </a>
 </p>
