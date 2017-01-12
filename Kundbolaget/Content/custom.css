@@ -1,0 +1,35 @@
+﻿.navbar {padding-top: 10px; padding-bottom: 10px;}
+.page-header {
+  font-family: Arial;
+  font-size: xx-large;
+  color: black;
+  padding-left: 40px;  
+}
+.navbar-inverse {
+  background-color: #000000;
+  border-color: #000000;
+}
+.navbar-inverse .navbar-text {  
+  color: #fce09b;
+}
+  
+.navbar-inverse .navbar-nav > li > a {  
+  color: #fce09b;  
+  font-family: Tahoma;
+  font-size:15px;
+  font-weight: lighter;  
+}  
+
+.navbar-inverse .navbar-link {
+  color: #9d9d9d;
+}
+.navbar-inverse .navbar-link:hover {
+  color: #fce09b;
+}
+
+.dropdown-menu {
+  background-color: #000000;
+}
+
+
+

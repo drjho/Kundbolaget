@@ -1,60 +1,63 @@
-﻿<nav class="navbar navbar-inverse">
+﻿<div class="page-header">
+    <h1>Kundbolaget</h1>
+</div>
+<nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
+            @*@Html.ActionLink("Kundbolaget", "Index", "Home", null, new { @class = "navbar-brand" })*@
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            @Html.ActionLink("Kundbolaget", "Index", "Home", null, new { @class = "navbar-brand" })
         </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-                <li><a href="@Url.Action("Index", "Products" )"><span class="glyphicon glyphicon-glass"></span> Produkter</a></li>
-                <li><a href="@Url.Action("Index", "Warehouse")"><span class="glyphicon glyphicon-shopping-cart"></span> Lager</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> Kundhantering<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            @Html.ActionLink("Kunder", "Index", "Customer")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Adresser", "Index", "Address")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Kundadresser", "Index", "CustomerAddress")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Kundgrupp", "Index", "CustomerGroup")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Prislistor", "Index", "PriceList")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Alkohollicens", "Index", "AlcoholLicense")
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-paperclip"></span> Orderhantering<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            @Html.ActionLink("Order", "Index", "Orders")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Plockorder", "Index", "PickingOrders")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Följesedel", "DeliveryNotes", "Orders")
-                        </li>
-                    </ul>
-                </li>
-                <li><a href="@Url.Action("Index", "JsonFile")"><span class="glyphicon glyphicon-upload"></span> Orderfil</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                @*<li><a href="#"><span class="glyphicon glyphicon-user"></span> Skapa konto</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logga in</a></li>*@
-            </ul>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="@Url.Action("Index", "Products" )"><span class="glyphicon glyphicon-glass"></span> Produkter</a></li>
+                    <li><a href="@Url.Action("Index", "Warehouse")"><span class="glyphicon glyphicon-shopping-cart"></span> Lager</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> Kundhantering<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                @Html.ActionLink("Kunder", "Index", "Customer")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Adresser", "Index", "Address")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Kundadresser", "Index", "CustomerAddress")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Kundgrupp", "Index", "CustomerGroup")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Prislistor", "Index", "PriceList")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Alkohollicens", "Index", "AlcoholLicense")
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-paperclip"></span> Orderhantering<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                @Html.ActionLink("Order", "Index", "Orders")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Plockorder", "Index", "PickingOrders")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Följesedel", "DeliveryNotes", "Orders")
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="@Url.Action("Index", "JsonFile")"><span class="glyphicon glyphicon-upload"></span> Orderfil</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @*<li><a href="#"><span class="glyphicon glyphicon-user"></span> Skapa konto</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logga in</a></li>*@
+                </ul>
+            </div>
         </div>
-    </div>
 </nav>
