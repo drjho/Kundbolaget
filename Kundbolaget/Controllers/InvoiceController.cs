@@ -16,9 +16,6 @@ namespace Kundbolaget.Controllers
     {
         private DbInvoiceDepository invoiceRepo;
         private DbOrderRepository orderRepo;
-        private DbOrderProductRepository orderProductRepo;
-        private DbCustomerRepository customerRepo;
-        private DbProductRepository productRepository;
         private DbPriceListRepository priceListRepository;
 
 
@@ -40,6 +37,7 @@ namespace Kundbolaget.Controllers
             }
             return View(model);
         }
+
         //GET: Invoice/Details
         public ActionResult Details(int? id)
         {
@@ -60,23 +58,32 @@ namespace Kundbolaget.Controllers
         {
             //TODO: Kolla att det inte redan finns en Faktura med detta orderID
             var order = orderRepo.GetItem(id);
+
+
             //FileStream fs = new FileStream(@"C:\Users\pontu\Source\Repos\Kundbolaget\Kundbolaget\PDF\" + "\\" + "First PDF document.pdf", FileMode.Create);
-            var pricelists = priceListRepository.GetItems().ToList();
-            var priceList = new List<PriceList>();
-            foreach (var price in pricelists)
-            {
-                foreach (var product in order.OrderProducts)
-                {
-                    if (price.Product.Id == product.Product.Id && order.Customer.CustomerGroupId == price.CustomerGroupId)
-                    {
-                        priceList.Add(price);
-                    }
-                }
-            }
-            var invoice = new Invoice { OrderId = order.Id, InvoiceDate = DateTime.Today.Date, Product = order.OrderProducts, Paid = false, Customer = order.Customer, CustomerId = order.CustomerId, Address = order.Address, AddressId = order.AddressId, PriceList = priceList};
+            //var pricelists = priceListRepository.GetItems().ToList();
+            //var priceList = new List<PriceList>();
+            //foreach (var price in pricelists)
+            //{
+            //    foreach (var product in order.OrderProducts)
+            //    {
+            //        if (price.Product.Id == product.Product.Id && order.Customer.CustomerGroupId == price.CustomerGroupId)
+            //        {
+            //            priceList.Add(price);
+            //        }
+            //    }
+            //}
+
+            var invoice = new Invoice {
+                OrderId = order.Id,
+                InvoiceDate = DateTime.Today.Date,
+                Paid = false,
+                CustomerId = order.CustomerId,
+                AddressId = order.AddressId
+            };
 
             invoiceRepo.CreateItem(invoice);
-            return RedirectToAction("Details", invoice.Id);
+            return RedirectToAction("Index");
         }
         
     }

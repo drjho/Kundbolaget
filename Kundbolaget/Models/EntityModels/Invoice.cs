@@ -20,9 +20,6 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Faktureringsdatum")]
         public DateTime InvoiceDate { get; set; }
 
-        [Display(Name = "Produkt")]
-        public virtual List<OrderProduct> Product { get; set; }
-
         [Display(Name = "Betald")]
         public bool Paid { get; set; }
 
@@ -36,8 +33,5 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Kundadress")]
         public virtual Address Address { get; set; }
 
-        public virtual List<PriceList> PriceList { get; set; }
-
-        
     }
 }

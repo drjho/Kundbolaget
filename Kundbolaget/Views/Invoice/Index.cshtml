@@ -1,18 +1,26 @@
 ﻿@model IEnumerable<Kundbolaget.Models.EntityModels.Invoice>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Kundbolaget-Faktura";
+    var searchDate = DateTime.Now.Date;
 }
 
-<h2>Index</h2>
+<h2>Faktura</h2>
 
-<p>
+@*<p>
     @Html.ActionLink("Create New", "Create")
-</p>
+</p>*@
+@using (Html.BeginForm())
+{
+    <p>
+        Sök leveransdatum: (åååå-mm-dd) @Html.TextBox("searchDate", string.Format("{0:yyyy-MM-dd}", searchDate), new { @class = "DatePicker" })
+        <input type="submit" value="Sök" />
+    </p>
+}
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Address.StreetName)
+            @Html.DisplayNameFor(model => model.Address)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Customer.Name)
@@ -29,7 +37,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Address.StreetName)
+            @Html.DisplayFor(modelItem => item.Address.AddressString)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Customer.Name)
@@ -41,9 +49,9 @@
             @Html.DisplayFor(modelItem => item.Paid)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }) |*@
+            @Html.ActionLink("Detaljer", "Details", new { id=item.Id })
+            @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
         </td>
     </tr>
 }
