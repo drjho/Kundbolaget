@@ -139,6 +139,8 @@ namespace Kundbolaget.Controllers
 
             orderProductRepo.UpdateItems(order.OrderProducts);
 
+          
+
             order.OrderStatus = OrderStatus.Fraktar;
             orderRepo.UpdateItem(order);
             return RedirectToAction("Index");

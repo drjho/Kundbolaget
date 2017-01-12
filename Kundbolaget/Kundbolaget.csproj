@@ -195,6 +195,7 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\CustomerGroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\JsonFileController.cs" />
     <Compile Include="Controllers\OrderProductsController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
@@ -208,6 +209,7 @@
     <Compile Include="EntityFramework\Repositories\DbCustomerGroupRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbAlcoholLicenseRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbCustomerRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\DbInvoiceDepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbPickingOrderRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbOrderProductRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbOrderRepository.cs" />
@@ -240,6 +242,7 @@
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\AlcoholLicense.cs" />
     <Compile Include="Models\EntityModels\Customer.cs" />
+    <Compile Include="Models\EntityModels\Invoice.cs" />
     <Compile Include="Models\EntityModels\Order.cs" />
     <Compile Include="Models\EntityModels\PickingOrder.cs" />
     <Compile Include="Models\EntityModels\OrderProduct.cs" />
@@ -336,6 +339,8 @@
     <Content Include="Views\Orders\ShowDeliveryNote.cshtml" />
     <Content Include="Views\Orders\FinalizeDelivery.cshtml" />
     <Content Include="Views\Orders\DeliveryNotes.cshtml" />
+    <Content Include="Views\Invoice\Details.cshtml" />
+    <Content Include="Views\Invoice\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -345,6 +350,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="PDF\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

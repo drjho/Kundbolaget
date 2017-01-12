@@ -14,7 +14,7 @@ namespace Kundbolaget.Models.EntityModels
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
 
-        [Display(Name = "Pris")]
+        [Display(Name = "á pris")]
         public float Price { get; set; }
 
         [Display(Name = "Kundgrupp")]

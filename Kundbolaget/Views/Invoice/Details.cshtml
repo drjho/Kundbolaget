@@ -1,0 +1,103 @@
+﻿@model Kundbolaget.Models.EntityModels.Invoice
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Invoice</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.AddressString)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.AddressString)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InvoiceDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InvoiceDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Paid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Paid)
+        </dd>
+        <dd>
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Order.OrderProducts)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Order.OrderProducts.First().Product)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Order.OrderProducts.First().OrderedAmount)
+                    </th>
+                    
+                    <th>
+                        @Html.DisplayNameFor(model => model.Order.OrderProducts.First().AcceptedAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Order.OrderProducts.First().Price)
+                    </th>
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.PriceList.First().RebatePerPallet)
+                    </th>*@
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.Order.OrderProducts)
+                {
+                    foreach (var price in Model.PriceList.Where(x => x.ProductId == item.Product.Id)) { 
+                         <tr>
+                             <td>
+                                 @Html.DisplayFor(modelItem => item.Id)
+                             </td>
+                             <td>
+                                 @Html.DisplayFor(modelItem => item.Product.Name)
+                             </td>
+                             <td>
+                                 @Html.DisplayFor(modelItem => item.OrderedAmount)
+                             </td>
+                   
+                             <td>
+                                 @Html.DisplayFor(modelItem => item.AcceptedAmount)
+                             </td>
+                             <td>
+                                 @Html.DisplayFor(modelItem => price.Price)
+                             </td>
+                             @*<td>
+                                 @Html.DisplayFor(modelItem => price.RebatePerPallet)
+                             </td>*@
+                             <td></td>
+                         </tr>
+                    }
+                }
+            </table>
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
