@@ -329,7 +329,6 @@
     <Content Include="Views\Orders\ShowDeliveryNote.cshtml" />
     <Content Include="Views\Orders\FinalizeDelivery.cshtml" />
     <Content Include="Views\Orders\DeliveryNotes.cshtml" />
-    <Content Include="Views\Invoice\Details_bak.cshtml" />
     <Content Include="Views\Invoice\Index.cshtml" />
     <Content Include="Views\Invoice\Delete.cshtml" />
     <Content Include="Views\Invoice\Details.cshtml" />
