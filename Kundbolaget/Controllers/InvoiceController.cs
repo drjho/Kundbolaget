@@ -61,6 +61,8 @@ namespace Kundbolaget.Controllers
                 Paid = invoice.Paid,
                 IsOverdue = invoice.IsOverdue,
                 TotalPrice = invoice.TotalPrice,
+                VAT = invoice.TotalPrice * 0.25f,
+                TotalSum = invoice.TotalPrice * 1.25f
             };
             var customerGroupId = invoice.Order.Customer.CustomerGroupId;
             foreach (var op in invoice.Order.OrderProducts)

@@ -37,5 +37,12 @@ namespace Kundbolaget.Models.ViewModels
         [Display(Name = "Totalpris")]
         public float TotalPrice { get; set; }
 
+        [Display(Name = "Moms")]
+        public float VAT { get; set; }
+
+        [Display(Name = "´Summa")]
+        public float TotalSum { get; set; }
+
+
     }
 }
