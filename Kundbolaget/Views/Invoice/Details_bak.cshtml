@@ -1,7 +1,7 @@
 ﻿@model Kundbolaget.Models.ViewModels.InvoiceVM
 
 @{
-    ViewBag.Title = "Kundbolaget-Faktura";
+    ViewBag.Title = "Details";
 }
 
 <h2>Fakturadetaljer</h2>
@@ -16,20 +16,7 @@
         <dd>
             @Html.DisplayFor(model => model.OrderId)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CustomerName)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.CustomerName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.InvoiceDate)
         </dt>
@@ -53,7 +40,6 @@
         <dd>
             @Html.DisplayFor(model => model.IsOverdue)
         </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.TotalPrice)
         </dt>
@@ -80,9 +66,6 @@
                     <th>
                         @Html.DisplayNameFor(model => model.ProductList.First().UnitPrice)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ProductList.First().Price)
-                    </th>
                     <th></th>
                 </tr>
                 @foreach (var item in Model.ProductList)
@@ -101,9 +84,6 @@
                             @Html.DisplayFor(modelItem => item.AcceptedAmount)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.UnitPrice)
-                        </td>
-                        <td>
                             @Html.DisplayFor(modelItem => item.Price)
                         </td>
                         <td></td>
@@ -111,16 +91,17 @@
                 }
             </table>
         </dd>
+
     </dl>
 </div>
 <p>
     @if (!Model.Paid)
     {
-        <a href="@Url.Action("ChangeToPaid", new { id = Model.Id })" cla class="btn btn-primary">
+        <a href="@Html.DisplayFor(modelItem => item.Price)" class="btn btn-primary">
             <span class="glyphicon glyphicon-edit" aria-hidden="true"> </span> Ändra till betald
         </a>
     }
-    <a href="@Url.Action( "Index")" cla class="btn btn-default">
+    <a href="@Html.ActionLink("Back to List", "Index")" class="btn btn-default">
         <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"> </span> Tillbaka till listan
     </a>
 </p>

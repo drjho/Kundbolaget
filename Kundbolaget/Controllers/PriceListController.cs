@@ -49,8 +49,13 @@ namespace Kundbolaget.Controllers
         public ActionResult Create(PriceList model)
         {
             if (!ModelState.IsValid)
+            {
+                ViewBag.ProductId = new SelectList(productRepository.GetItems(), "Id", "Name");
+                ViewBag.CustomerGroupId = new SelectList(customerGroupRepository.GetItems(), "Id", "Name");
                 return View(model);
+            }
             repository.CreateItem(model);
+
             return RedirectToAction("Index");
         }
 

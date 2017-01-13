@@ -8,7 +8,7 @@ using System.Web.Mvc;
 using Kundbolaget.EntityFramework.Context;
 using Kundbolaget.EntityFramework.Repositories;
 using Kundbolaget.Models.EntityModels;
-
+using Kundbolaget.Models.ViewModels;
 
 namespace Kundbolaget.Controllers
 {
@@ -50,7 +50,33 @@ namespace Kundbolaget.Controllers
             {
                 return HttpNotFound();
             }
-            return View(invoice);
+
+            var model = new InvoiceVM
+            {
+                Id = invoice.Id,
+                OrderId = invoice.Id,
+                CustomerName = invoice.Order.Customer.Name,
+                Address = invoice.Order.Address.AddressString,
+                InvoiceDate = invoice.InvoiceDate,
+                Paid = invoice.Paid,
+                IsOverdue = invoice.IsOverdue,
+                TotalPrice = invoice.TotalPrice,
+            };
+            var customerGroupId = invoice.Order.Customer.CustomerGroupId;
+            foreach (var op in invoice.Order.OrderProducts)
+            {
+                model.ProductList.Add(new OrderProductVM
+                {
+                    Id = op.Id,
+                    ProductName = op.Product.ShortDescription,
+                    OrderedAmount = op.OrderedAmount,
+                    AcceptedAmount = op.AcceptedAmount,
+                    UnitPrice = GetUnitPrice(customerGroupId, (int)op.ProductId, op.AcceptedAmount),
+                    Price = op.Price,
+                    Comment = op.Comment,
+                });
+            }
+            return View(model);
         }
 
         public ActionResult Delete(int? id)
@@ -81,7 +107,7 @@ namespace Kundbolaget.Controllers
 
         }
 
-        public float GetTotalPrice(int customerGroupId, int productId, int amount)
+        public float GetUnitPrice(int customerGroupId, int productId, int amount)
         {
             var productPrice = priceListRepo.GetItems().SingleOrDefault(x => x.CustomerGroupId == customerGroupId && x.ProductId == productId);
             var limit = 0;
@@ -97,8 +123,7 @@ namespace Kundbolaget.Controllers
                     limit = 480;
                     break;
             }
-            var unitPrice = productPrice.Price * (amount > limit ? (1 - productPrice.RebatePerPallet * .01f) : 1);
-            return amount * unitPrice;
+            return productPrice.Price * (amount > limit ? (1 - productPrice.RebatePerPallet * .01f) : 1);
         }
 
         public ActionResult Create(int id)
@@ -110,7 +135,7 @@ namespace Kundbolaget.Controllers
 
             foreach (var item in order.OrderProducts)
             {
-                item.Price = GetTotalPrice(customerGroupId, (int)item.ProductId, item.AcceptedAmount);
+                item.Price = GetUnitPrice(customerGroupId, (int)item.ProductId, item.AcceptedAmount);
             }
 
             order.OrderStatus = OrderStatus.Fakturerar;

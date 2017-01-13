@@ -55,7 +55,8 @@ namespace Kundbolaget.Migrations
                 new Product { Id = 3, Name = "Strongbow", Alcohol = 4.5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Cider, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 50},
                 new Product { Id = 4, Name = "Bishops finger", Alcohol = 5.5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Öl, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 50},
                 new Product { Id = 5, Name = "Chapel Hill", Alcohol = 12f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Mosserande, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 75},
-                new Product { Id = 6, Name = "Koskenkorva", Alcohol = 40f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Starksprit, StoragePackage = StoragePackage.Kartong, VatCode = 1, Volume = 100}
+                new Product { Id = 6, Name = "Koskenkorva", Alcohol = 40f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Starksprit, StoragePackage = StoragePackage.Kartong, VatCode = 1, Volume = 100},
+                new Product { Id = 7, Name = "Eriksberg Hovmästarlager", Alcohol = .5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 24, ProductGroup = ProductGroup.Alkoholfritt, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 33}
             };
 
             var warehouses = new Warehouse[]
@@ -113,6 +114,10 @@ namespace Kundbolaget.Migrations
             storagePlaces[12].ProductId = products[5].Id;
             storagePlaces[12].TotalAmount = 100;
             storagePlaces[12].Vacant = false;
+            storagePlaces[13].ArrivalDate = DateTime.Today;
+            storagePlaces[13].ProductId = products[6].Id;
+            storagePlaces[13].TotalAmount = 600;
+            storagePlaces[13].Vacant = false;
 
 
             var customergroup = new CustomerGroup[]
@@ -142,7 +147,8 @@ namespace Kundbolaget.Migrations
                 new PriceList { Id = 2, CustomerGroupId = 1, ProductId = 2, Price = 20, RebatePerPallet = 3, StartDate = DateTime.Parse("01/01/2017") },
                 new PriceList { Id = 3, CustomerGroupId = 1, ProductId = 3, Price = 20, RebatePerPallet = 4, StartDate = DateTime.Parse("01/01/2017") },
                 new PriceList { Id = 4, CustomerGroupId = 1, ProductId = 4, Price = 20, RebatePerPallet = 5, StartDate = DateTime.Parse("01/01/2017") },
-                new PriceList { Id = 5, CustomerGroupId = 1, ProductId = 5, Price = 20, RebatePerPallet = 1, StartDate = DateTime.Parse("01/01/2017") },
+                new PriceList { Id = 5, CustomerGroupId = 1, ProductId = 5, Price = 68, RebatePerPallet = 3, StartDate = DateTime.Parse("01/01/2017") },
+                new PriceList { Id = 6, CustomerGroupId = 1, ProductId = 7, Price = 11.90f, RebatePerPallet = 2, StartDate = DateTime.Parse("01/01/2017") },
             };
 
             var licenses = new AlcoholLicense[]
