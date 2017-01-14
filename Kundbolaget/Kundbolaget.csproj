@@ -169,6 +169,8 @@
     <Content Include="Data\test_low_credit.json" />
     <Content Include="Data\test_no_pricelist.json" />
     <Content Include="Data\test_rebate.json" />
+    <Content Include="Data\test_wrongAddressId_as_text.json" />
+    <Content Include="Data\test_wrongProductId_with_text.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
