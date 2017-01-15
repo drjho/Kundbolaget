@@ -18,7 +18,7 @@
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ProductId, "Produkt", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("ProductId", null, htmlAttributes: new { @class = "form-control" })
                 @*@Html.EditorFor(model => model.ProductId, new { htmlAttributes = new { @class = "form-control" } })*@
