@@ -113,6 +113,7 @@
     <a href="@Url.Action("Index", "Orders")" class="btn btn-default">
         <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"> </span> Tillbaka till ordrarna
     </a>
-    @*@Html.ActionLink("Leverans avslutad", "FinalizeDelivery", new { id = Model.Id }) | 
-    @Html.ActionLink("Tillbaka till ordrarna", "Index")*@
+    <a href="javascript:window.print()" cla class="btn btn-default">
+        <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Skriv ut
+    </a>
 </p>

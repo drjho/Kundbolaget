@@ -70,6 +70,7 @@
     <a href="@Url.Action("Index", "Orders", new { id = (int)@Model.First().OrderProduct.OrderId })" class="btn btn-default">
         <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"> </span> Tillbaka
     </a>
-    @*@Html.ActionLink("Varorna plockade", "CreateDeliveryNote", new { id = (int)@Model.First().OrderProduct.OrderId })*@
-    @*@Html.ActionLink("Tillbaka", "Index")*@
+    <a href="javascript:window.print()" cla class="btn btn-default">
+        <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Skriv ut
+    </a>
 </p>
