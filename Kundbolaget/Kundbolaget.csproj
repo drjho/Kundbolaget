@@ -164,13 +164,14 @@
     <Content Include="Data\test_wrongAmount_zero.json" />
     <Content Include="Data\test_wrongAmount_negative.json" />
     <Content Include="Data\test_wrongDateFormat.json" />
-    <Content Include="Data\test_emptyDate.json" />
+    <Content Include="Data\test_not_normal_product.json" />
     <Content Include="Data\test_out_of_stock.json" />
     <Content Include="Data\test_low_credit.json" />
     <Content Include="Data\test_no_pricelist.json" />
     <Content Include="Data\test_rebate.json" />
     <Content Include="Data\test_wrongAddressId_as_text.json" />
     <Content Include="Data\test_wrongProductId_with_text.json" />
+    <Content Include="Data\test_emptyDate.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
