@@ -1,25 +1,40 @@
 ﻿.navbar {padding-top: 10px; padding-bottom: 10px;}
-.page-header {
+/*.page-header {
   font-family: Arial;
   font-size: xx-large;
   color: black;
   padding-left: 40px;  
+}*/
+.navbar-brand {
+  float: left;
+  height: 50px;
+  padding: 15px 15px;
+  padding-right: 40px;
+  font-size: 28px;
+  line-height: 20px;
+}
+.navbar-inverse .navbar-brand,
+.navbar-inverse .navbar-nav > li > a {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, .25);
+  color: white;
+  font-family: fantasy;
+}
+.navbar-default .navbar-brand {
+  color: #ffffff;
 }
 .navbar-inverse {
   background-color: #000000;
   border-color: #000000;
 }
 .navbar-inverse .navbar-text {  
-  color: #fce09b;
+  color: #ffffff;
 }
-  
 .navbar-inverse .navbar-nav > li > a {  
-  color: #fce09b;  
+  color: #ffffff;  
   font-family: Tahoma;
   font-size:15px;
   font-weight: lighter;  
 }  
-
 .navbar-inverse .navbar-link {
   color: #9d9d9d;
 }
