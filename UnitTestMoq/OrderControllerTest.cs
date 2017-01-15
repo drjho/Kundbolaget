@@ -511,8 +511,8 @@ namespace UnitTestMoq
 
             // Assert
             _mockSetOrder.Verify(x => x.Attach(It.IsAny<Order>()), Times.Once);
-            _mockSetStoragePlace.Verify(x => x.Attach(It.IsAny<StoragePlace>()), Times.AtLeastOnce);
-            _mockSetOrderProduct.Verify(x => x.Attach(It.IsAny<OrderProduct>()), Times.AtLeastOnce);
+            //_mockSetStoragePlace.Verify(x => x.Attach(It.IsAny<StoragePlace>()), Times.AtLeastOnce);
+            //_mockSetOrderProduct.Verify(x => x.Attach(It.IsAny<OrderProduct>()), Times.AtLeastOnce);
             _mockContext.Verify(x => x.SaveChanges(), Times.AtLeastOnce);
             Assert.AreEqual("Index", actualResult.RouteValues["action"]);
 
