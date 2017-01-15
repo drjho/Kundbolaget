@@ -260,7 +260,7 @@ namespace UnitTestMoq
             var expectedCount = ResourceData.PickingOrders.Count;
 
             // Act
-            var actionResult = _controller.Index();
+            var actionResult = _controller.Index(null);
             var viewResult = actionResult as ViewResult;
             var viewResultModel = viewResult.Model;
             var actual = viewResultModel as List<PickingOrder>;
@@ -268,6 +268,8 @@ namespace UnitTestMoq
             // Assert
             Assert.AreEqual(expectedCount, actual.Count);
         }
+
+
 
         [Test]
         public void DeleteConfirmed_Without_Existing_Entity_Return_404_Error()

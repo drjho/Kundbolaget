@@ -52,5 +52,10 @@ namespace Kundbolaget.EntityFramework.Repositories
                 entry.State = EntityState.Modified;
                 db.SaveChanges();
         }
+
+        public void Dispose()
+        {
+            db.Dispose();
+        }
     }
 }

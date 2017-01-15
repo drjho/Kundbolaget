@@ -78,14 +78,17 @@ namespace Kundbolaget.Controllers
 
             var items = customerAddressRepo.GetItems();
 
+            var cid = (string)jCustomerOrder["customerid"];
+            var aid = (string)jCustomerOrder["addressid"];
+
             var customerAddress = customerAddressRepo.GetItems().Where(
                 a => a.AddressType == AddressType.Leverans &&
-                a.Address.AddressOrderId == (string)jCustomerOrder["addressid"] &&
-                a.Customer.CustomerOrderId == (string)jCustomerOrder["customerid"]).SingleOrDefault();
+                a.Address.AddressOrderId == aid &&
+                a.Customer.CustomerOrderId == cid).SingleOrDefault();
 
             if (customerAddress == null)
             {
-                ModelState.AddModelError("CustomerAddress", "V.g. kontrollera angivet CustomerOrderId eller AddressOrderId");
+                ModelState.AddModelError("", $"Kundorderid: '{cid}' eller Adressorderid: '{aid}' är felaktigt.");
                 return View();
             }
 
@@ -93,32 +96,63 @@ namespace Kundbolaget.Controllers
 
             var allProducts = productRepo.GetItems();
 
-            var deliveryDate = Convert.ToDateTime(jCustomerOrder["date"]);
+            string dStr = (string)jCustomerOrder["date"];
+            DateTime dDate;
 
-            var jProducts = jCustomerOrder["products"].ToArray();
+            if (dStr.Length < 1)
+            {
+                dDate = DateTime.Now;
+            }
+            else if (!DateTime.TryParse(dStr, out dDate))
+            {
+                ModelState.AddModelError("", $"Önskad leveransdatum: '{dStr}' är felaktigt.");
+                return View();
+            }
+
             var order = new Order
             {
                 CustomerId = customerAddress.Customer.Id,
                 AddressId = customerAddress.Address.Id,
                 OrderDate = DateTime.Today,
-                DesiredDeliveryDate = Convert.ToDateTime(jCustomerOrder["date"]),
-                Comment = (string)jCustomerOrder["comment"],
+                DesiredDeliveryDate = dDate,
+                Comment = (string)jCustomerOrder["comment"]
             };
 
             if (customer != null)
             {
                 var firstPossibleDate = DateTime.Today.AddDays(customer.DaysToDelievery);
-                order.PlannedDeliveryDate = (order.DesiredDeliveryDate.CompareTo(firstPossibleDate) < 0) ? firstPossibleDate : order.DesiredDeliveryDate;
+                order.PlannedDeliveryDate = (order.DesiredDeliveryDate.CompareTo(firstPossibleDate) <= 0) ? firstPossibleDate : order.DesiredDeliveryDate;
             }
 
+            var jProducts = jCustomerOrder["products"].ToArray();
             foreach (var jProduct in jProducts)
             {
+                var prodString = (string)jProduct["pno"];
+                var product = productRepo.GetItem(prodString);
+                if (product == null)
+                {
+                    ModelState.AddModelError("", $"Produktorderid: '{prodString}' finns inte.");
+                    return View();
+                }
+
+                var aStr = (string)jProduct["amount"];
+                uint oa;
+                if (!uint.TryParse(aStr, out oa))
+                {
+                    ModelState.AddModelError("", $"Beställt antal: '{aStr}' är felaktigt.");
+                    return View();
+                }
+                if (oa < 1)
+                {
+                    ModelState.AddModelError("", $"Beställt antal: '{aStr}' mindre än 1.");
+                    return View();
+                }
                 var orderProduct = new OrderProduct
                 {
                     OrderId = order.Id,
                     Comment = (string)jProduct["comment"],
                     ProductId = productRepo.GetItem((string)jProduct["pno"]).Id,
-                    OrderedAmount = (int)jProduct["amount"]
+                    OrderedAmount = (int)oa
                 };
                 order.OrderProducts.Add(orderProduct);
             }
@@ -128,7 +162,7 @@ namespace Kundbolaget.Controllers
             {
                 if (item.DesiredDeliveryDate.Equals(order.DesiredDeliveryDate) && item.Comment.Equals(order.Comment))
                 {
-                    ModelState.AddModelError("SimilarOrder", "Kanske upprepad order");
+                    ModelState.AddModelError("", "En order med samma kundorderid, adressorderid och önskat leveransdatum är redan registrerad.");
                     return View();
                 }
             }

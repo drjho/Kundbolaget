@@ -1,0 +1,127 @@
+﻿@model IEnumerable<Kundbolaget.Models.EntityModels.Order>
+
+@{
+    ViewBag.Title = "Kundbolaget-Följesedlar";
+    var searchDate = DateTime.Now.Date;
+}
+
+<h2>Följsedlar</h2>
+@using (@Html.BeginForm())
+{
+    <p>
+        Sök leveransdatum: (åååå-mm-dd) @Html.TextBox("searchDate", string.Format("{0:yyyy-MM-dd}", searchDate), new { @class = "DatePicker" })
+        <input type="submit" value="Sök" />
+    </p>
+}
+<hr />
+@foreach (var item in Model)
+{
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.AddressString)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => item.Address.AddressString)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => item.Customer.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => item.OrderDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DesiredDeliveryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => item.DesiredDeliveryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PlannedDeliveryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => item.PlannedDeliveryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => item.Comment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => item.OrderStatus)
+        </dd>
+        <dd>
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderProducts.First().Product.ProductOrderId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderProducts.First().Product)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderProducts.First().OrderedAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderProducts.First().DeliveredAmount)
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var op in item.OrderProducts)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => op.Product.ProductOrderId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => op.Product.ShortDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => op.OrderedAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => op.DeliveredAmount)
+                        </td>
+                        <td>
+                            @*     @Html.ActionLink("Uppdatera", "Edit", "OrderProducts", new { id = item.Id }, null)*@
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
+    </dl>
+    <hr />
+}
+
+<p>
+    @*<a href="@Url.Action("PrintDeliveryNotes", "Orders")" class="btn btn-primary">
+        <span class="glyphicon glyphicon-print" aria-hidden="true"> </span> Skriv ut
+    </a>*@
+    <a href="@Url.Action("Index", "Orders")" class="btn btn-default">
+        <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"> </span> Tillbaka till ordrarna
+    </a>
+</p>
+

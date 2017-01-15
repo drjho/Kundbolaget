@@ -9,23 +9,19 @@ namespace Kundbolaget.Models.EntityModels
     {
         public int Id { get; set; }
 
-        //[Required(ErrorMessage = "Angett fel produktorder id")]
         [Display(Name = "Produkt id")]
         public int? ProductId { get; set; }
 
         [Display(Name = "Produkt")]
         public virtual Product Product { get; set; }
 
-        [Required]
         [Display(Name = "Beställt antal")]
         public int OrderedAmount { get; set; }
 
-        [Required]
         [Display(Name = "Reserverat antal")]
         public int AvailabeAmount { get; set; }
 
-        [Required]
-        [Display(Name = "Levererat antal")]
+        [Display(Name = "Leveransantal")]
         public int DeliveredAmount { get; set; }
 
         [Display(Name = "Mottaget antal")]
@@ -36,10 +32,14 @@ namespace Kundbolaget.Models.EntityModels
 
         [Display(Name = "Order id")]
         public int? OrderId { get; set; }
+
         [Display(Name = "Order")]
         public virtual Order Order { get; set; }
 
+        [Display(Name = "Pris")]
+        public float Price { get; set; }
+
         [Display(Name = "Plockordrar")]
-        public virtual List<PickingOrder> PickList { get; set; }
+        public virtual List<PickingOrder> PickList { get; set; } = new List<PickingOrder>();
     }
 }

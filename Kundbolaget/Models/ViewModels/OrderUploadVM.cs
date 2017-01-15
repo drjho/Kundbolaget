@@ -8,7 +8,7 @@ namespace Kundbolaget.Models.ViewModels
 {
     public class OrderUploadVM
     {
-        [Required, FileExtensions(Extensions = "json")]
+        [Required, FileExtensions(Extensions = "json", ErrorMessage = "Filen måste vara av Json-format")]
         public HttpPostedFileBase File { get; set; }
     }
 }

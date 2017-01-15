@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Kundbolaget.Models.EntityModels.Invoice>
+
+@{
+    ViewBag.Title = "Kundbolaget-Faktura";
+    var searchDate = DateTime.Now.Date;
+}
+
+<h2>Faktura</h2>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+@using (Html.BeginForm())
+{
+    <p>
+        Sök leveransdatum: (åååå-mm-dd) @Html.TextBox("searchDate", string.Format("{0:yyyy-MM-dd}", searchDate), new { @class = "DatePicker" })
+        <input type="submit" value="Sök" />
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Order.Customer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InvoiceDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Paid)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsOverdue)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.Customer.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InvoiceDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Paid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsOverdue)
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }) |*@
+                @Html.ActionLink("Detaljer", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Ta bort", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>

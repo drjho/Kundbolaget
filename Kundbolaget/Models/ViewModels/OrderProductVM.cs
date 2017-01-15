@@ -5,7 +5,7 @@ using System.Web.Mvc;
 
 namespace Kundbolaget.Models.EntityModels
 {
-    public class OrderProductVM 
+    public class OrderProductVM
     {
         public int Id { get; set; }
 
@@ -13,8 +13,7 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Produkt id")]
         public int ProductId { get; set; }
 
-        [Display(Name = "Produkt")]
-        public OrderProduct Product { get; set; }
+        public string ProductName { get; set; }
 
         [Required]
         [Display(Name = "Beställt antal")]
@@ -24,9 +23,17 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Tillgängligt antal")]
         public int AvailabeAmount { get; set; }
 
+        [Display(Name = "Mottaget antal")]
+        public int AcceptedAmount { get; set; }
+
+        [Display(Name = "á Pris")]
+        public float UnitPrice { get; set; }
+
+        [Display(Name = "Pris")]
+        public float Price { get; set; }
+
         [Display(Name = "Kommentar")]
         public string Comment { get; set; }
-
 
     }
 }

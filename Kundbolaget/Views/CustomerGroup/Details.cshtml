@@ -18,8 +18,19 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
 
-    </dl>
-</div>
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerList)
+        </dt>
+
+
+        @foreach (var item in Model.CustomerList)
+        {
+            <dd>
+                @Html.DisplayFor(modelItem => item.Name)
+            </dd>
+        }
+        </dl>
+    </div>
 <p>
     @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Tillbaka till listan", "Index")

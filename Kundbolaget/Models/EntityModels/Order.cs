@@ -17,25 +17,29 @@ namespace Kundbolaget.Models.EntityModels
         [Display(Name = "Order id")]
         public int Id { get; set; }
 
-        [Required]
-        [Display( Name ="Orderdatum")]
-        public DateTime OrderDate { get; set; }
-
-        [Required (ErrorMessage = "Angett fel kundorder id")]
+        [Required(ErrorMessage = "Angett fel kundorder id")]
         [Display(Name = "Kund id")]
         public int? CustomerId { get; set; }
         [Display(Name = "Kund")]
         public virtual Customer Customer { get; set; }
 
-        [Required]
-        [Display(Name = "Önskad leveransdatum")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Orderdatum")]
+        public DateTime OrderDate { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Önskat leveransdatum")]
         public DateTime DesiredDeliveryDate { get; set; }
 
-        [Display( Name ="Planerad leveransdatum")]
-        public DateTime PlannedDeliveryDate { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true, NullDisplayText = "Ej bestämt")]
+        [Display(Name = "Planerat leveransdatum")]
+        public DateTime? PlannedDeliveryDate { get; set; }
 
         [Required(ErrorMessage = "Angett fel adressorder id")]
-        [Display(Name ="Adress id")]
+        [Display(Name = "Adress id")]
         public int? AddressId { get; set; }
         [Display(Name = "Adress")]
         public virtual Address Address { get; set; }

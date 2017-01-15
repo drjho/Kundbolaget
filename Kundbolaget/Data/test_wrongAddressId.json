@@ -1,0 +1,18 @@
+{
+  "customerid": "000001",
+  "addressid": "10000001",
+  "products": [
+    {
+      "pno": "000001",
+      "amount": 10,
+      "comment": ""
+    },
+    {
+      "pno": "000002",
+      "amount": 10,
+      "comment": ""
+    }
+  ],
+  "date": "01/01/2018",
+  "comment": "ring vid leverans"
+}

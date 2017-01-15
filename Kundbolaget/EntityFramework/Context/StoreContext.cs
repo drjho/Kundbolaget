@@ -27,6 +27,6 @@ namespace Kundbolaget.EntityFramework.Context
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderProduct> OrderProducts { get; set; }
         public virtual DbSet<PickingOrder> PickingOrders { get; set; }
-
+        public virtual DbSet<Invoice> Invoices { get; set; }
     }
 }

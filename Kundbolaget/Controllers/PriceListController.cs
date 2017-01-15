@@ -1,20 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Web;
 using System.Web.Mvc;
+using Kundbolaget.EntityFramework.Context;
 using Kundbolaget.EntityFramework.Repositories;
 using Kundbolaget.Models.EntityModels;
+using Kundbolaget.Models.ViewModels;
 
 namespace Kundbolaget.Controllers
 {
     public class PriceListController : Controller
     {
         DbPriceListRepository repository;
+        DbCustomerGroupRepository customerGroupRepository;
+        private DbProductRepository productRepository;
+        
 
         public PriceListController()
         {
-            repository = new DbPriceListRepository();
+            StoreContext db = new StoreContext();
+            repository = new DbPriceListRepository(db);
+            customerGroupRepository = new DbCustomerGroupRepository(db);
+            productRepository = new DbProductRepository(db);
         }
 
         public PriceListController(DbPriceListRepository dbPriceListRepository)
@@ -31,6 +40,8 @@ namespace Kundbolaget.Controllers
         //GET: PriceList/Create
         public ActionResult Create()
         {
+            ViewBag.ProductId = new SelectList(productRepository.GetItems(), "Id", "Name");
+            ViewBag.CustomerGroupId = new SelectList(customerGroupRepository.GetItems(), "Id", "Name");
             return View();
         }
         // POST: Products/Create
@@ -38,8 +49,13 @@ namespace Kundbolaget.Controllers
         public ActionResult Create(PriceList model)
         {
             if (!ModelState.IsValid)
+            {
+                ViewBag.ProductId = new SelectList(productRepository.GetItems(), "Id", "Name");
+                ViewBag.CustomerGroupId = new SelectList(customerGroupRepository.GetItems(), "Id", "Name");
                 return View(model);
+            }
             repository.CreateItem(model);
+
             return RedirectToAction("Index");
         }
 
@@ -47,6 +63,8 @@ namespace Kundbolaget.Controllers
         public ActionResult Edit(int id)
         {
             var model = repository.GetItem(id);
+            ViewBag.ProductId = new SelectList(productRepository.GetItems(), "Id", "Name", model.ProductId);
+            ViewBag.CustomerGroupId = new SelectList(customerGroupRepository.GetItems(), "Id", "Name", model.CustomerGroupId);
             return View(model);
         }
         //Post: PriceList/Edit{id}
@@ -83,5 +101,6 @@ namespace Kundbolaget.Controllers
             repository.DeleteItem(id);
             return RedirectToAction("Index");
         }
+        
     }
 }

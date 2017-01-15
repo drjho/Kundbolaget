@@ -1,9 +1,9 @@
 ﻿@model Kundbolaget.Models.ViewModels.OrderUploadVM
 @{
-    ViewBag.Title = "Kundbolaget-Kundorderfil";
+    ViewBag.Title = "Kundbolaget-Beställning";
 }
 
-<h2>Kundorder</h2>
+<h2>Orderfil</h2>
 
 @using (Html.BeginForm("UploadJson", "JsonFile", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
@@ -14,7 +14,7 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-offset-2 col-md-12">
                 <p>
                     @Html.TextBoxFor(model => model.File, new { type = "file" })
                 </p>
@@ -22,11 +22,13 @@
                     @Html.ValidationMessageFor(model => model.File)
                 </p>
                 <p>
-                    <input type="submit" value="Ladda upp filen" class="btn btn-default" />
+                    <button type="submit" value="Ladda upp filen" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-upload" aria-hidden="true"> </span> Ladda upp filen
+                    </button>
                 </p>
                 <p>
-                    @Html.ValidationMessage("SimilarOrder", new { @class = "text-danger" })
-                    @Html.ValidationMessage("CustomerAddress", new { @class = "text-danger" })
+                    @*@Html.ValidationMessage("SimilarOrder", new { @class = "text-danger" })
+                    @Html.ValidationMessage("CustomerAddress", new { @class = "text-danger" })*@
                 </p>
             </div>
 
@@ -35,5 +37,8 @@
 }
 
 <div>
-    @Html.ActionLink("Tillbaka", "Index")
+    <a href="@Url.Action("Index")" class="btn btn-default">
+    <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"> </span> Tillbaka
+</a>
+    @*@Html.ActionLink("Tillbaka", "Index")*@
 </div>

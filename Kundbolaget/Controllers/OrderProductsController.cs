@@ -109,22 +109,30 @@ namespace Kundbolaget.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ProductId,OrderedAmount,AvailabeAmount,DeliveredAmount,AcceptedAmount,Comment,OrderId")] OrderProduct updatedOrderProduct)
+        public ActionResult Edit([Bind(Include = "Id,ProductId,OrderedAmount,AvailabeAmount,DeliveredAmount,AcceptedAmount,Comment,OrderId")] OrderProduct updated)
         {
+            if (updated.AcceptedAmount > updated.DeliveredAmount)
+            {
+                ModelState.AddModelError("AcceptedAmount", "Mottaget antal är större än leveransantal.");
+            }
+            if (updated.AcceptedAmount < 0)
+            {
+                ModelState.AddModelError("AcceptedAmount", "Mottaget antal är mindre än 0.");
+            }
             if (ModelState.IsValid)
             {
-                orderProductRepo.UpdateItem(updatedOrderProduct);
-                var order = orderRepo.GetItem((int)updatedOrderProduct.OrderId);
+                orderProductRepo.UpdateItem(updated);
+                var order = orderRepo.GetItem((int)updated.OrderId);
                 switch (order.OrderStatus)
                 {
                     case OrderStatus.Behandlar:
-                        return RedirectToAction("PrepareOrder", "Orders", new { id = updatedOrderProduct.OrderId });
+                        return RedirectToAction("PrepareOrder", "Orders", new { id = updated.OrderId });
                     case OrderStatus.Plockar:
                         return View();
                     case OrderStatus.Fraktar:
                         return View();
                     case OrderStatus.Levererad:
-                        return RedirectToAction("FinalizeDelivery", "Orders", new { id = updatedOrderProduct.OrderId });
+                        return RedirectToAction("FinalizeDelivery", "Orders", new { id = updated.OrderId });
                     case OrderStatus.Fakturerar:
                         return View();
                     case OrderStatus.Arkiverad:
@@ -133,9 +141,9 @@ namespace Kundbolaget.Controllers
                         return View();
                 }
             }
-            ViewBag.OrderId = new SelectList(orderRepo.GetItems(), "Id", "Id", updatedOrderProduct.OrderId);
-            ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name", updatedOrderProduct.ProductId);
-            return View(updatedOrderProduct);
+            ViewBag.OrderId = new SelectList(orderRepo.GetItems(), "Id", "Id", updated.OrderId);
+            ViewBag.ProductId = new SelectList(productRepo.GetItems(), "Id", "Name", updated.ProductId);
+            return View(updated);
         }
 
         // GET: OrderProducts/Delete/5

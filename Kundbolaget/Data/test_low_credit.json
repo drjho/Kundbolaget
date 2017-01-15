@@ -1,0 +1,13 @@
+{
+  "customerid": "000004",
+  "addressid": "00000006",
+  "products": [
+    {
+      "pno": "000003",
+      "amount": 200,
+      "comment": ""
+    }
+  ],
+  "date": "01/01/2017",
+  "comment": "säkert över kreditgräns"
+}

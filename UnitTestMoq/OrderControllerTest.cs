@@ -30,6 +30,7 @@ namespace UnitTestMoq
         private Mock<DbSet<Customer>> _mockSetCustomer;
         private Mock<DbSet<Address>> _mockSetAddress;
         private Mock<DbSet<PickingOrder>> _mockSetPickingOrder;
+        private Mock<DbSet<AlcoholLicense>> _mockSetLicense;
 
         //Fake Controller
         private OrdersController _orderController;
@@ -47,6 +48,7 @@ namespace UnitTestMoq
             _mockSetCustomer = new Mock<DbSet<Customer>>();
             _mockSetAddress = new Mock<DbSet<Address>>();
             _mockSetPickingOrder = new Mock<DbSet<PickingOrder>>();
+            _mockSetLicense = new Mock<DbSet<AlcoholLicense>>();
 
             //Add data
             var dataStoragePlace = ResourceData.StoragePlaces.AsQueryable();
@@ -56,6 +58,7 @@ namespace UnitTestMoq
             var dataCustomer = ResourceData.Customers.AsQueryable();
             var dataAddress = ResourceData.Addresses.AsQueryable();
             var dataPickingOrder = ResourceData.PickingOrders.AsQueryable();
+            var dataLicense = ResourceData.AlcoholLicenses.AsQueryable();
 
             //Setup behavior
             var setupDbSp = Helper.SetupDb(_mockSetStoragePlace, dataStoragePlace);
@@ -65,6 +68,7 @@ namespace UnitTestMoq
             var setupDbCu = Helper.SetupDb(_mockSetCustomer, dataCustomer);
             var setupDbAd = Helper.SetupDb(_mockSetAddress, dataAddress);
             var setupDbPO = Helper.SetupDb(_mockSetPickingOrder, dataPickingOrder);
+            var setupDbLi = Helper.SetupDb(_mockSetLicense, dataLicense);
 
             _mockContext.Setup(x => x.StoragePlaces).Returns(setupDbSp.Object);
             _mockContext.Setup(x => x.Orders).Returns(setupDbOr.Object);
@@ -73,7 +77,7 @@ namespace UnitTestMoq
             _mockContext.Setup(x => x.Customers).Returns(setupDbCu.Object);
             _mockContext.Setup(x => x.Addresses).Returns(setupDbAd.Object);
             _mockContext.Setup(x => x.PickingOrders).Returns(setupDbPO.Object);
-
+            _mockContext.Setup(x => x.AlcoholLicense).Returns(setupDbLi.Object);
 
             //This will make the mock version of the db approve any string given to the include method.
             //Without this you will get null reference exception when calling include.
@@ -84,6 +88,7 @@ namespace UnitTestMoq
             _mockSetCustomer.Setup(x => x.Include(It.IsAny<string>())).Returns(_mockSetCustomer.Object);
             _mockSetAddress.Setup(x => x.Include(It.IsAny<string>())).Returns(_mockSetAddress.Object);
             _mockSetPickingOrder.Setup(x => x.Include(It.IsAny<string>())).Returns(_mockSetPickingOrder.Object);
+            _mockSetLicense.Setup(x => x.Include(It.IsAny<string>())).Returns(_mockSetLicense.Object);
 
             //Inject mock data via overload constructor
             var dbStoragePlaceRepository = new DbStoragePlaceRepository(_mockContext.Object);
@@ -94,10 +99,12 @@ namespace UnitTestMoq
             var dbStorageRepository = new DbStoragePlaceRepository(_mockContext.Object);
             var dbCustomerRepository = new DbCustomerRepository(_mockContext.Object);
             var dbPickingOrderRepository = new DbPickingOrderRepository(_mockContext.Object);
+            var dbLicenseRepository = new DbAlcoholLicenseRepository(_mockContext.Object);
 
             //Setup fakerepo via overloaded constructor
             _orderController = new OrdersController(dbOrderRepository, dbAddressRepository,
-                dbStoragePlaceRepository, dbOrderProductRepository, dbCustomerRepository, dbPickingOrderRepository);
+                dbStoragePlaceRepository, dbOrderProductRepository, dbCustomerRepository,
+                dbPickingOrderRepository, dbLicenseRepository);
         }
 
 
@@ -277,7 +284,7 @@ namespace UnitTestMoq
             var expectedCount = ResourceData.Orders.Count;
 
             // Act
-            var actionResult = _orderController.Index();
+            var actionResult = _orderController.Index(null);
             var viewResult = actionResult as ViewResult;
             var viewResultModel = (Order[])viewResult.Model;
             var actual = viewResultModel.ToList();
@@ -470,6 +477,7 @@ namespace UnitTestMoq
         [Test]
         public void PrepareOrder_Return_ViewModel()
         {
+
             // Act
             var actionResult = _orderController.PrepareOrder(1);
             var viewResult = actionResult as ViewResult;

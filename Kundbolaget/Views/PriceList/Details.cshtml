@@ -25,13 +25,19 @@
         <dd>
             @Html.DisplayFor(model => model.StartDate)
         </dd>
-
+       
         <dt>
             @Html.DisplayNameFor(model => model.Price)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerGroup)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CustomerGroup.Name)
         </dd>
 
         <dt>

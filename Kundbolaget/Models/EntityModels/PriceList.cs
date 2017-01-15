@@ -11,17 +11,20 @@ namespace Kundbolaget.Models.EntityModels
         public int Id { get; set; }
 
         [Display(Name = "Giltig från")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
 
-        [Display(Name = "Pris")]
-        public decimal Price { get; set; }
+        [Required]
+        [Display(Name = "á pris")]
+        public float Price { get; set; }
 
         [Display(Name = "Kundgrupp")]
         public virtual CustomerGroup CustomerGroup { get; set; }
-
-        public virtual OrderProduct Product { get; set; }
+        [Display(Name = "Produkt")]
+        public virtual Product Product { get; set; }
 
         public virtual int? ProductId { get; set; }
+        public virtual int? CustomerGroupId { get; set; }
 
         [Display(Name = "Rabatt i %")]
         public int RebatePerPallet { get; set; }

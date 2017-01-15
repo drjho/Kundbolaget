@@ -1,0 +1,13 @@
+{
+  "customerid": "000002",
+  "addressid": "00000004",
+  "products": [
+    {
+      "pno": "000005",
+      "amount": 100,
+      "comment": ""
+    }
+  ],
+  "date": "01/23/2017",
+  "comment": ""
+}

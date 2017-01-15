@@ -58,6 +58,13 @@
             @Html.DisplayFor(model => model.OrganisationNumber)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerGroup)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerGroup.Id). @Html.DisplayFor(model => model.CustomerGroup.Name)
+        </dd>
     </dl>
 </div>
 <table class="table">

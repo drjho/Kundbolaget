@@ -2,13 +2,21 @@
 
 @{
     ViewBag.Title = "Kundbolaget-Order";
+    var searchDate = DateTime.Now.Date;
 }
 
-<h2>Ordrar</h2>
+<h2>Order</h2>
 
 <p>
     @*@Html.ActionLink("Skapa ny order", "Create")*@
 </p>
+@using (Html.BeginForm())
+{
+    <p>
+        Sök leveransdatum: (åååå-mm-dd) @Html.TextBox("searchDate", string.Format("{0:yyyy-MM-dd}", searchDate), new { @class = "DatePicker" })
+        <input type="submit" value="Sök" />
+    </p>
+}
 <table class="table">
     <tr>
         <th>
@@ -37,7 +45,35 @@
 
     @foreach (var item in Model)
     {
-        <tr>
+        string str = "";
+        switch (item.OrderStatus)
+        {
+            case Kundbolaget.Models.EntityModels.OrderStatus.Behandlar:
+                str = "alert alert-info";
+                break;
+            case Kundbolaget.Models.EntityModels.OrderStatus.Plockar:
+                if (item.OrderProducts.Any(x => x.AvailabeAmount == 0))
+                {
+                    str = "alert alert-warning";
+                }
+                break;
+            case Kundbolaget.Models.EntityModels.OrderStatus.Fraktar:
+                if (item.OrderProducts.Any(x => x.DeliveredAmount == 0))
+                {
+                    str = "alert alert-danger";
+                }
+                break;
+            case Kundbolaget.Models.EntityModels.OrderStatus.Levererad:
+                break;
+            case Kundbolaget.Models.EntityModels.OrderStatus.Fakturerar:
+                break;
+            case Kundbolaget.Models.EntityModels.OrderStatus.Arkiverad:
+                break;
+            default:
+                break;
+        }
+        <tr class="@str">
+
             <td>
                 @Html.DisplayFor(modelItem => item.Address.AddressString)
             </td>
@@ -62,7 +98,7 @@
             <td>
                 @if (item.OrderStatus == Kundbolaget.Models.EntityModels.OrderStatus.Behandlar)
                 {
-                    @Html.ActionLink("Gör ordning", "PrepareOrder", new { id = item.Id }) @Html.Raw(" | ")
+                    @Html.ActionLink("Reservera varor", "PrepareOrder", new { id = item.Id }) @Html.Raw(" | ")
                 }
                 @if (item.OrderStatus == Kundbolaget.Models.EntityModels.OrderStatus.Plockar)
                 {

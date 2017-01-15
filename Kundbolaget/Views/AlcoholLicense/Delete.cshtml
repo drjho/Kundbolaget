@@ -1,7 +1,7 @@
 ﻿@model Kundbolaget.Models.EntityModels.AlcoholLicense
 
 @{
-    ViewBag.Title = "Ta bort";
+    ViewBag.Title = "Kundbolaget-Alkohollicens";
 }
 
 <h2>Ta bort</h2>
@@ -26,13 +26,21 @@
             @Html.DisplayFor(model => model.EndDate)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer.Name)
+        </dd>
+
     </dl>
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <input type="submit" value="Ta bort" class="btn btn-danger" /> |
             @Html.ActionLink("Tillbaka till listan", "Index")
         </div>
     }

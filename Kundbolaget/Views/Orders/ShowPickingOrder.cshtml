@@ -4,58 +4,73 @@
     ViewBag.Title = "Kundbolaget-Plocksedel";
 }
 
-<h2>Plockorder för order: @Model.First().OrderProduct.OrderId</h2>
+<h2>Plockorder för order: @ViewBag.OrderId</h2>
 
 <p>
     @*@Html.ActionLink("Create New", "Create")*@
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.OrderProduct.Product)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StoragePlace)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReservedAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PickedAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Comment)
-        </th>
-        <th></th>
-    </tr>
+@if (Model.Count() > 0)
+{
 
-    @foreach (var item in Model)
-    {
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderProduct.Product.ShortDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StoragePlace.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReservedAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PickedAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comment)
-            </td>
-            <td>
-                @Html.ActionLink("Uppdatera", "Edit", "PickingOrders", new { id=item.Id }, null)
-              
-
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderProduct.Product)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoragePlace)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReservedAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickedAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th></th>
         </tr>
-    }
-</table>
+
+        @foreach (var item in Model)
+        {
+            var str = (item.OrderProduct.Order.OrderStatus < Kundbolaget.Models.EntityModels.OrderStatus.Fraktar) ? "?" : "";
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderProduct.Product.ShortDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StoragePlace.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReservedAmount)
+                </td>
+                <td class="alert-success">
+                    @Html.DisplayFor(modelItem => item.PickedAmount)@Html.Raw(str)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    @*@Html.ActionLink("Uppdatera", "Edit", "PickingOrders", new { id = item.Id }, null)*@
+
+                    <a href="@Url.Action("Edit", "PickingOrders", new { id = item.Id })" class="btn btn-success">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"> </span> Uppdatera
+                    </a>
+                </td>
+            </tr>
+        }
+    </table>
+}
 <p>
-    @Html.ActionLink("Varorna plockade", "CreateDeliveryNote", new { id = (int) @Model.First().OrderProduct.OrderId }) |
-    @Html.ActionLink("Tillbaka", "Index")
+    <a href="@Url.Action("CreateDeliveryNote", "Orders", new { id = (int)@Model.First().OrderProduct.OrderId })" class="btn btn-primary">
+        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"> </span> Varorna plockade
+    </a>
+    <a href="@Url.Action("Index", "Orders", new { id = (int)@Model.First().OrderProduct.OrderId })" class="btn btn-default">
+        <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"> </span> Tillbaka
+    </a>
+    <a href="javascript:window.print()" cla class="btn btn-default">
+        <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Skriv ut
+    </a>
 </p>

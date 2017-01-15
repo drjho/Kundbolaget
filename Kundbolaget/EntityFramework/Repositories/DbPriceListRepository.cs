@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using Kundbolaget.EntityFramework.Context;
 using Kundbolaget.Models.EntityModels;
+using Kundbolaget.Models.ViewModels;
 
 namespace Kundbolaget.EntityFramework.Repositories
 {
@@ -19,45 +20,42 @@ namespace Kundbolaget.EntityFramework.Repositories
 
         public DbPriceListRepository(StoreContext fakeContext)
         {
-           db = fakeContext;
+            db = fakeContext;
         }
 
         public PriceList GetItem(int id)
-        {         
-                return db.PriceLists.SingleOrDefault(p => p.Id == id);         
+        {
+            return db.PriceLists.SingleOrDefault(p => p.Id == id);
         }
 
         public PriceList[] GetItems()
         {
-                return db.PriceLists.ToArray();       
+            return db.PriceLists.ToArray();
         }
 
         public void CreateItem(PriceList newItem)
         {
-                db.PriceLists.Add(newItem);
-                db.SaveChanges();
+            db.PriceLists.Add(newItem);
+            db.SaveChanges();
         }
 
         public void UpdateItem(PriceList updatedItem)
         {
 
-                db.PriceLists.Attach(updatedItem);
-                var entry = db.Entry(updatedItem);
-                entry.State = EntityState.Modified;
-                db.SaveChanges();
-            
+            db.PriceLists.Attach(updatedItem);
+            var entry = db.Entry(updatedItem);
+            entry.State = EntityState.Modified;
+            db.SaveChanges();
+
         }
 
         public void DeleteItem(int id)
         {
-                var pricelist = db.PriceLists.SingleOrDefault(c => c.Id == id);
-                db.PriceLists.Remove(pricelist);
-                db.SaveChanges();          
+            var pricelist = db.PriceLists.SingleOrDefault(c => c.Id == id);
+            if (pricelist == null)
+                return;
+            db.PriceLists.Remove(pricelist);
+            db.SaveChanges();
         }
-
-        //public void AddToCustomerGroup(CustomerGroup model)
-        //{
-        //    var pricelist
-        //}
     }
 }

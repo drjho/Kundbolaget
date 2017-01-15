@@ -143,6 +143,9 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Data\test_beta.json" />
+    <Content Include="Data\test_longterm.json" />
+    <Content Include="Data\test_no_license.json" />
+    <Content Include="Data\test_wrongCustomerId.json" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -154,7 +157,21 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Data\test_beta2.json" />
-    <Content Include="Data\test_wrong.json" />
+    <Content Include="Data\test_wrongCustomerId_as_text.json" />
+    <Content Include="Data\test_wrongProductId.json" />
+    <Content Include="Data\test_wrongAddressId.json" />
+    <Content Include="Data\test_wrongAmount_as_text.json" />
+    <Content Include="Data\test_wrongAmount_zero.json" />
+    <Content Include="Data\test_wrongAmount_negative.json" />
+    <Content Include="Data\test_wrongDateFormat.json" />
+    <Content Include="Data\test_not_normal_product.json" />
+    <Content Include="Data\test_out_of_stock.json" />
+    <Content Include="Data\test_low_credit.json" />
+    <Content Include="Data\test_no_pricelist.json" />
+    <Content Include="Data\test_rebate.json" />
+    <Content Include="Data\test_wrongAddressId_as_text.json" />
+    <Content Include="Data\test_wrongProductId_with_text.json" />
+    <Content Include="Data\test_emptyDate.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -182,6 +199,7 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\CustomerGroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\JsonFileController.cs" />
     <Compile Include="Controllers\OrderProductsController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
@@ -195,6 +213,7 @@
     <Compile Include="EntityFramework\Repositories\DbCustomerGroupRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbAlcoholLicenseRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbCustomerRepository.cs" />
+    <Compile Include="EntityFramework\Repositories\DbInvoiceDepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbPickingOrderRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbOrderProductRepository.cs" />
     <Compile Include="EntityFramework\Repositories\DbOrderRepository.cs" />
@@ -207,34 +226,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612181433343_initCreate3.cs" />
-    <Compile Include="Migrations\201612181433343_initCreate3.Designer.cs">
-      <DependentUpon>201612181433343_initCreate3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612200026029_orderDesiredDate.cs" />
-    <Compile Include="Migrations\201612200026029_orderDesiredDate.Designer.cs">
-      <DependentUpon>201612200026029_orderDesiredDate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612200841423_addedOrderStatus.cs" />
-    <Compile Include="Migrations\201612200841423_addedOrderStatus.Designer.cs">
-      <DependentUpon>201612200841423_addedOrderStatus.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612201959130_revisedForPrepareOrder.cs" />
-    <Compile Include="Migrations\201612201959130_revisedForPrepareOrder.Designer.cs">
-      <DependentUpon>201612201959130_revisedForPrepareOrder.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612291146569_addedPickingOrder.cs" />
-    <Compile Include="Migrations\201612291146569_addedPickingOrder.Designer.cs">
-      <DependentUpon>201612291146569_addedPickingOrder.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612291508186_addedShortDecriptionInProduct.cs" />
-    <Compile Include="Migrations\201612291508186_addedShortDecriptionInProduct.Designer.cs">
-      <DependentUpon>201612291508186_addedShortDecriptionInProduct.cs</DependentUpon>
+    <Compile Include="Migrations\201701122211479_initCreate_sprint4_2.cs" />
+    <Compile Include="Migrations\201701122211479_initCreate_sprint4_2.Designer.cs">
+      <DependentUpon>201701122211479_initCreate_sprint4_2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EntityModels\Address.cs" />
     <Compile Include="Models\EntityModels\AlcoholLicense.cs" />
     <Compile Include="Models\EntityModels\Customer.cs" />
+    <Compile Include="Models\EntityModels\Invoice.cs" />
     <Compile Include="Models\EntityModels\Order.cs" />
     <Compile Include="Models\EntityModels\PickingOrder.cs" />
     <Compile Include="Models\EntityModels\OrderProduct.cs" />
@@ -244,10 +244,10 @@
     <Compile Include="Models\EntityModels\Product.cs" />
     <Compile Include="Models\EntityModels\StoragePlace.cs" />
     <Compile Include="Models\EntityModels\Warehouse.cs" />
+    <Compile Include="Models\ViewModels\InvoiceVM.cs" />
     <Compile Include="Models\ViewModels\OrderProductVM.cs" />
     <Compile Include="Models\ViewModels\OrderVM.cs" />
     <Compile Include="Models\ViewModels\StoragePlaceProductVM.cs" />
-    <Compile Include="Models\ViewModels\CreateProductVM.cs" />
     <Compile Include="Models\ViewModels\OrderUploadVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -282,7 +282,6 @@
     <Content Include="Views\Address\Details.cshtml" />
     <Content Include="Views\Address\Delete.cshtml" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
-    <Content Include="Views\Products\AddToWarehouse.cshtml" />
     <Content Include="Views\CustomerGroup\Index.cshtml" />
     <Content Include="Views\CustomerGroup\Create.cshtml" />
     <Content Include="Views\CustomerGroup\Edit.cshtml" />
@@ -332,6 +331,10 @@
     <Content Include="Views\Orders\ShowPickingOrder.cshtml" />
     <Content Include="Views\Orders\ShowDeliveryNote.cshtml" />
     <Content Include="Views\Orders\FinalizeDelivery.cshtml" />
+    <Content Include="Views\Orders\DeliveryNotes.cshtml" />
+    <Content Include="Views\Invoice\Index.cshtml" />
+    <Content Include="Views\Invoice\Delete.cshtml" />
+    <Content Include="Views\Invoice\Details.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -341,28 +344,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="PDF\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201612181433343_initCreate3.resx">
-      <DependentUpon>201612181433343_initCreate3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612200026029_orderDesiredDate.resx">
-      <DependentUpon>201612200026029_orderDesiredDate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612200841423_addedOrderStatus.resx">
-      <DependentUpon>201612200841423_addedOrderStatus.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612201959130_revisedForPrepareOrder.resx">
-      <DependentUpon>201612201959130_revisedForPrepareOrder.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612291146569_addedPickingOrder.resx">
-      <DependentUpon>201612291146569_addedPickingOrder.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612291508186_addedShortDecriptionInProduct.resx">
-      <DependentUpon>201612291508186_addedShortDecriptionInProduct.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201701122211479_initCreate_sprint4_2.resx">
+      <DependentUpon>201701122211479_initCreate_sprint4_2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
