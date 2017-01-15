@@ -17,17 +17,17 @@
         <dd>
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <tr>
-            @if (Model.ListOfCustomers != null)
-            {
-                foreach (var customer in Model.ListOfCustomers)
-                {
-                    <td>
-                        @Html.DisplayFor(model => customer.Name)
-                    </td>
-                }
-            }
-        </tr>
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerList)
+        </dt>
+
+
+        @foreach (var item in Model.CustomerList)
+        {
+            <dd>
+                @Html.DisplayFor(modelItem => item.Name)
+            </dd>
+        }
 
 
 
@@ -37,7 +37,7 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Ta bort" class="btn btn-default" /> |
+            <input type="submit" value="Ta bort" class="btn btn-danger" /> |
             @Html.ActionLink("Tillbaka till listan", "Index")
         </div>
     }
