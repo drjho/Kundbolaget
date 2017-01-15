@@ -54,10 +54,10 @@ namespace Kundbolaget.Migrations
                 new Product { Id = 2, Name = "IPA", Alcohol = 4f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Öl, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 33},
                 new Product { Id = 3, Name = "Strongbow", Alcohol = 4.5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Cider, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 50},
                 new Product { Id = 4, Name = "Bishops finger", Alcohol = 5.5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Öl, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 50},
-                new Product { Id = 5, Name = "Chapel Hill", Alcohol = 12f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Mosserande, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 75},
+                new Product { Id = 5, Name = "Chapel Hill", Alcohol = 12f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Mousserande, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 75},
                 new Product { Id = 6, Name = "Koskenkorva", Alcohol = 40f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 12, ProductGroup = ProductGroup.Starksprit, StoragePackage = StoragePackage.Kartong, VatCode = 1, Volume = 100},
                 new Product { Id = 7, Name = "Eriksberg Hovmästarlager", Alcohol = .5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 24, ProductGroup = ProductGroup.Alkoholfritt, StoragePackage = StoragePackage.Back, VatCode = 1, Volume = 33},
-                new Product { Id = 8, Name = "Dom Perignon", Alcohol = 12.5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 4, ProductGroup = ProductGroup.Mosserande, StoragePackage = StoragePackage.Kartong, VatCode = 1, Volume = 75, ProductStatus = ProductStatus.Beställningsvara}
+                new Product { Id = 8, Name = "Dom Perignon", Alcohol = 12.5f, AuditCode = 1, ConsumerPackage = ConsumerPackage.Flaska, ConsumerPerStorage = 4, ProductGroup = ProductGroup.Mousserande, StoragePackage = StoragePackage.Kartong, VatCode = 1, Volume = 75, ProductStatus = ProductStatus.Beställningsvara}
             };
 
             var warehouses = new Warehouse[]

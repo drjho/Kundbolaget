@@ -18,7 +18,7 @@ namespace Kundbolaget.Models.EntityModels
 
     public enum ProductGroup
     {
-        Cider, Rödvin, Vitvin, Starksprit, Öl, Mosserande, Alkoholfritt
+        Cider, Rödvin, Vitvin, Starksprit, Öl, Mousserande, Alkoholfritt
     }
 
     public enum ProductStatus
