@@ -137,15 +137,16 @@ namespace Kundbolaget.Controllers
 
             foreach (var item in order.OrderProducts)
             {
-                item.Price = GetUnitPrice(customerGroupId, (int)item.ProductId, item.AcceptedAmount);
+                item.Price = GetUnitPrice(customerGroupId, (int)item.ProductId, item.AcceptedAmount) * item.AcceptedAmount;
             }
 
             order.OrderStatus = OrderStatus.Fakturerar;
-            orderRepo.UpdateItem(order);
+            //orderRepo.UpdateItem(order);
 
             var invoice = new Invoice
             {
-                OrderId = order.Id,
+                Order = order,
+                //OrderId = order.Id,
                 InvoiceDate = DateTime.Today.Date,
                 Paid = false,
             };
